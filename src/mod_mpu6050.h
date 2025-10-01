@@ -1,0 +1,42 @@
+#ifndef MOD_MPU6050_H
+#define MOD_MPU6050_H
+
+#include <stdint.h>
+#include "stm32f4xx_hal.h"
+
+#define MPU6050_ADDR 0x68 << 1
+
+// Kalman struct
+typedef struct
+{
+    float y[2];
+
+    float R[2][2];
+    float Q[3][3];
+    float Ad[3][3];
+
+    float Kk[3][2];
+    float Pp[3][3];
+    float Pm[3][3];
+
+    float xp[3];
+    float xm[3];
+} KALMAN;
+
+/* Update vars */
+void mod_mpu_update(float *angle, float *rps);
+float mod_mpu_update_pitch(int16_t, int16_t, int16_t);
+float mod_mpu_update_rps(int16_t);
+void mod_mpu_update_kalman(float, float);
+
+/* Get updated pitch */
+void mod_mpu_get_states(float *angle, float *rps);
+
+/* Read the raw data from the MPU6050 */
+HAL_StatusTypeDef mod_mpu_read_raw_accel(int16_t *ax, int16_t *ay, int16_t *az);
+HAL_StatusTypeDef mod_mpu_read_raw_gyro(int16_t *gx, int16_t *gy, int16_t *gz);
+
+/* Init mpu pins and I2C */
+void mod_mpu_configure_hardware(void);
+
+#endif

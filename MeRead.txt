@@ -1,0 +1,3 @@
+happy with stepper control, non blocking acceleration maybe thread priority should change?
+will attempt Kalman filter
+pid can sugma, ligma, sawcon
