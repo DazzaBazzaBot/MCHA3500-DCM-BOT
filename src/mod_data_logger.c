@@ -64,7 +64,7 @@ void log_motor(){
 
 
     // print [time],[voltage],[torque],[current],[velocity]
-    printf("%.5f,%.5f,%.5f,%.5f\n", time, voltage, torque, current);
+    //printf("%.5f,%.5f,%.5f,%.5f\n", time, voltage, torque, current);
 
     // stop after 5s
     if(time >= 5.0f){

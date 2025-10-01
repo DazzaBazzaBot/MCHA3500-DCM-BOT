@@ -225,6 +225,7 @@ Common symbol       size              file
 uwTick              0x4               build/stm32f4_HAL/stm32f4xx_hal.o
 ModManagerControlAlgorithm
                     0x1               build/cmd_parser.o
+hdma_adc1           0x60              build/stm32f4xx_hal_msp.o
 
 Memory Configuration
 
@@ -349,748 +350,750 @@ LOAD c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none
                 0x080007e8                heartbeat_task_stop
                 0x08000804                heartbeat_task_is_running
                 0x08000810                heartbeat_task_deinit
- .text          0x08000824      0x12c build/stm32f4xx_hal_msp.o
+ .text          0x08000824      0x198 build/stm32f4xx_hal_msp.o
                 0x08000824                HAL_TIM_PWM_MspInit
                 0x080008f4                HAL_ADC_MspInit
- .text          0x08000950      0x410 build/mod_dcm_driver.o
-                0x08000950                left_forward
-                0x08000974                left_reverse
-                0x08000998                left_halt
-                0x080009bc                mod_dcm_set_voltage_log
-                0x08000a8c                right_forward
-                0x08000ab0                right_reverse
-                0x08000ad4                right_halt
-                0x08000af8                mod_dcm_set_PWM
-                0x08000c14                mod_dcm_set_voltage
-                0x08000c60                mod_dcm_configure_hardware
- .text          0x08000d60      0x4f4 build/mod_mpu6050.o
-                0x08000d60                mod_mpu_update_pitch
-                0x08000ddc                mod_mpu_update_rps
-                0x08000e00                mod_mpu_update_kalman
-                0x0800108c                mod_mpu_get_states
-                0x080010a0                mod_mpu_read_raw_accel
-                0x080010e8                mod_mpu_read_raw_gyro
-                0x08001130                mod_mpu_update
-                0x080011b0                mod_mpu_configure_hardware
- .text          0x08001254        0x0 build/mod_observer.o
- *fill*         0x08001254        0x4 
- .text          0x08001258       0xd4 build/mod_PID_control.o
-                0x08001258                mod_PID_compute_control
-                0x08001298                mod_PID_run
- .text          0x0800132c        0x0 build/mod_LQR_control.o
- .text          0x0800132c        0x0 build/mod_MPC_control.o
- .text          0x0800132c       0xdc build/mod_manager.o
-                0x0800132c                mod_manager_task
-                0x08001338                mod_manager_PID
-                0x08001360                mod_manager_LQR
-                0x0800136c                mod_manager_MPC
-                0x08001378                mod_manager_init
-                0x080013b0                mod_manager_start
-                0x080013f0                mod_manager_stop
- .text          0x08001408      0x1a0 build/mod_data_logger.o
-                0x08001408                log_imu
-                0x0800140a                mod_log_task
-                0x08001414                log_inertia
-                0x08001416                mod_log_init
-                0x0800143c                mod_log_start
-                0x08001484                mod_log_stop
-                0x0800149c                log_motor
- .text          0x080015a8       0xe8 build/mod_adc.o
-                0x080015a8                mod_adc_update_readings
-                0x08001620                mod_adc_configure_hardware
- .text          0x08001690        0x0 build/mod_enc.o
- .text          0x08001690        0x0 build/main.o
- .text          0x08001690        0xc build/stm32f4xx_it.o
-                0x08001690                NMI_Handler
-                0x08001692                HardFault_Handler
-                0x08001694                MemManage_Handler
-                0x08001696                BusFault_Handler
-                0x08001698                UsageFault_Handler
-                0x0800169a                DebugMon_Handler
- .text          0x0800169c       0xb8 build/system_stm32f4xx.o
-                0x0800169c                SystemInit
-                0x080016e8                SystemCoreClockUpdate
- .text          0x08001754      0x47c build/uart.o
-                0x08001754                uart_init
-                0x08001a24                __wrap_printf
-                0x08001a5c                __io_putchar
-                0x08001a8c                __io_getchar
-                0x08001aa8                _write
-                0x08001ac6                _read
-                0x08001ada                _uart_rxne_isr
-                0x08001b04                _uart_txe_isr
-                0x08001b3c                _uart_error
-                0x08001b94                USART2_IRQHandler
- .text          0x08001bd0      0x400 build/uart_bt.o
-                0x08001bd0                uart_bt_init
-                0x08001ea8                __wrap_printf_bt
-                0x08001ee0                _uart_bt_rxne_isr
-                0x08001f08                _uart_bt_txe_isr
-                0x08001f40                _uart_bt_error
-                0x08001f98                USART1_IRQHandler
- .text          0x08001fd0       0x44 build/cmd_task.o
-                0x08001fe8                cmd_task_init
- .text          0x08002014       0x14 build/startup_stm32f446xx.o
- .text          0x08002028      0x210 build/stm32f4_HAL/stm32f4xx_hal.o
-                0x08002028                HAL_MspInit
-                0x0800202a                HAL_MspDeInit
-                0x0800202c                HAL_DeInit
-                0x08002058                HAL_InitTick
-                0x0800209c                HAL_Init
-                0x080020d0                HAL_IncTick
-                0x080020e8                HAL_GetTick
-                0x080020f4                HAL_GetTickPrio
-                0x08002100                HAL_SetTickFreq
-                0x08002120                HAL_GetTickFreq
-                0x0800212c                HAL_Delay
-                0x08002154                HAL_SuspendTick
-                0x08002162                HAL_ResumeTick
-                0x08002170                HAL_GetHalVersion
-                0x08002178                HAL_GetREVID
-                0x08002184                HAL_GetDEVID
-                0x08002194                HAL_DBGMCU_EnableDBGSleepMode
-                0x080021a4                HAL_DBGMCU_DisableDBGSleepMode
-                0x080021b4                HAL_DBGMCU_EnableDBGStopMode
-                0x080021c4                HAL_DBGMCU_DisableDBGStopMode
-                0x080021d4                HAL_DBGMCU_EnableDBGStandbyMode
-                0x080021e4                HAL_DBGMCU_DisableDBGStandbyMode
-                0x080021f4                HAL_EnableCompensationCell
-                0x08002204                HAL_DisableCompensationCell
-                0x08002214                HAL_GetUIDw0
-                0x08002220                HAL_GetUIDw1
-                0x0800222c                HAL_GetUIDw2
- .text          0x08002238      0x62c build/stm32f4_HAL/stm32f4xx_hal_dma.o
-                0x08002264                HAL_DMA_Init
-                0x08002360                HAL_DMA_DeInit
-                0x080023b4                HAL_DMA_Start
-                0x08002408                HAL_DMA_Start_IT
-                0x0800247c                HAL_DMA_Abort
-                0x08002504                HAL_DMA_Abort_IT
-                0x08002528                HAL_DMA_PollForTransfer
-                0x08002636                HAL_DMA_IRQHandler
-                0x080027b0                HAL_DMA_RegisterCallback
-                0x080027f8                HAL_DMA_UnRegisterCallback
-                0x0800285a                HAL_DMA_GetState
-                0x08002860                HAL_DMA_GetError
- .text          0x08002864      0x9c4 build/stm32f4_HAL/stm32f4xx_hal_adc.o
-                0x08002866                HAL_ADC_Init
-                0x080029b4                HAL_ADC_MspDeInit
-                0x080029b6                HAL_ADC_DeInit
-                0x080029ea                HAL_ADC_Start
-                0x08002ad4                HAL_ADC_Stop
-                0x08002b0a                HAL_ADC_PollForConversion
-                0x08002ba8                HAL_ADC_PollForEvent
-                0x08002c0e                HAL_ADC_Start_IT
-                0x08002d04                HAL_ADC_Stop_IT
-                0x08002d4c                HAL_ADC_Start_DMA
-                0x08002e70                HAL_ADC_Stop_DMA
-                0x08002eca                HAL_ADC_GetValue
-                0x08002ed0                HAL_ADC_ConvCpltCallback
-                0x08002ed2                HAL_ADC_ConvHalfCpltCallback
-                0x08002ede                HAL_ADC_LevelOutOfWindowCallback
-                0x08002ee0                HAL_ADC_ErrorCallback
-                0x08002ee2                HAL_ADC_IRQHandler
-                0x0800308c                HAL_ADC_ConfigChannel
-                0x080031c0                HAL_ADC_AnalogWDGConfig
-                0x08003220                HAL_ADC_GetState
-                0x08003224                HAL_ADC_GetError
- .text          0x08003228      0x6b0 build/stm32f4_HAL/stm32f4xx_hal_adc_ex.o
-                0x08003298                HAL_ADCEx_InjectedStart
-                0x0800334c                HAL_ADCEx_InjectedStart_IT
-                0x08003408                HAL_ADCEx_InjectedStop
-                0x08003462                HAL_ADCEx_InjectedPollForConversion
-                0x080034ea                HAL_ADCEx_InjectedStop_IT
-                0x0800354c                HAL_ADCEx_InjectedGetValue
-                0x0800357e                HAL_ADCEx_MultiModeStart_DMA
-                0x08003678                HAL_ADCEx_MultiModeStop_DMA
-                0x080036d8                HAL_ADCEx_MultiModeGetValue
-                0x080036e4                HAL_ADCEx_InjectedConvCpltCallback
-                0x080036e6                HAL_ADCEx_InjectedConfigChannel
-                0x08003888                HAL_ADCEx_MultiModeConfigChannel
- .text          0x080038d8      0x33c build/stm32f4_HAL/stm32f4xx_hal_gpio.o
-                0x080038d8                HAL_GPIO_Init
-                0x08003a94                HAL_GPIO_DeInit
-                0x08003bac                HAL_GPIO_ReadPin
-                0x08003bb8                HAL_GPIO_WritePin
-                0x08003bc2                HAL_GPIO_TogglePin
-                0x08003bd0                HAL_GPIO_LockPin
-                0x08003bfa                HAL_GPIO_EXTI_Callback
-                0x08003bfc                HAL_GPIO_EXTI_IRQHandler
- .text          0x08003c14      0x220 build/stm32f4_HAL/stm32f4xx_ll_gpio.o
-                0x08003c34                LL_GPIO_DeInit
-                0x08003ce0                LL_GPIO_Init
-                0x08003e1c                LL_GPIO_StructInit
- .text          0x08003e34      0x21c build/stm32f4_HAL/stm32f4xx_ll_usart.o
-                0x08003e34                LL_USART_DeInit
-                0x08003ef4                LL_USART_Init
-                0x08003ff0                LL_USART_StructInit
-                0x08004008                LL_USART_ClockInit
-                0x08004042                LL_USART_ClockStructInit
- .text          0x08004050      0x22c build/stm32f4_HAL/stm32f4xx_ll_dma.o
-                0x08004050                LL_DMA_DeInit
-                0x080041d4                LL_DMA_Init
-                0x08004258                LL_DMA_StructInit
- .text          0x0800427c      0x60c build/stm32f4_HAL/stm32f4xx_ll_rcc.o
-                0x0800428c                LL_RCC_DeInit
-                0x0800433c                LL_RCC_GetCECClockFreq
-                0x08004368                RCC_GetHCLKClockFreq
-                0x08004380                RCC_GetPCLK1ClockFreq
-                0x08004398                RCC_GetPCLK2ClockFreq
-                0x080043b0                RCC_PLL_GetFreqDomain_SYS
-                0x080043f8                RCC_GetSystemClockFreq
-                0x08004428                LL_RCC_GetSystemClocksFreq
-                0x0800444a                LL_RCC_GetFMPI2CClockFreq
-                0x0800449c                RCC_PLL_GetFreqDomain_48M
-                0x080044d8                RCC_PLL_GetFreqDomain_I2S
-                0x08004514                RCC_PLL_GetFreqDomain_SPDIFRX
-                0x08004518                RCC_PLL_GetFreqDomain_SAI
-                0x0800451c                RCC_PLLSAI_GetFreqDomain_SAI
-                0x0800456c                RCC_PLLSAI_GetFreqDomain_48M
-                0x080045b0                LL_RCC_GetSDIOClockFreq
-                0x080045f8                LL_RCC_GetUSBClockFreq
-                0x0800462c                RCC_PLLI2S_GetFreqDomain_SAI
-                0x0800467c                LL_RCC_GetSAIClockFreq
-                0x08004734                RCC_PLLI2S_GetFreqDomain_SPDIFRX
-                0x08004778                LL_RCC_GetSPDIFRXClockFreq
-                0x080047ac                RCC_PLLI2S_GetFreqDomain_I2S
-                0x080047f0                LL_RCC_GetI2SClockFreq
- .text          0x08004888     0x3208 build/stm32f4_HAL/stm32f4xx_hal_i2c.o
-                0x08004cac                HAL_I2C_MspInit
-                0x08004cae                HAL_I2C_Init
-                0x08004dfc                HAL_I2C_MspDeInit
-                0x08004dfe                HAL_I2C_DeInit
-                0x08004e30                HAL_I2C_Master_Transmit
-                0x08004fe0                HAL_I2C_Master_Receive
-                0x080052c0                HAL_I2C_Slave_Transmit
-                0x08005420                HAL_I2C_Slave_Receive
-                0x0800559c                HAL_I2C_Master_Transmit_IT
-                0x0800564c                HAL_I2C_Master_Receive_IT
-                0x08005704                HAL_I2C_Slave_Transmit_IT
-                0x08005774                HAL_I2C_Slave_Receive_IT
-                0x080057e4                HAL_I2C_Master_Transmit_DMA
-                0x08005910                HAL_I2C_Master_Receive_DMA
-                0x08005a38                HAL_I2C_Slave_Transmit_DMA
-                0x08005af8                HAL_I2C_Slave_Receive_DMA
-                0x08005bb8                HAL_I2C_Mem_Write
-                0x08005cd8                HAL_I2C_Mem_Read
-                0x08005ee8                HAL_I2C_Mem_Write_IT
-                0x08005fa4                HAL_I2C_Mem_Read_IT
-                0x08006070                HAL_I2C_Mem_Write_DMA
-                0x080061c4                HAL_I2C_Mem_Read_DMA
-                0x08006350                HAL_I2C_IsDeviceReady
-                0x080064b0                HAL_I2C_Master_Seq_Transmit_IT
-                0x08006580                HAL_I2C_Master_Seq_Transmit_DMA
-                0x080066f8                HAL_I2C_Master_Seq_Receive_IT
-                0x08006804                HAL_I2C_Master_Seq_Receive_DMA
-                0x080069d0                HAL_I2C_Slave_Seq_Transmit_IT
-                0x08006a46                HAL_I2C_Slave_Seq_Transmit_DMA
-                0x08006b84                HAL_I2C_Slave_Seq_Receive_IT
-                0x08006bfa                HAL_I2C_Slave_Seq_Receive_DMA
-                0x08006d38                HAL_I2C_EnableListen_IT
-                0x08006d6e                HAL_I2C_DisableListen_IT
-                0x08006dac                HAL_I2C_MasterTxCpltCallback
-                0x08006dae                HAL_I2C_MasterRxCpltCallback
-                0x08006db0                HAL_I2C_SlaveTxCpltCallback
-                0x08006db2                HAL_I2C_SlaveRxCpltCallback
-                0x08006db4                HAL_I2C_AddrCallback
-                0x08006db6                HAL_I2C_ListenCpltCallback
-                0x08006db8                HAL_I2C_MemTxCpltCallback
-                0x08006dba                HAL_I2C_MemRxCpltCallback
-                0x08006dbc                HAL_I2C_ErrorCallback
-                0x08006f0a                HAL_I2C_AbortCpltCallback
-                0x080070dc                HAL_I2C_Master_Abort_IT
-                0x08007128                HAL_I2C_EV_IRQHandler
-                0x08007950                HAL_I2C_ER_IRQHandler
-                0x08007a80                HAL_I2C_GetState
-                0x08007a86                HAL_I2C_GetMode
-                0x08007a8c                HAL_I2C_GetError
- .text          0x08007a90       0x7c build/stm32f4_HAL/stm32f4xx_hal_i2c_ex.o
-                0x08007a90                HAL_I2CEx_ConfigAnalogFilter
-                0x08007ace                HAL_I2CEx_ConfigDigitalFilter
- .text          0x08007b0c     0x1db4 build/stm32f4_HAL/stm32f4xx_hal_tim.o
-                0x08007c28                HAL_TIM_Base_MspInit
-                0x08007c2a                HAL_TIM_Base_MspDeInit
-                0x08007c2c                HAL_TIM_Base_DeInit
-                0x08007c66                HAL_TIM_Base_Start
-                0x08007c8a                HAL_TIM_Base_Stop
-                0x08007cb8                HAL_TIM_Base_Start_IT
-                0x08007cd8                HAL_TIM_Base_Stop_IT
-                0x08007d02                HAL_TIM_Base_Start_DMA
-                0x08007d6c                HAL_TIM_Base_Stop_DMA
-                0x08007da8                HAL_TIM_OC_MspInit
-                0x08007daa                HAL_TIM_OC_MspDeInit
-                0x08007dac                HAL_TIM_OC_DeInit
-                0x08007de8                HAL_TIM_PWM_MspDeInit
-                0x08007dea                HAL_TIM_PWM_DeInit
-                0x08007e24                HAL_TIM_IC_MspInit
-                0x08007e26                HAL_TIM_IC_MspDeInit
-                0x08007e28                HAL_TIM_IC_DeInit
-                0x08007e62                HAL_TIM_OnePulse_MspInit
-                0x08007e64                HAL_TIM_OnePulse_MspDeInit
-                0x08007e66                HAL_TIM_OnePulse_DeInit
-                0x08007ea0                HAL_TIM_OnePulse_Start
-                0x08007ee0                HAL_TIM_OnePulse_Stop
-                0x08007f48                HAL_TIM_OnePulse_Start_IT
-                0x08007f98                HAL_TIM_OnePulse_Stop_IT
-                0x08008010                HAL_TIM_Encoder_MspInit
-                0x08008012                HAL_TIM_Encoder_MspDeInit
-                0x08008014                HAL_TIM_Encoder_DeInit
-                0x0800804e                HAL_TIM_Encoder_Start
-                0x08008092                HAL_TIM_Encoder_Stop
-                0x080080da                HAL_TIM_Encoder_Start_IT
-                0x08008148                HAL_TIM_Encoder_Stop_IT
-                0x080081bc                HAL_TIM_Encoder_Start_DMA
-                0x08008300                HAL_TIM_Encoder_Stop_DMA
-                0x08008392                HAL_TIM_DMABurst_WriteStart
-                0x08008470                HAL_TIM_DMABurst_WriteStop
-                0x080084d4                HAL_TIM_DMABurst_ReadStart
-                0x080085b8                HAL_TIM_DMABurst_ReadStop
-                0x080085bc                HAL_TIM_GenerateEvent
-                0x080085e0                HAL_TIM_ConfigTI1Input
-                0x080085f0                HAL_TIM_ReadCapturedValue
-                0x0800861c                HAL_TIM_PeriodElapsedCallback
-                0x0800862e                HAL_TIM_PeriodElapsedHalfCpltCallback
-                0x08008640                HAL_TIM_OC_DelayElapsedCallback
-                0x08008642                HAL_TIM_IC_CaptureCallback
-                0x08008644                TIM_DMACaptureCplt
-                0x08008680                HAL_TIM_IC_CaptureHalfCpltCallback
-                0x08008682                TIM_DMACaptureHalfCplt
-                0x080086be                HAL_TIM_PWM_PulseFinishedCallback
-                0x080086c0                TIM_DMADelayPulseCplt
-                0x080086fc                HAL_TIM_PWM_PulseFinishedHalfCpltCallback
-                0x080086fe                TIM_DMADelayPulseHalfCplt
-                0x0800873a                HAL_TIM_TriggerCallback
-                0x0800873c                HAL_TIM_IRQHandler
-                0x08008890                HAL_TIM_TriggerHalfCpltCallback
-                0x080088a2                HAL_TIM_ErrorCallback
-                0x080088a4                TIM_DMAError
-                0x080088b4                HAL_TIM_Base_GetState
-                0x080088ba                HAL_TIM_OC_GetState
-                0x080088c0                HAL_TIM_PWM_GetState
-                0x080088c6                HAL_TIM_IC_GetState
-                0x080088cc                HAL_TIM_OnePulse_GetState
-                0x080088d2                HAL_TIM_Encoder_GetState
-                0x080088d8                TIM_Base_SetConfig
-                0x080089a4                HAL_TIM_Base_Init
-                0x080089d8                HAL_TIM_OC_Init
-                0x08008a0c                HAL_TIM_PWM_Init
-                0x08008a40                HAL_TIM_IC_Init
-                0x08008a74                HAL_TIM_OnePulse_Init
-                0x08008aba                HAL_TIM_Encoder_Init
-                0x08008b4e                TIM_OC2_SetConfig
-                0x08008bbc                HAL_TIM_OC_ConfigChannel
-                0x08008c0e                HAL_TIM_PWM_ConfigChannel
-                0x08008cc0                TIM_TI1_SetConfig
-                0x08008d34                HAL_TIM_IC_ConfigChannel
-                0x08008e46                HAL_TIM_OnePulse_ConfigChannel
-                0x08008f4c                TIM_ETR_SetConfig
-                0x08008f60                HAL_TIM_ConfigOCrefClear
-                0x08009024                HAL_TIM_ConfigClockSource
-                0x080091ec                HAL_TIM_SlaveConfigSynchro_IT
-                0x0800923a                HAL_TIM_SlaveConfigSynchro
-                0x08009288                TIM_CCxChannelCmd
-                0x080092a4                HAL_TIM_OC_Start
-                0x080092e0                HAL_TIM_PWM_Start
-                0x080092e4                HAL_TIM_OC_Stop
-                0x0800933c                HAL_TIM_OC_Start_IT
-                0x080093a8                HAL_TIM_PWM_Start_IT
-                0x080093ac                HAL_TIM_OC_Stop_IT
-                0x08009438                HAL_TIM_PWM_Stop_IT
-                0x0800943c                HAL_TIM_OC_Start_DMA
-                0x08009548                HAL_TIM_PWM_Start_DMA
-                0x0800954c                HAL_TIM_OC_Stop_DMA
-                0x080095f8                HAL_TIM_PWM_Stop_DMA
-                0x080095fc                HAL_TIM_PWM_Stop
-                0x0800965c                HAL_TIM_IC_Start
-                0x0800967c                HAL_TIM_IC_Stop
-                0x080096a6                HAL_TIM_IC_Start_IT
-                0x080096f8                HAL_TIM_IC_Stop_IT
-                0x08009754                HAL_TIM_IC_Start_DMA
-                0x08009844                HAL_TIM_IC_Stop_DMA
- .text          0x080098c0      0x800 build/stm32f4_HAL/stm32f4xx_hal_tim_ex.o
-                0x080098dc                HAL_TIMEx_HallSensor_MspInit
-                0x080098de                HAL_TIMEx_HallSensor_Init
-                0x0800998c                HAL_TIMEx_HallSensor_MspDeInit
-                0x0800998e                HAL_TIMEx_HallSensor_DeInit
-                0x080099c8                HAL_TIMEx_HallSensor_Start
-                0x080099ee                HAL_TIMEx_HallSensor_Stop
-                0x08009a1e                HAL_TIMEx_HallSensor_Start_IT
-                0x08009a4c                HAL_TIMEx_HallSensor_Stop_IT
-                0x08009a84                HAL_TIMEx_HallSensor_Start_DMA
-                0x08009b04                HAL_TIMEx_HallSensor_Stop_DMA
-                0x08009b44                HAL_TIMEx_OCN_Start
-                0x08009b6c                HAL_TIMEx_OCN_Stop
-                0x08009bb2                HAL_TIMEx_OCN_Start_IT
-                0x08009c04                HAL_TIMEx_OCN_Stop_IT
-                0x08009c7e                HAL_TIMEx_OCN_Start_DMA
-                0x08009d4c                HAL_TIMEx_OCN_Stop_DMA
-                0x08009dd0                HAL_TIMEx_PWMN_Start
-                0x08009dd4                HAL_TIMEx_PWMN_Stop
-                0x08009dd8                HAL_TIMEx_PWMN_Start_IT
-                0x08009ddc                HAL_TIMEx_PWMN_Stop_IT
-                0x08009de0                HAL_TIMEx_PWMN_Start_DMA
-                0x08009de4                HAL_TIMEx_PWMN_Stop_DMA
-                0x08009de8                HAL_TIMEx_OnePulseN_Start
-                0x08009dfe                HAL_TIMEx_OnePulseN_Stop
-                0x08009e02                HAL_TIMEx_OnePulseN_Start_IT
-                0x08009e28                HAL_TIMEx_OnePulseN_Stop_IT
-                0x08009e7e                HAL_TIMEx_ConfigCommutEvent
-                0x08009ed8                HAL_TIMEx_ConfigCommutEvent_IT
-                0x08009f32                HAL_TIMEx_ConfigCommutEvent_DMA
-                0x08009fa8                HAL_TIMEx_MasterConfigSynchronization
-                0x0800a028                HAL_TIMEx_ConfigBreakDeadTime
-                0x0800a07a                HAL_TIMEx_RemapConfig
-                0x0800a094                HAL_TIMEx_CommutCallback
-                0x0800a096                TIMEx_DMACommutationCplt
-                0x0800a0a6                HAL_TIMEx_CommutHalfCpltCallback
-                0x0800a0a8                TIMEx_DMACommutationHalfCplt
-                0x0800a0b8                HAL_TIMEx_BreakCallback
-                0x0800a0ba                HAL_TIMEx_HallSensor_GetState
- .text          0x0800a0c0        0x0 build/stm32f4_HAL/stm32f4xx_hal_rtc.o
- .text          0x0800a0c0      0x6b4 build/stm32f4_HAL/stm32f4xx_hal_rcc.o
-                0x0800a40c                HAL_RCC_MCOConfig
-                0x0800a4a4                HAL_RCC_EnableCSS
-                0x0800a4b0                HAL_RCC_DisableCSS
-                0x0800a518                HAL_RCC_ClockConfig
-                0x0800a64c                HAL_RCC_GetHCLKFreq
-                0x0800a658                HAL_RCC_GetPCLK1Freq
-                0x0800a678                HAL_RCC_GetPCLK2Freq
-                0x0800a71c                HAL_RCC_GetClockConfig
-                0x0800a758                HAL_RCC_CSSCallback
-                0x0800a75a                HAL_RCC_NMI_IRQHandler
- .text          0x0800a774      0xdb8 build/stm32f4_HAL/stm32f4xx_hal_rcc_ex.o
-                0x0800a774                HAL_RCCEx_PeriphCLKConfig
-                0x0800ab7c                HAL_RCCEx_GetPeriphCLKConfig
-                0x0800ac78                HAL_RCCEx_GetPeriphCLKFreq
-                0x0800ae20                HAL_RCCEx_SelectLSEMode
-                0x0800ae38                HAL_RCCEx_EnablePLLI2S
-                0x0800aeac                HAL_RCCEx_DisablePLLI2S
-                0x0800aee0                HAL_RCCEx_EnablePLLSAI
-                0x0800af50                HAL_RCCEx_DisablePLLSAI
-                0x0800af84                HAL_RCC_GetSysClockFreq
-                0x0800b014                HAL_RCC_DeInit
-                0x0800b168                HAL_RCC_OscConfig
-                0x0800b4a0                HAL_RCC_GetOscConfig
- .text          0x0800b52c      0x1ac build/stm32f4_HAL/stm32f4xx_hal_pwr.o
-                0x0800b52c                HAL_PWR_DeInit
-                0x0800b544                HAL_PWR_EnableBkUpAccess
-                0x0800b550                HAL_PWR_DisableBkUpAccess
-                0x0800b55c                HAL_PWR_ConfigPVD
-                0x0800b5cc                HAL_PWR_EnablePVD
-                0x0800b5d8                HAL_PWR_DisablePVD
-                0x0800b5e4                HAL_PWR_EnableWakeUpPin
-                0x0800b5f4                HAL_PWR_DisableWakeUpPin
-                0x0800b604                HAL_PWR_EnterSLEEPMode
-                0x0800b624                HAL_PWR_EnterSTOPMode
-                0x0800b65c                HAL_PWR_EnterSTANDBYMode
-                0x0800b67c                HAL_PWR_PVDCallback
-                0x0800b67e                HAL_PWR_PVD_IRQHandler
-                0x0800b698                HAL_PWR_EnableSleepOnExit
-                0x0800b6a8                HAL_PWR_DisableSleepOnExit
-                0x0800b6b8                HAL_PWR_EnableSEVOnPend
-                0x0800b6c8                HAL_PWR_DisableSEVOnPend
- .text          0x0800b6d8      0x294 build/stm32f4_HAL/stm32f4xx_hal_pwr_ex.o
-                0x0800b6d8                HAL_PWREx_EnableBkUpReg
-                0x0800b70c                HAL_PWREx_DisableBkUpReg
-                0x0800b744                HAL_PWREx_EnableFlashPowerDown
-                0x0800b750                HAL_PWREx_DisableFlashPowerDown
-                0x0800b75c                HAL_PWREx_GetVoltageRange
-                0x0800b76c                HAL_PWREx_ControlVoltageScaling
-                0x0800b81c                HAL_PWREx_EnableOverDrive
-                0x0800b890                HAL_PWREx_DisableOverDrive
-                0x0800b904                HAL_PWREx_EnterUnderDriveSTOPMode
- .text          0x0800b96c      0x2bc build/stm32f4_HAL/stm32f4xx_hal_cortex.o
-                0x0800b96c                HAL_NVIC_SetPriorityGrouping
-                0x0800b990                HAL_NVIC_SetPriority
-                0x0800b9f4                HAL_NVIC_EnableIRQ
-                0x0800ba10                HAL_NVIC_DisableIRQ
-                0x0800ba34                HAL_NVIC_SystemReset
-                0x0800ba58                HAL_SYSTICK_Config
-                0x0800ba80                HAL_MPU_Disable
-                0x0800ba9c                HAL_MPU_Enable
-                0x0800babc                HAL_MPU_ConfigRegion
-                0x0800bb20                HAL_NVIC_GetPriorityGrouping
-                0x0800bb30                HAL_NVIC_GetPriority
-                0x0800bb88                HAL_NVIC_SetPendingIRQ
-                0x0800bba4                HAL_NVIC_GetPendingIRQ
-                0x0800bbc8                HAL_NVIC_ClearPendingIRQ
-                0x0800bbe4                HAL_NVIC_GetActive
-                0x0800bc08                HAL_SYSTICK_CLKSourceConfig
-                0x0800bc1e                HAL_SYSTICK_Callback
-                0x0800bc20                HAL_SYSTICK_IRQHandler
- .text          0x0800bc28     0x1824 build/stm32f4_HAL/stm32f4xx_hal_spi.o
-                0x0800bdcc                HAL_SPI_MspInit
-                0x0800bdce                HAL_SPI_Init
-                0x0800be52                HAL_SPI_MspDeInit
-                0x0800be54                HAL_SPI_DeInit
-                0x0800be80                HAL_SPI_Transmit
-                0x0800bffa                HAL_SPI_TransmitReceive
-                0x0800c27e                HAL_SPI_Receive
-                0x0800c43c                HAL_SPI_Transmit_IT
-                0x0800c4e4                HAL_SPI_TransmitReceive_IT
-                0x0800c5b0                HAL_SPI_Receive_IT
-                0x0800c678                HAL_SPI_Transmit_DMA
-                0x0800c750                HAL_SPI_TransmitReceive_DMA
-                0x0800c878                HAL_SPI_Receive_DMA
-                0x0800c97c                HAL_SPI_Abort
-                0x0800caa4                HAL_SPI_DMAPause
-                0x0800cac4                HAL_SPI_DMAResume
-                0x0800cae4                HAL_SPI_DMAStop
-                0x0800cb2a                HAL_SPI_TxCpltCallback
-                0x0800cb2c                HAL_SPI_RxCpltCallback
-                0x0800cb2e                HAL_SPI_TxRxCpltCallback
-                0x0800cb30                HAL_SPI_TxHalfCpltCallback
-                0x0800cb3c                HAL_SPI_RxHalfCpltCallback
-                0x0800cb48                HAL_SPI_TxRxHalfCpltCallback
-                0x0800cb54                HAL_SPI_ErrorCallback
-                0x0800d116                HAL_SPI_IRQHandler
-                0x0800d220                HAL_SPI_AbortCpltCallback
-                0x0800d222                HAL_SPI_Abort_IT
-                0x0800d440                HAL_SPI_GetState
-                0x0800d446                HAL_SPI_GetError
- .text          0x0800d44c        0x0 build/FreeRTOS/croutine.o
- .text          0x0800d44c      0x264 build/FreeRTOS/event_groups.o
-                0x0800d44c                xEventGroupCreateStatic
-                0x0800d464                xEventGroupCreate
-                0x0800d480                xEventGroupWaitBits
-                0x0800d536                xEventGroupClearBits
-                0x0800d550                vEventGroupClearBitsCallback
-                0x0800d554                xEventGroupClearBitsFromISR
-                0x0800d564                xEventGroupGetBitsFromISR
-                0x0800d580                xEventGroupSetBits
-                0x0800d5dc                xEventGroupSync
-                0x0800d666                vEventGroupSetBitsCallback
-                0x0800d66a                vEventGroupDelete
-                0x0800d694                xEventGroupSetBitsFromISR
-                0x0800d6a4                uxEventGroupGetNumber
-                0x0800d6aa                vEventGroupSetNumber
- .text          0x0800d6b0       0x82 build/FreeRTOS/list.o
-                0x0800d6b0                vListInitialise
-                0x0800d6c6                vListInitialiseItem
-                0x0800d6cc                vListInsertEnd
-                0x0800d6e4                vListInsert
-                0x0800d712                uxListRemove
- .text          0x0800d732      0x8f2 build/FreeRTOS/queue.o
-                0x0800d84e                xQueueGenericReset
-                0x0800d8b8                xQueueGenericCreateStatic
-                0x0800d8e4                xQueueGenericCreate
-                0x0800d91e                xQueueGetMutexHolder
-                0x0800d938                xQueueGetMutexHolderFromISR
-                0x0800d944                xQueueCreateCountingSemaphoreStatic
-                0x0800d95e                xQueueCreateCountingSemaphore
-                0x0800d970                xQueueGenericSend
-                0x0800da74                xQueueCreateMutexStatic
-                0x0800da9e                xQueueGiveMutexRecursive
-                0x0800dac6                xQueueCreateMutex
-                0x0800daea                xQueueGenericSendFromISR
-                0x0800db54                xQueueGiveFromISR
-                0x0800dbb0                xQueueReceive
-                0x0800dc9e                xQueueSemaphoreTake
-                0x0800ddc4                xQueueTakeMutexRecursive
-                0x0800ddf4                xQueuePeek
-                0x0800dee2                xQueueReceiveFromISR
-                0x0800df4a                xQueuePeekFromISR
-                0x0800df7a                uxQueueMessagesWaiting
-                0x0800df90                uxQueueSpacesAvailable
-                0x0800dfaa                uxQueueMessagesWaitingFromISR
-                0x0800dfae                vQueueDelete
-                0x0800dfba                uxQueueGetQueueNumber
-                0x0800dfbe                vQueueSetQueueNumber
-                0x0800dfc2                ucQueueGetQueueType
-                0x0800dfc8                xQueueIsQueueEmptyFromISR
-                0x0800dfd2                xQueueIsQueueFullFromISR
-                0x0800dfde                vQueueWaitForMessageRestricted
- .text          0x0800e024     0x12c0 build/FreeRTOS/tasks.o
-                0x0800e2e4                xTaskCreateStatic
-                0x0800e318                xTaskCreate
-                0x0800e374                vTaskDelete
-                0x0800e3f8                eTaskGetState
-                0x0800e460                uxTaskPriorityGet
-                0x0800e480                uxTaskPriorityGetFromISR
-                0x0800e4a8                vTaskPrioritySet
-                0x0800e558                vTaskResume
-                0x0800e5dc                xTaskResumeFromISR
-                0x0800e664                vTaskStartScheduler
-                0x0800e6e0                vTaskEndScheduler
-                0x0800e700                vTaskSuspendAll
-                0x0800e714                xTaskGetTickCount
-                0x0800e720                xTaskGetTickCountFromISR
-                0x0800e72c                uxTaskGetNumberOfTasks
-                0x0800e738                pcTaskGetName
-                0x0800e748                xTaskIncrementTick
-                0x0800e828                xTaskResumeAll
-                0x0800e8ec                vTaskDelayUntil
-                0x0800e93c                vTaskDelay
-                0x0800e96a                xTaskCatchUpTicks
-                0x0800e988                vTaskSwitchContext
-                0x0800e9ec                vTaskSuspend
-                0x0800ea7c                vTaskPlaceOnEventList
-                0x0800ea9c                vTaskPlaceOnUnorderedEventList
-                0x0800eac4                vTaskPlaceOnEventListRestricted
-                0x0800eaec                xTaskRemoveFromEventList
-                0x0800eb54                vTaskRemoveFromUnorderedEventList
-                0x0800eba8                vTaskSetTimeOutState
-                0x0800ebcc                vTaskInternalSetTimeOutState
-                0x0800ebe0                xTaskCheckForTimeOut
-                0x0800ec30                vTaskMissedYield
-                0x0800ec40                uxTaskGetTaskNumber
-                0x0800ec46                vTaskSetTaskNumber
-                0x0800ec4c                vTaskGetInfo
-                0x0800ed22                uxTaskGetSystemState
-                0x0800edbc                uxTaskGetStackHighWaterMark
-                0x0800eddc                xTaskGetCurrentTaskHandle
-                0x0800ede8                xTaskGetSchedulerState
-                0x0800ee08                xTaskPriorityInherit
-                0x0800ee88                xTaskPriorityDisinherit
-                0x0800eee4                vTaskPriorityDisinheritAfterTimeout
-                0x0800ef54                uxTaskResetEventItemValue
-                0x0800ef6c                pvTaskIncrementMutexHeldCount
-                0x0800ef84                ulTaskNotifyTake
-                0x0800eff0                xTaskNotifyWait
-                0x0800f084                xTaskGenericNotify
-                0x0800f134                xTaskGenericNotifyFromISR
-                0x0800f1f4                vTaskNotifyGiveFromISR
-                0x0800f284                xTaskNotifyStateClear
-                0x0800f2b0                ulTaskNotifyValueClear
- .text          0x0800f2e4      0x4a8 build/FreeRTOS/timers.o
-                0x0800f360                xTimerCreateTimerTask
-                0x0800f3b0                xTimerCreate
-                0x0800f3f6                xTimerCreateStatic
-                0x0800f436                xTimerGenericCommand
-                0x0800f694                xTimerGetTimerDaemonTaskHandle
-                0x0800f6a0                xTimerGetPeriod
-                0x0800f6a4                vTimerSetReloadMode
-                0x0800f6ca                uxTimerGetReloadMode
-                0x0800f6e6                xTimerGetExpiryTime
-                0x0800f6ea                pcTimerGetName
-                0x0800f6ee                xTimerIsTimerActive
-                0x0800f70a                pvTimerGetTimerID
-                0x0800f720                vTimerSetTimerID
-                0x0800f734                xTimerPendFunctionCallFromISR
-                0x0800f75c                xTimerPendFunctionCall
-                0x0800f784                uxTimerGetTimerNumber
-                0x0800f788                vTimerSetTimerNumber
- .text          0x0800f78c      0x52a build/FreeRTOS/stream_buffer.o
-                0x0800f82c                xStreamBufferGenericCreate
-                0x0800f868                xStreamBufferGenericCreateStatic
-                0x0800f8a8                vStreamBufferDelete
-                0x0800f8ba                xStreamBufferReset
-                0x0800f900                xStreamBufferSetTriggerLevel
-                0x0800f914                xStreamBufferSpacesAvailable
-                0x0800f928                xStreamBufferBytesAvailable
-                0x0800f92a                xStreamBufferSend
-                0x0800fa08                xStreamBufferSendFromISR
-                0x0800faa0                xStreamBufferReceive
-                0x0800fb54                xStreamBufferNextMessageLengthBytes
-                0x0800fb82                xStreamBufferReceiveFromISR
-                0x0800fc12                xStreamBufferIsEmpty
-                0x0800fc1e                xStreamBufferIsFull
-                0x0800fc36                xStreamBufferSendCompletedFromISR
-                0x0800fc6e                xStreamBufferReceiveCompletedFromISR
-                0x0800fca6                uxStreamBufferGetStreamBufferNumber
-                0x0800fcaa                vStreamBufferSetStreamBufferNumber
-                0x0800fcae                ucStreamBufferGetStreamBufferType
- *fill*         0x0800fcb6        0x2 
- .text          0x0800fcb8     0x1140 build/FreeRTOS/cmsis_os2.o
-                0x0800fcf6                SysTick_Handler
-                0x0800fd10                osKernelInitialize
-                0x0800fd3c                osKernelGetInfo
-                0x0800fd68                osKernelGetState
-                0x0800fd88                osKernelStart
-                0x0800fdc8                osKernelLock
-                0x0800fdf4                osKernelUnlock
-                0x0800fe2c                osKernelRestoreLock
-                0x0800fe70                osKernelGetTickCount
-                0x0800fe88                osKernelGetTickFreq
-                0x0800fe8e                osKernelGetSysTimerCount
-                0x0800fece                osKernelGetSysTimerFreq
-                0x0800fed8                osThreadNew
-                0x0800ff6c                osThreadGetName
-                0x0800ff86                osThreadGetId
-                0x0800ff8a                osThreadGetState
-                0x0800ffb4                osThreadGetStackSpace
-                0x0800ffce                osThreadSetPriority
-                0x0800fffc                osThreadGetPriority
-                0x08010018                osThreadYield
-                0x0801003c                osThreadSuspend
-                0x08010060                osThreadResume
-                0x08010084                osThreadExit
-                0x0801008e                osThreadTerminate
-                0x080100c2                osThreadGetCount
-                0x080100d6                osThreadEnumerate
-                0x08010140                osThreadFlagsSet
-                0x080101be                osThreadFlagsClear
-                0x0801020e                osThreadFlagsGet
-                0x0801023c                osThreadFlagsWait
-                0x080102d6                osDelay
-                0x080102f4                osDelayUntil
-                0x08010324                osTimerNew
-                0x0801039c                osTimerGetName
-                0x080103b6                osTimerStart
-                0x080103ec                osTimerStop
-                0x0801042e                osTimerIsRunning
-                0x08010448                osTimerDelete
-                0x0801048e                osEventFlagsNew
-                0x080104ba                osEventFlagsSet
-                0x08010514                osEventFlagsClear
-                0x0801055a                osEventFlagsGet
-                0x0801057c                osEventFlagsWait
-                0x080105e0                osEventFlagsDelete
-                0x08010604                osMutexNew
-                0x0801065c                osMutexAcquire
-                0x080106a2                osMutexRelease
-                0x080106e2                osMutexGetOwner
-                0x080106fe                osMutexDelete
-                0x08010724                osSemaphoreNew
-                0x080107b2                osSemaphoreAcquire
-                0x08010814                osSemaphoreRelease
-                0x0801086c                osSemaphoreGetCount
-                0x0801088e                osSemaphoreDelete
-                0x080108b2                osMessageQueueNew
-                0x08010916                osMessageQueuePut
-                0x08010984                osMessageQueueGet
-                0x080109ee                osMessageQueueGetCapacity
-                0x080109f4                osMessageQueueGetMsgSize
-                0x080109fa                osMessageQueueGetCount
-                0x080109fe                osMessageQueueGetSpace
-                0x08010a34                osMessageQueueReset
-                0x08010a5a                osMessageQueueDelete
-                0x08010a5e                osMemoryPoolNew
-                0x08010b4c                osMemoryPoolGetName
-                0x08010b62                osMemoryPoolAlloc
-                0x08010c18                osMemoryPoolFree
-                0x08010cd4                osMemoryPoolGetCapacity
-                0x08010cec                osMemoryPoolGetBlockSize
-                0x08010d04                osMemoryPoolGetCount
-                0x08010d34                osMemoryPoolGetSpace
-                0x08010d64                osMemoryPoolDelete
-                0x08010dc0                vApplicationGetIdleTaskMemory
-                0x08010ddc                vApplicationGetTimerTaskMemory
- .text          0x08010df8        0x2 build/FreeRTOS/clib_arm.o
-                0x08010df8                software_init_hook
- *fill*         0x08010dfa        0x2 
- .text          0x08010dfc       0xd0 build/FreeRTOS/os_systick.o
-                0x08010dfc                OS_Tick_Setup
-                0x08010e3c                OS_Tick_Enable
-                0x08010e64                OS_Tick_Disable
-                0x08010e90                OS_Tick_AcknowledgeIRQ
-                0x08010e98                OS_Tick_GetIRQn
-                0x08010e9e                OS_Tick_GetClock
-                0x08010ea8                OS_Tick_GetInterval
-                0x08010eb2                OS_Tick_GetCount
-                0x08010ebe                OS_Tick_GetOverflow
- .text          0x08010ecc       0x8c build/FreeRTOS/heap_useNewlib.o
-                0x08010ecc                sbrk
-                0x08010f1c                _sbrk
-                0x08010f20                __malloc_lock
-                0x08010f24                __malloc_unlock
-                0x08010f28                __env_lock
-                0x08010f2c                __env_unlock
-                0x08010f30                pvPortMalloc
-                0x08010f34                vPortFree
-                0x08010f38                xPortGetFreeHeapSize
-                0x08010f54                vPortInitialiseBlocks
- *fill*         0x08010f58        0x8 
+                0x080009b0                DMA2_Stream0_IRQHandler
+ *fill*         0x080009bc        0x4 
+ .text          0x080009c0      0x410 build/mod_dcm_driver.o
+                0x080009c0                left_forward
+                0x080009e4                left_reverse
+                0x08000a08                left_halt
+                0x08000a2c                mod_dcm_set_voltage_log
+                0x08000afc                right_forward
+                0x08000b20                right_reverse
+                0x08000b44                right_halt
+                0x08000b68                mod_dcm_set_PWM
+                0x08000c84                mod_dcm_set_voltage
+                0x08000cd0                mod_dcm_configure_hardware
+ .text          0x08000dd0      0x4f4 build/mod_mpu6050.o
+                0x08000dd0                mod_mpu_update_pitch
+                0x08000e4c                mod_mpu_update_rps
+                0x08000e70                mod_mpu_update_kalman
+                0x080010fc                mod_mpu_get_states
+                0x08001110                mod_mpu_read_raw_accel
+                0x08001158                mod_mpu_read_raw_gyro
+                0x080011a0                mod_mpu_update
+                0x08001220                mod_mpu_configure_hardware
+ .text          0x080012c4        0x0 build/mod_observer.o
+ *fill*         0x080012c4        0x4 
+ .text          0x080012c8       0xd4 build/mod_PID_control.o
+                0x080012c8                mod_PID_compute_control
+                0x08001308                mod_PID_run
+ .text          0x0800139c        0x0 build/mod_LQR_control.o
+ .text          0x0800139c        0x0 build/mod_MPC_control.o
+ .text          0x0800139c       0xdc build/mod_manager.o
+                0x0800139c                mod_manager_task
+                0x080013a8                mod_manager_PID
+                0x080013d0                mod_manager_LQR
+                0x080013dc                mod_manager_MPC
+                0x080013e8                mod_manager_init
+                0x08001420                mod_manager_start
+                0x08001460                mod_manager_stop
+ .text          0x08001478      0x12c build/mod_data_logger.o
+                0x08001478                log_imu
+                0x0800147a                mod_log_task
+                0x08001484                log_inertia
+                0x08001486                mod_log_init
+                0x080014ac                mod_log_start
+                0x080014f4                mod_log_stop
+                0x0800150c                log_motor
+ .text          0x080015a4       0xe8 build/mod_adc.o
+                0x080015a4                mod_adc_update_readings
+                0x080015fc                mod_adc_configure_hardware
+                0x08001688                HAL_ADC_ConvCpltCallback
+ .text          0x0800168c        0x0 build/mod_enc.o
+ .text          0x0800168c        0x0 build/main.o
+ .text          0x0800168c        0xc build/stm32f4xx_it.o
+                0x0800168c                NMI_Handler
+                0x0800168e                HardFault_Handler
+                0x08001690                MemManage_Handler
+                0x08001692                BusFault_Handler
+                0x08001694                UsageFault_Handler
+                0x08001696                DebugMon_Handler
+ .text          0x08001698       0xb8 build/system_stm32f4xx.o
+                0x08001698                SystemInit
+                0x080016e4                SystemCoreClockUpdate
+ .text          0x08001750      0x47c build/uart.o
+                0x08001750                uart_init
+                0x08001a20                __wrap_printf
+                0x08001a58                __io_putchar
+                0x08001a88                __io_getchar
+                0x08001aa4                _write
+                0x08001ac2                _read
+                0x08001ad6                _uart_rxne_isr
+                0x08001b00                _uart_txe_isr
+                0x08001b38                _uart_error
+                0x08001b90                USART2_IRQHandler
+ .text          0x08001bcc      0x400 build/uart_bt.o
+                0x08001bcc                uart_bt_init
+                0x08001ea4                __wrap_printf_bt
+                0x08001edc                _uart_bt_rxne_isr
+                0x08001f04                _uart_bt_txe_isr
+                0x08001f3c                _uart_bt_error
+                0x08001f94                USART1_IRQHandler
+ .text          0x08001fcc       0x44 build/cmd_task.o
+                0x08001fe4                cmd_task_init
+ .text          0x08002010       0x14 build/startup_stm32f446xx.o
+ .text          0x08002024      0x210 build/stm32f4_HAL/stm32f4xx_hal.o
+                0x08002024                HAL_MspInit
+                0x08002026                HAL_MspDeInit
+                0x08002028                HAL_DeInit
+                0x08002054                HAL_InitTick
+                0x08002098                HAL_Init
+                0x080020cc                HAL_IncTick
+                0x080020e4                HAL_GetTick
+                0x080020f0                HAL_GetTickPrio
+                0x080020fc                HAL_SetTickFreq
+                0x0800211c                HAL_GetTickFreq
+                0x08002128                HAL_Delay
+                0x08002150                HAL_SuspendTick
+                0x0800215e                HAL_ResumeTick
+                0x0800216c                HAL_GetHalVersion
+                0x08002174                HAL_GetREVID
+                0x08002180                HAL_GetDEVID
+                0x08002190                HAL_DBGMCU_EnableDBGSleepMode
+                0x080021a0                HAL_DBGMCU_DisableDBGSleepMode
+                0x080021b0                HAL_DBGMCU_EnableDBGStopMode
+                0x080021c0                HAL_DBGMCU_DisableDBGStopMode
+                0x080021d0                HAL_DBGMCU_EnableDBGStandbyMode
+                0x080021e0                HAL_DBGMCU_DisableDBGStandbyMode
+                0x080021f0                HAL_EnableCompensationCell
+                0x08002200                HAL_DisableCompensationCell
+                0x08002210                HAL_GetUIDw0
+                0x0800221c                HAL_GetUIDw1
+                0x08002228                HAL_GetUIDw2
+ .text          0x08002234      0x62c build/stm32f4_HAL/stm32f4xx_hal_dma.o
+                0x08002260                HAL_DMA_Init
+                0x0800235c                HAL_DMA_DeInit
+                0x080023b0                HAL_DMA_Start
+                0x08002404                HAL_DMA_Start_IT
+                0x08002478                HAL_DMA_Abort
+                0x08002500                HAL_DMA_Abort_IT
+                0x08002524                HAL_DMA_PollForTransfer
+                0x08002632                HAL_DMA_IRQHandler
+                0x080027ac                HAL_DMA_RegisterCallback
+                0x080027f4                HAL_DMA_UnRegisterCallback
+                0x08002856                HAL_DMA_GetState
+                0x0800285c                HAL_DMA_GetError
+ .text          0x08002860      0x9c4 build/stm32f4_HAL/stm32f4xx_hal_adc.o
+                0x08002862                HAL_ADC_Init
+                0x080029b0                HAL_ADC_MspDeInit
+                0x080029b2                HAL_ADC_DeInit
+                0x080029e6                HAL_ADC_Start
+                0x08002ad0                HAL_ADC_Stop
+                0x08002b06                HAL_ADC_PollForConversion
+                0x08002ba4                HAL_ADC_PollForEvent
+                0x08002c0a                HAL_ADC_Start_IT
+                0x08002d00                HAL_ADC_Stop_IT
+                0x08002d48                HAL_ADC_Start_DMA
+                0x08002e6c                HAL_ADC_Stop_DMA
+                0x08002ec6                HAL_ADC_GetValue
+                0x08002ece                HAL_ADC_ConvHalfCpltCallback
+                0x08002eda                HAL_ADC_LevelOutOfWindowCallback
+                0x08002edc                HAL_ADC_ErrorCallback
+                0x08002ede                HAL_ADC_IRQHandler
+                0x08003088                HAL_ADC_ConfigChannel
+                0x080031bc                HAL_ADC_AnalogWDGConfig
+                0x0800321c                HAL_ADC_GetState
+                0x08003220                HAL_ADC_GetError
+ .text          0x08003224      0x6b0 build/stm32f4_HAL/stm32f4xx_hal_adc_ex.o
+                0x08003294                HAL_ADCEx_InjectedStart
+                0x08003348                HAL_ADCEx_InjectedStart_IT
+                0x08003404                HAL_ADCEx_InjectedStop
+                0x0800345e                HAL_ADCEx_InjectedPollForConversion
+                0x080034e6                HAL_ADCEx_InjectedStop_IT
+                0x08003548                HAL_ADCEx_InjectedGetValue
+                0x0800357a                HAL_ADCEx_MultiModeStart_DMA
+                0x08003674                HAL_ADCEx_MultiModeStop_DMA
+                0x080036d4                HAL_ADCEx_MultiModeGetValue
+                0x080036e0                HAL_ADCEx_InjectedConvCpltCallback
+                0x080036e2                HAL_ADCEx_InjectedConfigChannel
+                0x08003884                HAL_ADCEx_MultiModeConfigChannel
+ .text          0x080038d4      0x33c build/stm32f4_HAL/stm32f4xx_hal_gpio.o
+                0x080038d4                HAL_GPIO_Init
+                0x08003a90                HAL_GPIO_DeInit
+                0x08003ba8                HAL_GPIO_ReadPin
+                0x08003bb4                HAL_GPIO_WritePin
+                0x08003bbe                HAL_GPIO_TogglePin
+                0x08003bcc                HAL_GPIO_LockPin
+                0x08003bf6                HAL_GPIO_EXTI_Callback
+                0x08003bf8                HAL_GPIO_EXTI_IRQHandler
+ .text          0x08003c10      0x220 build/stm32f4_HAL/stm32f4xx_ll_gpio.o
+                0x08003c30                LL_GPIO_DeInit
+                0x08003cdc                LL_GPIO_Init
+                0x08003e18                LL_GPIO_StructInit
+ .text          0x08003e30      0x21c build/stm32f4_HAL/stm32f4xx_ll_usart.o
+                0x08003e30                LL_USART_DeInit
+                0x08003ef0                LL_USART_Init
+                0x08003fec                LL_USART_StructInit
+                0x08004004                LL_USART_ClockInit
+                0x0800403e                LL_USART_ClockStructInit
+ .text          0x0800404c      0x22c build/stm32f4_HAL/stm32f4xx_ll_dma.o
+                0x0800404c                LL_DMA_DeInit
+                0x080041d0                LL_DMA_Init
+                0x08004254                LL_DMA_StructInit
+ .text          0x08004278      0x60c build/stm32f4_HAL/stm32f4xx_ll_rcc.o
+                0x08004288                LL_RCC_DeInit
+                0x08004338                LL_RCC_GetCECClockFreq
+                0x08004364                RCC_GetHCLKClockFreq
+                0x0800437c                RCC_GetPCLK1ClockFreq
+                0x08004394                RCC_GetPCLK2ClockFreq
+                0x080043ac                RCC_PLL_GetFreqDomain_SYS
+                0x080043f4                RCC_GetSystemClockFreq
+                0x08004424                LL_RCC_GetSystemClocksFreq
+                0x08004446                LL_RCC_GetFMPI2CClockFreq
+                0x08004498                RCC_PLL_GetFreqDomain_48M
+                0x080044d4                RCC_PLL_GetFreqDomain_I2S
+                0x08004510                RCC_PLL_GetFreqDomain_SPDIFRX
+                0x08004514                RCC_PLL_GetFreqDomain_SAI
+                0x08004518                RCC_PLLSAI_GetFreqDomain_SAI
+                0x08004568                RCC_PLLSAI_GetFreqDomain_48M
+                0x080045ac                LL_RCC_GetSDIOClockFreq
+                0x080045f4                LL_RCC_GetUSBClockFreq
+                0x08004628                RCC_PLLI2S_GetFreqDomain_SAI
+                0x08004678                LL_RCC_GetSAIClockFreq
+                0x08004730                RCC_PLLI2S_GetFreqDomain_SPDIFRX
+                0x08004774                LL_RCC_GetSPDIFRXClockFreq
+                0x080047a8                RCC_PLLI2S_GetFreqDomain_I2S
+                0x080047ec                LL_RCC_GetI2SClockFreq
+ .text          0x08004884     0x3208 build/stm32f4_HAL/stm32f4xx_hal_i2c.o
+                0x08004ca8                HAL_I2C_MspInit
+                0x08004caa                HAL_I2C_Init
+                0x08004df8                HAL_I2C_MspDeInit
+                0x08004dfa                HAL_I2C_DeInit
+                0x08004e2c                HAL_I2C_Master_Transmit
+                0x08004fdc                HAL_I2C_Master_Receive
+                0x080052bc                HAL_I2C_Slave_Transmit
+                0x0800541c                HAL_I2C_Slave_Receive
+                0x08005598                HAL_I2C_Master_Transmit_IT
+                0x08005648                HAL_I2C_Master_Receive_IT
+                0x08005700                HAL_I2C_Slave_Transmit_IT
+                0x08005770                HAL_I2C_Slave_Receive_IT
+                0x080057e0                HAL_I2C_Master_Transmit_DMA
+                0x0800590c                HAL_I2C_Master_Receive_DMA
+                0x08005a34                HAL_I2C_Slave_Transmit_DMA
+                0x08005af4                HAL_I2C_Slave_Receive_DMA
+                0x08005bb4                HAL_I2C_Mem_Write
+                0x08005cd4                HAL_I2C_Mem_Read
+                0x08005ee4                HAL_I2C_Mem_Write_IT
+                0x08005fa0                HAL_I2C_Mem_Read_IT
+                0x0800606c                HAL_I2C_Mem_Write_DMA
+                0x080061c0                HAL_I2C_Mem_Read_DMA
+                0x0800634c                HAL_I2C_IsDeviceReady
+                0x080064ac                HAL_I2C_Master_Seq_Transmit_IT
+                0x0800657c                HAL_I2C_Master_Seq_Transmit_DMA
+                0x080066f4                HAL_I2C_Master_Seq_Receive_IT
+                0x08006800                HAL_I2C_Master_Seq_Receive_DMA
+                0x080069cc                HAL_I2C_Slave_Seq_Transmit_IT
+                0x08006a42                HAL_I2C_Slave_Seq_Transmit_DMA
+                0x08006b80                HAL_I2C_Slave_Seq_Receive_IT
+                0x08006bf6                HAL_I2C_Slave_Seq_Receive_DMA
+                0x08006d34                HAL_I2C_EnableListen_IT
+                0x08006d6a                HAL_I2C_DisableListen_IT
+                0x08006da8                HAL_I2C_MasterTxCpltCallback
+                0x08006daa                HAL_I2C_MasterRxCpltCallback
+                0x08006dac                HAL_I2C_SlaveTxCpltCallback
+                0x08006dae                HAL_I2C_SlaveRxCpltCallback
+                0x08006db0                HAL_I2C_AddrCallback
+                0x08006db2                HAL_I2C_ListenCpltCallback
+                0x08006db4                HAL_I2C_MemTxCpltCallback
+                0x08006db6                HAL_I2C_MemRxCpltCallback
+                0x08006db8                HAL_I2C_ErrorCallback
+                0x08006f06                HAL_I2C_AbortCpltCallback
+                0x080070d8                HAL_I2C_Master_Abort_IT
+                0x08007124                HAL_I2C_EV_IRQHandler
+                0x0800794c                HAL_I2C_ER_IRQHandler
+                0x08007a7c                HAL_I2C_GetState
+                0x08007a82                HAL_I2C_GetMode
+                0x08007a88                HAL_I2C_GetError
+ .text          0x08007a8c       0x7c build/stm32f4_HAL/stm32f4xx_hal_i2c_ex.o
+                0x08007a8c                HAL_I2CEx_ConfigAnalogFilter
+                0x08007aca                HAL_I2CEx_ConfigDigitalFilter
+ .text          0x08007b08     0x1db4 build/stm32f4_HAL/stm32f4xx_hal_tim.o
+                0x08007c24                HAL_TIM_Base_MspInit
+                0x08007c26                HAL_TIM_Base_MspDeInit
+                0x08007c28                HAL_TIM_Base_DeInit
+                0x08007c62                HAL_TIM_Base_Start
+                0x08007c86                HAL_TIM_Base_Stop
+                0x08007cb4                HAL_TIM_Base_Start_IT
+                0x08007cd4                HAL_TIM_Base_Stop_IT
+                0x08007cfe                HAL_TIM_Base_Start_DMA
+                0x08007d68                HAL_TIM_Base_Stop_DMA
+                0x08007da4                HAL_TIM_OC_MspInit
+                0x08007da6                HAL_TIM_OC_MspDeInit
+                0x08007da8                HAL_TIM_OC_DeInit
+                0x08007de4                HAL_TIM_PWM_MspDeInit
+                0x08007de6                HAL_TIM_PWM_DeInit
+                0x08007e20                HAL_TIM_IC_MspInit
+                0x08007e22                HAL_TIM_IC_MspDeInit
+                0x08007e24                HAL_TIM_IC_DeInit
+                0x08007e5e                HAL_TIM_OnePulse_MspInit
+                0x08007e60                HAL_TIM_OnePulse_MspDeInit
+                0x08007e62                HAL_TIM_OnePulse_DeInit
+                0x08007e9c                HAL_TIM_OnePulse_Start
+                0x08007edc                HAL_TIM_OnePulse_Stop
+                0x08007f44                HAL_TIM_OnePulse_Start_IT
+                0x08007f94                HAL_TIM_OnePulse_Stop_IT
+                0x0800800c                HAL_TIM_Encoder_MspInit
+                0x0800800e                HAL_TIM_Encoder_MspDeInit
+                0x08008010                HAL_TIM_Encoder_DeInit
+                0x0800804a                HAL_TIM_Encoder_Start
+                0x0800808e                HAL_TIM_Encoder_Stop
+                0x080080d6                HAL_TIM_Encoder_Start_IT
+                0x08008144                HAL_TIM_Encoder_Stop_IT
+                0x080081b8                HAL_TIM_Encoder_Start_DMA
+                0x080082fc                HAL_TIM_Encoder_Stop_DMA
+                0x0800838e                HAL_TIM_DMABurst_WriteStart
+                0x0800846c                HAL_TIM_DMABurst_WriteStop
+                0x080084d0                HAL_TIM_DMABurst_ReadStart
+                0x080085b4                HAL_TIM_DMABurst_ReadStop
+                0x080085b8                HAL_TIM_GenerateEvent
+                0x080085dc                HAL_TIM_ConfigTI1Input
+                0x080085ec                HAL_TIM_ReadCapturedValue
+                0x08008618                HAL_TIM_PeriodElapsedCallback
+                0x0800862a                HAL_TIM_PeriodElapsedHalfCpltCallback
+                0x0800863c                HAL_TIM_OC_DelayElapsedCallback
+                0x0800863e                HAL_TIM_IC_CaptureCallback
+                0x08008640                TIM_DMACaptureCplt
+                0x0800867c                HAL_TIM_IC_CaptureHalfCpltCallback
+                0x0800867e                TIM_DMACaptureHalfCplt
+                0x080086ba                HAL_TIM_PWM_PulseFinishedCallback
+                0x080086bc                TIM_DMADelayPulseCplt
+                0x080086f8                HAL_TIM_PWM_PulseFinishedHalfCpltCallback
+                0x080086fa                TIM_DMADelayPulseHalfCplt
+                0x08008736                HAL_TIM_TriggerCallback
+                0x08008738                HAL_TIM_IRQHandler
+                0x0800888c                HAL_TIM_TriggerHalfCpltCallback
+                0x0800889e                HAL_TIM_ErrorCallback
+                0x080088a0                TIM_DMAError
+                0x080088b0                HAL_TIM_Base_GetState
+                0x080088b6                HAL_TIM_OC_GetState
+                0x080088bc                HAL_TIM_PWM_GetState
+                0x080088c2                HAL_TIM_IC_GetState
+                0x080088c8                HAL_TIM_OnePulse_GetState
+                0x080088ce                HAL_TIM_Encoder_GetState
+                0x080088d4                TIM_Base_SetConfig
+                0x080089a0                HAL_TIM_Base_Init
+                0x080089d4                HAL_TIM_OC_Init
+                0x08008a08                HAL_TIM_PWM_Init
+                0x08008a3c                HAL_TIM_IC_Init
+                0x08008a70                HAL_TIM_OnePulse_Init
+                0x08008ab6                HAL_TIM_Encoder_Init
+                0x08008b4a                TIM_OC2_SetConfig
+                0x08008bb8                HAL_TIM_OC_ConfigChannel
+                0x08008c0a                HAL_TIM_PWM_ConfigChannel
+                0x08008cbc                TIM_TI1_SetConfig
+                0x08008d30                HAL_TIM_IC_ConfigChannel
+                0x08008e42                HAL_TIM_OnePulse_ConfigChannel
+                0x08008f48                TIM_ETR_SetConfig
+                0x08008f5c                HAL_TIM_ConfigOCrefClear
+                0x08009020                HAL_TIM_ConfigClockSource
+                0x080091e8                HAL_TIM_SlaveConfigSynchro_IT
+                0x08009236                HAL_TIM_SlaveConfigSynchro
+                0x08009284                TIM_CCxChannelCmd
+                0x080092a0                HAL_TIM_OC_Start
+                0x080092dc                HAL_TIM_PWM_Start
+                0x080092e0                HAL_TIM_OC_Stop
+                0x08009338                HAL_TIM_OC_Start_IT
+                0x080093a4                HAL_TIM_PWM_Start_IT
+                0x080093a8                HAL_TIM_OC_Stop_IT
+                0x08009434                HAL_TIM_PWM_Stop_IT
+                0x08009438                HAL_TIM_OC_Start_DMA
+                0x08009544                HAL_TIM_PWM_Start_DMA
+                0x08009548                HAL_TIM_OC_Stop_DMA
+                0x080095f4                HAL_TIM_PWM_Stop_DMA
+                0x080095f8                HAL_TIM_PWM_Stop
+                0x08009658                HAL_TIM_IC_Start
+                0x08009678                HAL_TIM_IC_Stop
+                0x080096a2                HAL_TIM_IC_Start_IT
+                0x080096f4                HAL_TIM_IC_Stop_IT
+                0x08009750                HAL_TIM_IC_Start_DMA
+                0x08009840                HAL_TIM_IC_Stop_DMA
+ .text          0x080098bc      0x800 build/stm32f4_HAL/stm32f4xx_hal_tim_ex.o
+                0x080098d8                HAL_TIMEx_HallSensor_MspInit
+                0x080098da                HAL_TIMEx_HallSensor_Init
+                0x08009988                HAL_TIMEx_HallSensor_MspDeInit
+                0x0800998a                HAL_TIMEx_HallSensor_DeInit
+                0x080099c4                HAL_TIMEx_HallSensor_Start
+                0x080099ea                HAL_TIMEx_HallSensor_Stop
+                0x08009a1a                HAL_TIMEx_HallSensor_Start_IT
+                0x08009a48                HAL_TIMEx_HallSensor_Stop_IT
+                0x08009a80                HAL_TIMEx_HallSensor_Start_DMA
+                0x08009b00                HAL_TIMEx_HallSensor_Stop_DMA
+                0x08009b40                HAL_TIMEx_OCN_Start
+                0x08009b68                HAL_TIMEx_OCN_Stop
+                0x08009bae                HAL_TIMEx_OCN_Start_IT
+                0x08009c00                HAL_TIMEx_OCN_Stop_IT
+                0x08009c7a                HAL_TIMEx_OCN_Start_DMA
+                0x08009d48                HAL_TIMEx_OCN_Stop_DMA
+                0x08009dcc                HAL_TIMEx_PWMN_Start
+                0x08009dd0                HAL_TIMEx_PWMN_Stop
+                0x08009dd4                HAL_TIMEx_PWMN_Start_IT
+                0x08009dd8                HAL_TIMEx_PWMN_Stop_IT
+                0x08009ddc                HAL_TIMEx_PWMN_Start_DMA
+                0x08009de0                HAL_TIMEx_PWMN_Stop_DMA
+                0x08009de4                HAL_TIMEx_OnePulseN_Start
+                0x08009dfa                HAL_TIMEx_OnePulseN_Stop
+                0x08009dfe                HAL_TIMEx_OnePulseN_Start_IT
+                0x08009e24                HAL_TIMEx_OnePulseN_Stop_IT
+                0x08009e7a                HAL_TIMEx_ConfigCommutEvent
+                0x08009ed4                HAL_TIMEx_ConfigCommutEvent_IT
+                0x08009f2e                HAL_TIMEx_ConfigCommutEvent_DMA
+                0x08009fa4                HAL_TIMEx_MasterConfigSynchronization
+                0x0800a024                HAL_TIMEx_ConfigBreakDeadTime
+                0x0800a076                HAL_TIMEx_RemapConfig
+                0x0800a090                HAL_TIMEx_CommutCallback
+                0x0800a092                TIMEx_DMACommutationCplt
+                0x0800a0a2                HAL_TIMEx_CommutHalfCpltCallback
+                0x0800a0a4                TIMEx_DMACommutationHalfCplt
+                0x0800a0b4                HAL_TIMEx_BreakCallback
+                0x0800a0b6                HAL_TIMEx_HallSensor_GetState
+ .text          0x0800a0bc        0x0 build/stm32f4_HAL/stm32f4xx_hal_rtc.o
+ .text          0x0800a0bc      0x6b4 build/stm32f4_HAL/stm32f4xx_hal_rcc.o
+                0x0800a408                HAL_RCC_MCOConfig
+                0x0800a4a0                HAL_RCC_EnableCSS
+                0x0800a4ac                HAL_RCC_DisableCSS
+                0x0800a514                HAL_RCC_ClockConfig
+                0x0800a648                HAL_RCC_GetHCLKFreq
+                0x0800a654                HAL_RCC_GetPCLK1Freq
+                0x0800a674                HAL_RCC_GetPCLK2Freq
+                0x0800a718                HAL_RCC_GetClockConfig
+                0x0800a754                HAL_RCC_CSSCallback
+                0x0800a756                HAL_RCC_NMI_IRQHandler
+ .text          0x0800a770      0xdb8 build/stm32f4_HAL/stm32f4xx_hal_rcc_ex.o
+                0x0800a770                HAL_RCCEx_PeriphCLKConfig
+                0x0800ab78                HAL_RCCEx_GetPeriphCLKConfig
+                0x0800ac74                HAL_RCCEx_GetPeriphCLKFreq
+                0x0800ae1c                HAL_RCCEx_SelectLSEMode
+                0x0800ae34                HAL_RCCEx_EnablePLLI2S
+                0x0800aea8                HAL_RCCEx_DisablePLLI2S
+                0x0800aedc                HAL_RCCEx_EnablePLLSAI
+                0x0800af4c                HAL_RCCEx_DisablePLLSAI
+                0x0800af80                HAL_RCC_GetSysClockFreq
+                0x0800b010                HAL_RCC_DeInit
+                0x0800b164                HAL_RCC_OscConfig
+                0x0800b49c                HAL_RCC_GetOscConfig
+ .text          0x0800b528      0x1ac build/stm32f4_HAL/stm32f4xx_hal_pwr.o
+                0x0800b528                HAL_PWR_DeInit
+                0x0800b540                HAL_PWR_EnableBkUpAccess
+                0x0800b54c                HAL_PWR_DisableBkUpAccess
+                0x0800b558                HAL_PWR_ConfigPVD
+                0x0800b5c8                HAL_PWR_EnablePVD
+                0x0800b5d4                HAL_PWR_DisablePVD
+                0x0800b5e0                HAL_PWR_EnableWakeUpPin
+                0x0800b5f0                HAL_PWR_DisableWakeUpPin
+                0x0800b600                HAL_PWR_EnterSLEEPMode
+                0x0800b620                HAL_PWR_EnterSTOPMode
+                0x0800b658                HAL_PWR_EnterSTANDBYMode
+                0x0800b678                HAL_PWR_PVDCallback
+                0x0800b67a                HAL_PWR_PVD_IRQHandler
+                0x0800b694                HAL_PWR_EnableSleepOnExit
+                0x0800b6a4                HAL_PWR_DisableSleepOnExit
+                0x0800b6b4                HAL_PWR_EnableSEVOnPend
+                0x0800b6c4                HAL_PWR_DisableSEVOnPend
+ .text          0x0800b6d4      0x294 build/stm32f4_HAL/stm32f4xx_hal_pwr_ex.o
+                0x0800b6d4                HAL_PWREx_EnableBkUpReg
+                0x0800b708                HAL_PWREx_DisableBkUpReg
+                0x0800b740                HAL_PWREx_EnableFlashPowerDown
+                0x0800b74c                HAL_PWREx_DisableFlashPowerDown
+                0x0800b758                HAL_PWREx_GetVoltageRange
+                0x0800b768                HAL_PWREx_ControlVoltageScaling
+                0x0800b818                HAL_PWREx_EnableOverDrive
+                0x0800b88c                HAL_PWREx_DisableOverDrive
+                0x0800b900                HAL_PWREx_EnterUnderDriveSTOPMode
+ .text          0x0800b968      0x2bc build/stm32f4_HAL/stm32f4xx_hal_cortex.o
+                0x0800b968                HAL_NVIC_SetPriorityGrouping
+                0x0800b98c                HAL_NVIC_SetPriority
+                0x0800b9f0                HAL_NVIC_EnableIRQ
+                0x0800ba0c                HAL_NVIC_DisableIRQ
+                0x0800ba30                HAL_NVIC_SystemReset
+                0x0800ba54                HAL_SYSTICK_Config
+                0x0800ba7c                HAL_MPU_Disable
+                0x0800ba98                HAL_MPU_Enable
+                0x0800bab8                HAL_MPU_ConfigRegion
+                0x0800bb1c                HAL_NVIC_GetPriorityGrouping
+                0x0800bb2c                HAL_NVIC_GetPriority
+                0x0800bb84                HAL_NVIC_SetPendingIRQ
+                0x0800bba0                HAL_NVIC_GetPendingIRQ
+                0x0800bbc4                HAL_NVIC_ClearPendingIRQ
+                0x0800bbe0                HAL_NVIC_GetActive
+                0x0800bc04                HAL_SYSTICK_CLKSourceConfig
+                0x0800bc1a                HAL_SYSTICK_Callback
+                0x0800bc1c                HAL_SYSTICK_IRQHandler
+ .text          0x0800bc24     0x1824 build/stm32f4_HAL/stm32f4xx_hal_spi.o
+                0x0800bdc8                HAL_SPI_MspInit
+                0x0800bdca                HAL_SPI_Init
+                0x0800be4e                HAL_SPI_MspDeInit
+                0x0800be50                HAL_SPI_DeInit
+                0x0800be7c                HAL_SPI_Transmit
+                0x0800bff6                HAL_SPI_TransmitReceive
+                0x0800c27a                HAL_SPI_Receive
+                0x0800c438                HAL_SPI_Transmit_IT
+                0x0800c4e0                HAL_SPI_TransmitReceive_IT
+                0x0800c5ac                HAL_SPI_Receive_IT
+                0x0800c674                HAL_SPI_Transmit_DMA
+                0x0800c74c                HAL_SPI_TransmitReceive_DMA
+                0x0800c874                HAL_SPI_Receive_DMA
+                0x0800c978                HAL_SPI_Abort
+                0x0800caa0                HAL_SPI_DMAPause
+                0x0800cac0                HAL_SPI_DMAResume
+                0x0800cae0                HAL_SPI_DMAStop
+                0x0800cb26                HAL_SPI_TxCpltCallback
+                0x0800cb28                HAL_SPI_RxCpltCallback
+                0x0800cb2a                HAL_SPI_TxRxCpltCallback
+                0x0800cb2c                HAL_SPI_TxHalfCpltCallback
+                0x0800cb38                HAL_SPI_RxHalfCpltCallback
+                0x0800cb44                HAL_SPI_TxRxHalfCpltCallback
+                0x0800cb50                HAL_SPI_ErrorCallback
+                0x0800d112                HAL_SPI_IRQHandler
+                0x0800d21c                HAL_SPI_AbortCpltCallback
+                0x0800d21e                HAL_SPI_Abort_IT
+                0x0800d43c                HAL_SPI_GetState
+                0x0800d442                HAL_SPI_GetError
+ .text          0x0800d448        0x0 build/FreeRTOS/croutine.o
+ .text          0x0800d448      0x264 build/FreeRTOS/event_groups.o
+                0x0800d448                xEventGroupCreateStatic
+                0x0800d460                xEventGroupCreate
+                0x0800d47c                xEventGroupWaitBits
+                0x0800d532                xEventGroupClearBits
+                0x0800d54c                vEventGroupClearBitsCallback
+                0x0800d550                xEventGroupClearBitsFromISR
+                0x0800d560                xEventGroupGetBitsFromISR
+                0x0800d57c                xEventGroupSetBits
+                0x0800d5d8                xEventGroupSync
+                0x0800d662                vEventGroupSetBitsCallback
+                0x0800d666                vEventGroupDelete
+                0x0800d690                xEventGroupSetBitsFromISR
+                0x0800d6a0                uxEventGroupGetNumber
+                0x0800d6a6                vEventGroupSetNumber
+ .text          0x0800d6ac       0x82 build/FreeRTOS/list.o
+                0x0800d6ac                vListInitialise
+                0x0800d6c2                vListInitialiseItem
+                0x0800d6c8                vListInsertEnd
+                0x0800d6e0                vListInsert
+                0x0800d70e                uxListRemove
+ .text          0x0800d72e      0x8f2 build/FreeRTOS/queue.o
+                0x0800d84a                xQueueGenericReset
+                0x0800d8b4                xQueueGenericCreateStatic
+                0x0800d8e0                xQueueGenericCreate
+                0x0800d91a                xQueueGetMutexHolder
+                0x0800d934                xQueueGetMutexHolderFromISR
+                0x0800d940                xQueueCreateCountingSemaphoreStatic
+                0x0800d95a                xQueueCreateCountingSemaphore
+                0x0800d96c                xQueueGenericSend
+                0x0800da70                xQueueCreateMutexStatic
+                0x0800da9a                xQueueGiveMutexRecursive
+                0x0800dac2                xQueueCreateMutex
+                0x0800dae6                xQueueGenericSendFromISR
+                0x0800db50                xQueueGiveFromISR
+                0x0800dbac                xQueueReceive
+                0x0800dc9a                xQueueSemaphoreTake
+                0x0800ddc0                xQueueTakeMutexRecursive
+                0x0800ddf0                xQueuePeek
+                0x0800dede                xQueueReceiveFromISR
+                0x0800df46                xQueuePeekFromISR
+                0x0800df76                uxQueueMessagesWaiting
+                0x0800df8c                uxQueueSpacesAvailable
+                0x0800dfa6                uxQueueMessagesWaitingFromISR
+                0x0800dfaa                vQueueDelete
+                0x0800dfb6                uxQueueGetQueueNumber
+                0x0800dfba                vQueueSetQueueNumber
+                0x0800dfbe                ucQueueGetQueueType
+                0x0800dfc4                xQueueIsQueueEmptyFromISR
+                0x0800dfce                xQueueIsQueueFullFromISR
+                0x0800dfda                vQueueWaitForMessageRestricted
+ .text          0x0800e020     0x12c0 build/FreeRTOS/tasks.o
+                0x0800e2e0                xTaskCreateStatic
+                0x0800e314                xTaskCreate
+                0x0800e370                vTaskDelete
+                0x0800e3f4                eTaskGetState
+                0x0800e45c                uxTaskPriorityGet
+                0x0800e47c                uxTaskPriorityGetFromISR
+                0x0800e4a4                vTaskPrioritySet
+                0x0800e554                vTaskResume
+                0x0800e5d8                xTaskResumeFromISR
+                0x0800e660                vTaskStartScheduler
+                0x0800e6dc                vTaskEndScheduler
+                0x0800e6fc                vTaskSuspendAll
+                0x0800e710                xTaskGetTickCount
+                0x0800e71c                xTaskGetTickCountFromISR
+                0x0800e728                uxTaskGetNumberOfTasks
+                0x0800e734                pcTaskGetName
+                0x0800e744                xTaskIncrementTick
+                0x0800e824                xTaskResumeAll
+                0x0800e8e8                vTaskDelayUntil
+                0x0800e938                vTaskDelay
+                0x0800e966                xTaskCatchUpTicks
+                0x0800e984                vTaskSwitchContext
+                0x0800e9e8                vTaskSuspend
+                0x0800ea78                vTaskPlaceOnEventList
+                0x0800ea98                vTaskPlaceOnUnorderedEventList
+                0x0800eac0                vTaskPlaceOnEventListRestricted
+                0x0800eae8                xTaskRemoveFromEventList
+                0x0800eb50                vTaskRemoveFromUnorderedEventList
+                0x0800eba4                vTaskSetTimeOutState
+                0x0800ebc8                vTaskInternalSetTimeOutState
+                0x0800ebdc                xTaskCheckForTimeOut
+                0x0800ec2c                vTaskMissedYield
+                0x0800ec3c                uxTaskGetTaskNumber
+                0x0800ec42                vTaskSetTaskNumber
+                0x0800ec48                vTaskGetInfo
+                0x0800ed1e                uxTaskGetSystemState
+                0x0800edb8                uxTaskGetStackHighWaterMark
+                0x0800edd8                xTaskGetCurrentTaskHandle
+                0x0800ede4                xTaskGetSchedulerState
+                0x0800ee04                xTaskPriorityInherit
+                0x0800ee84                xTaskPriorityDisinherit
+                0x0800eee0                vTaskPriorityDisinheritAfterTimeout
+                0x0800ef50                uxTaskResetEventItemValue
+                0x0800ef68                pvTaskIncrementMutexHeldCount
+                0x0800ef80                ulTaskNotifyTake
+                0x0800efec                xTaskNotifyWait
+                0x0800f080                xTaskGenericNotify
+                0x0800f130                xTaskGenericNotifyFromISR
+                0x0800f1f0                vTaskNotifyGiveFromISR
+                0x0800f280                xTaskNotifyStateClear
+                0x0800f2ac                ulTaskNotifyValueClear
+ .text          0x0800f2e0      0x4a8 build/FreeRTOS/timers.o
+                0x0800f35c                xTimerCreateTimerTask
+                0x0800f3ac                xTimerCreate
+                0x0800f3f2                xTimerCreateStatic
+                0x0800f432                xTimerGenericCommand
+                0x0800f690                xTimerGetTimerDaemonTaskHandle
+                0x0800f69c                xTimerGetPeriod
+                0x0800f6a0                vTimerSetReloadMode
+                0x0800f6c6                uxTimerGetReloadMode
+                0x0800f6e2                xTimerGetExpiryTime
+                0x0800f6e6                pcTimerGetName
+                0x0800f6ea                xTimerIsTimerActive
+                0x0800f706                pvTimerGetTimerID
+                0x0800f71c                vTimerSetTimerID
+                0x0800f730                xTimerPendFunctionCallFromISR
+                0x0800f758                xTimerPendFunctionCall
+                0x0800f780                uxTimerGetTimerNumber
+                0x0800f784                vTimerSetTimerNumber
+ .text          0x0800f788      0x52a build/FreeRTOS/stream_buffer.o
+                0x0800f828                xStreamBufferGenericCreate
+                0x0800f864                xStreamBufferGenericCreateStatic
+                0x0800f8a4                vStreamBufferDelete
+                0x0800f8b6                xStreamBufferReset
+                0x0800f8fc                xStreamBufferSetTriggerLevel
+                0x0800f910                xStreamBufferSpacesAvailable
+                0x0800f924                xStreamBufferBytesAvailable
+                0x0800f926                xStreamBufferSend
+                0x0800fa04                xStreamBufferSendFromISR
+                0x0800fa9c                xStreamBufferReceive
+                0x0800fb50                xStreamBufferNextMessageLengthBytes
+                0x0800fb7e                xStreamBufferReceiveFromISR
+                0x0800fc0e                xStreamBufferIsEmpty
+                0x0800fc1a                xStreamBufferIsFull
+                0x0800fc32                xStreamBufferSendCompletedFromISR
+                0x0800fc6a                xStreamBufferReceiveCompletedFromISR
+                0x0800fca2                uxStreamBufferGetStreamBufferNumber
+                0x0800fca6                vStreamBufferSetStreamBufferNumber
+                0x0800fcaa                ucStreamBufferGetStreamBufferType
+ *fill*         0x0800fcb2        0x2 
+ .text          0x0800fcb4     0x1140 build/FreeRTOS/cmsis_os2.o
+                0x0800fcf2                SysTick_Handler
+                0x0800fd0c                osKernelInitialize
+                0x0800fd38                osKernelGetInfo
+                0x0800fd64                osKernelGetState
+                0x0800fd84                osKernelStart
+                0x0800fdc4                osKernelLock
+                0x0800fdf0                osKernelUnlock
+                0x0800fe28                osKernelRestoreLock
+                0x0800fe6c                osKernelGetTickCount
+                0x0800fe84                osKernelGetTickFreq
+                0x0800fe8a                osKernelGetSysTimerCount
+                0x0800feca                osKernelGetSysTimerFreq
+                0x0800fed4                osThreadNew
+                0x0800ff68                osThreadGetName
+                0x0800ff82                osThreadGetId
+                0x0800ff86                osThreadGetState
+                0x0800ffb0                osThreadGetStackSpace
+                0x0800ffca                osThreadSetPriority
+                0x0800fff8                osThreadGetPriority
+                0x08010014                osThreadYield
+                0x08010038                osThreadSuspend
+                0x0801005c                osThreadResume
+                0x08010080                osThreadExit
+                0x0801008a                osThreadTerminate
+                0x080100be                osThreadGetCount
+                0x080100d2                osThreadEnumerate
+                0x0801013c                osThreadFlagsSet
+                0x080101ba                osThreadFlagsClear
+                0x0801020a                osThreadFlagsGet
+                0x08010238                osThreadFlagsWait
+                0x080102d2                osDelay
+                0x080102f0                osDelayUntil
+                0x08010320                osTimerNew
+                0x08010398                osTimerGetName
+                0x080103b2                osTimerStart
+                0x080103e8                osTimerStop
+                0x0801042a                osTimerIsRunning
+                0x08010444                osTimerDelete
+                0x0801048a                osEventFlagsNew
+                0x080104b6                osEventFlagsSet
+                0x08010510                osEventFlagsClear
+                0x08010556                osEventFlagsGet
+                0x08010578                osEventFlagsWait
+                0x080105dc                osEventFlagsDelete
+                0x08010600                osMutexNew
+                0x08010658                osMutexAcquire
+                0x0801069e                osMutexRelease
+                0x080106de                osMutexGetOwner
+                0x080106fa                osMutexDelete
+                0x08010720                osSemaphoreNew
+                0x080107ae                osSemaphoreAcquire
+                0x08010810                osSemaphoreRelease
+                0x08010868                osSemaphoreGetCount
+                0x0801088a                osSemaphoreDelete
+                0x080108ae                osMessageQueueNew
+                0x08010912                osMessageQueuePut
+                0x08010980                osMessageQueueGet
+                0x080109ea                osMessageQueueGetCapacity
+                0x080109f0                osMessageQueueGetMsgSize
+                0x080109f6                osMessageQueueGetCount
+                0x080109fa                osMessageQueueGetSpace
+                0x08010a30                osMessageQueueReset
+                0x08010a56                osMessageQueueDelete
+                0x08010a5a                osMemoryPoolNew
+                0x08010b48                osMemoryPoolGetName
+                0x08010b5e                osMemoryPoolAlloc
+                0x08010c14                osMemoryPoolFree
+                0x08010cd0                osMemoryPoolGetCapacity
+                0x08010ce8                osMemoryPoolGetBlockSize
+                0x08010d00                osMemoryPoolGetCount
+                0x08010d30                osMemoryPoolGetSpace
+                0x08010d60                osMemoryPoolDelete
+                0x08010dbc                vApplicationGetIdleTaskMemory
+                0x08010dd8                vApplicationGetTimerTaskMemory
+ .text          0x08010df4        0x2 build/FreeRTOS/clib_arm.o
+                0x08010df4                software_init_hook
+ *fill*         0x08010df6        0x2 
+ .text          0x08010df8       0xd0 build/FreeRTOS/os_systick.o
+                0x08010df8                OS_Tick_Setup
+                0x08010e38                OS_Tick_Enable
+                0x08010e60                OS_Tick_Disable
+                0x08010e8c                OS_Tick_AcknowledgeIRQ
+                0x08010e94                OS_Tick_GetIRQn
+                0x08010e9a                OS_Tick_GetClock
+                0x08010ea4                OS_Tick_GetInterval
+                0x08010eae                OS_Tick_GetCount
+                0x08010eba                OS_Tick_GetOverflow
+ .text          0x08010ec8       0x8c build/FreeRTOS/heap_useNewlib.o
+                0x08010ec8                sbrk
+                0x08010f18                _sbrk
+                0x08010f1c                __malloc_lock
+                0x08010f20                __malloc_unlock
+                0x08010f24                __env_lock
+                0x08010f28                __env_unlock
+                0x08010f2c                pvPortMalloc
+                0x08010f30                vPortFree
+                0x08010f34                xPortGetFreeHeapSize
+                0x08010f50                vPortInitialiseBlocks
+ *fill*         0x08010f54        0xc 
  .text          0x08010f60      0x1ec build/FreeRTOS/port.o
                 0x08010fb0                pxPortInitialiseStack
                 0x08010fdc                SVC_Handler
@@ -1313,7 +1316,6 @@ LOAD c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none
                 0x080120c4                USART3_IRQHandler
                 0x080120c4                CAN1_RX1_IRQHandler
                 0x080120c4                UART5_IRQHandler
-                0x080120c4                DMA2_Stream0_IRQHandler
                 0x080120c4                TIM4_IRQHandler
                 0x080120c4                QUADSPI_IRQHandler
                 0x080120c4                I2C1_EV_IRQHandler
@@ -1895,7 +1897,7 @@ LOAD c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none
 .iplt           0x08018fe8        0x0
  .iplt          0x08018fe8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.rodata         0x08018fe8     0x1850
+.rodata         0x08018fe8     0x1860
                 0x08018fe8                . = ALIGN (0x4)
  *(.rodata)
  .rodata        0x08018fe8       0x90 build/cmd_parser.o
@@ -1921,155 +1923,158 @@ LOAD c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none
  .rodata.str1.1
                 0x08019d46       0x12 build/mod_manager.o
  .rodata.str1.1
-                0x08019d58       0x20 build/mod_data_logger.o
+                0x08019d58        0xb build/mod_data_logger.o
  .rodata.str1.1
-                0x08019d78       0x7e build/uart.o
+                0x08019d63       0x23 build/mod_adc.o
  .rodata.str1.1
-                0x08019df6       0x84 build/uart_bt.o
+                0x08019d86       0x7e build/uart.o
  .rodata.str1.1
-                0x08019e7a        0x5 build/FreeRTOS/tasks.o
+                0x08019e04       0x84 build/uart_bt.o
  .rodata.str1.1
-                0x08019e7f        0x8 build/FreeRTOS/timers.o
+                0x08019e88        0x5 build/FreeRTOS/tasks.o
  .rodata.str1.1
-                0x08019e87       0x11 build/FreeRTOS/cmsis_os2.o
+                0x08019e8d        0x8 build/FreeRTOS/timers.o
+ .rodata.str1.1
+                0x08019e95       0x11 build/FreeRTOS/cmsis_os2.o
+ *fill*         0x08019ea6        0x2 
  .rodata.CSWTCH.8
-                0x08019e98       0x18 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-e_atan2.o)
+                0x08019ea8       0x18 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-e_atan2.o)
  .rodata.CSWTCH.9
-                0x08019eb0       0x18 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-e_atan2.o)
+                0x08019ec0       0x18 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-e_atan2.o)
  .rodata.npio2_hw
-                0x08019ec8       0x80 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-ef_rem_pio2.o)
+                0x08019ed8       0x80 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-ef_rem_pio2.o)
  .rodata.two_over_pi
-                0x08019f48      0x318 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-ef_rem_pio2.o)
- .rodata.PIo2   0x0801a260       0x2c c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-kf_rem_pio2.o)
+                0x08019f58      0x318 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-ef_rem_pio2.o)
+ .rodata.PIo2   0x0801a270       0x2c c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-kf_rem_pio2.o)
  .rodata.init_jk
-                0x0801a28c        0xc c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-kf_rem_pio2.o)
+                0x0801a29c        0xc c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-kf_rem_pio2.o)
  .rodata.atanhi
-                0x0801a298       0x20 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_atan.o)
+                0x0801a2a8       0x20 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_atan.o)
  .rodata.atanlo
-                0x0801a2b8       0x20 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_atan.o)
+                0x0801a2c8       0x20 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_atan.o)
  .rodata._ctype_
-                0x0801a2d8      0x101 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-ctype_.o)
-                0x0801a2d8                _ctype_
- *fill*         0x0801a3d9        0x3 
+                0x0801a2e8      0x101 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-ctype_.o)
+                0x0801a2e8                _ctype_
+ *fill*         0x0801a3e9        0x3 
  .rodata._global_impure_ptr
-                0x0801a3dc        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-impure.o)
-                0x0801a3dc                _global_impure_ptr
+                0x0801a3ec        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-impure.o)
+                0x0801a3ec                _global_impure_ptr
  .rodata._mstats_r.str1.1
-                0x0801a3e0       0x21 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mstats.o)
+                0x0801a3f0       0x21 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mstats.o)
  .rodata._malloc_stats_r.str1.1
-                0x0801a401       0x4b c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallstatsr.o)
+                0x0801a411       0x4b c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallstatsr.o)
  .rodata._printf_float.str1.1
-                0x0801a44c       0x12 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
+                0x0801a45c       0x12 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
  .rodata._printf_i.str1.1
-                0x0801a45e       0x22 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfprintf_i.o)
+                0x0801a46e       0x22 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfprintf_i.o)
  .rodata._scanf_float.str1.1
-                0x0801a480        0x5 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfscanf_float.o)
+                0x0801a490        0x5 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfscanf_float.o)
                                   0x6 (size before relaxing)
  .rodata._strtod_l.str1.1
-                0x0801a485        0x5 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strtod.o)
+                0x0801a495        0x5 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strtod.o)
                                   0xd (size before relaxing)
- *fill*         0x0801a485        0x3 
- .rodata.fpi.1  0x0801a488       0x14 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strtod.o)
+ *fill*         0x0801a495        0x3 
+ .rodata.fpi.1  0x0801a498       0x14 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strtod.o)
  .rodata.fpinan.0
-                0x0801a49c       0x14 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strtod.o)
+                0x0801a4ac       0x14 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strtod.o)
  .rodata.tinytens
-                0x0801a4b0       0x28 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strtod.o)
+                0x0801a4c0       0x28 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strtod.o)
  .rodata._dtoa_r.str1.1
-                0x0801a4d8       0x8e c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-dtoa.o)
+                0x0801a4e8       0x8e c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-dtoa.o)
                                  0x90 (size before relaxing)
- *fill*         0x0801a566        0x2 
+ *fill*         0x0801a576        0x2 
  .rodata.__sf_fake_stderr
-                0x0801a568       0x20 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
-                0x0801a568                __sf_fake_stderr
+                0x0801a578       0x20 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0801a578                __sf_fake_stderr
  .rodata.__sf_fake_stdin
-                0x0801a588       0x20 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
-                0x0801a588                __sf_fake_stdin
+                0x0801a598       0x20 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0801a598                __sf_fake_stdin
  .rodata.__sf_fake_stdout
-                0x0801a5a8       0x20 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
-                0x0801a5a8                __sf_fake_stdout
+                0x0801a5b8       0x20 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
+                0x0801a5b8                __sf_fake_stdout
  .rodata.__gethex.str1.1
-                0x0801a5c8       0x61 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-gdtoa-gethex.o)
+                0x0801a5d8       0x61 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-gdtoa-gethex.o)
                                  0x72 (size before relaxing)
  .rodata.str1.1
-                0x0801a629        0x2 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lnumeric.o)
+                0x0801a639        0x2 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lnumeric.o)
                                   0x3 (size before relaxing)
- *fill*         0x0801a62b        0x1 
+ *fill*         0x0801a63b        0x1 
  .rodata._C_numeric_locale
-                0x0801a62c        0xc c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lnumeric.o)
-                0x0801a62c                _C_numeric_locale
+                0x0801a63c        0xc c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lnumeric.o)
+                0x0801a63c                _C_numeric_locale
  .rodata._setlocale_r.str1.1
-                0x0801a638        0x8 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-locale.o)
+                0x0801a648        0x8 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-locale.o)
                                   0x9 (size before relaxing)
  .rodata.str1.1
-                0x0801a640        0x2 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-locale.o)
+                0x0801a650        0x2 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-locale.o)
  .rodata._Balloc.str1.1
-                0x0801a640       0x5a c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0801a650       0x5a c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
                                  0x71 (size before relaxing)
  .rodata.__multadd.str1.1
-                0x0801a69a       0x11 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
- *fill*         0x0801a69a        0x6 
+                0x0801a6aa       0x11 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
+ *fill*         0x0801a6aa        0x6 
  .rodata.__mprec_bigtens
-                0x0801a6a0       0x28 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0801a6a0                __mprec_bigtens
+                0x0801a6b0       0x28 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0801a6b0                __mprec_bigtens
  .rodata.__mprec_tens
-                0x0801a6c8       0xc8 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0801a6c8                __mprec_tens
+                0x0801a6d8       0xc8 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0801a6d8                __mprec_tens
  .rodata.__mprec_tinytens
-                0x0801a790       0x28 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
-                0x0801a790                __mprec_tinytens
- .rodata.p05.0  0x0801a7b8        0xc c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0801a7a0       0x28 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
+                0x0801a7a0                __mprec_tinytens
+ .rodata.p05.0  0x0801a7c8        0xc c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
  .rodata._svfprintf_r.str1.1
-                0x0801a7c4       0x11 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-svfprintf.o)
+                0x0801a7d4       0x11 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-svfprintf.o)
  .rodata._vfprintf_r.str1.1
-                0x0801a7d5       0x11 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
+                0x0801a7e5       0x11 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
  .rodata.__assert_func.str1.1
-                0x0801a7d5       0x3c c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-assert.o)
+                0x0801a7e5       0x3c c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-assert.o)
                                  0x3d (size before relaxing)
- *fill*         0x0801a811        0x3 
+ *fill*         0x0801a821        0x3 
  .rodata.all_implied_fbits
-                0x0801a814       0x24 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtend.o
-                0x0801a838                . = ALIGN (0x4)
+                0x0801a824       0x24 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtend.o
+                0x0801a848                . = ALIGN (0x4)
 
-.ARM.extab      0x0801a838        0x0
+.ARM.extab      0x0801a848        0x0
  *(.ARM.extab* .gnu.linkonce.armextab.*)
- .ARM.extab     0x0801a838        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crt0.o
+ .ARM.extab     0x0801a848        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crt0.o
  .ARM.extab.text.__udivmoddi4
-                0x0801a838        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+                0x0801a848        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
 
-.ARM            0x0801a838        0x8
-                0x0801a838                __exidx_start = .
+.ARM            0x0801a848        0x8
+                0x0801a848                __exidx_start = .
  *(.ARM.exidx*)
- .ARM.exidx     0x0801a838        0x8 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crt0.o
+ .ARM.exidx     0x0801a848        0x8 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crt0.o
                                  0x10 (size before relaxing)
  .ARM.exidx.text.__udivmoddi4
-                0x0801a840        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+                0x0801a850        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
                                   0x8 (size before relaxing)
-                0x0801a840                __exidx_end = .
+                0x0801a850                __exidx_end = .
 
-.rel.dyn        0x0801a840        0x0
- .rel.iplt      0x0801a840        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+.rel.dyn        0x0801a850        0x0
+ .rel.iplt      0x0801a850        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
 
-.preinit_array  0x0801a840        0x0
-                0x0801a840                PROVIDE (__preinit_array_start = .)
+.preinit_array  0x0801a850        0x0
+                0x0801a850                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x0801a840                PROVIDE (__preinit_array_end = .)
+                0x0801a850                PROVIDE (__preinit_array_end = .)
 
-.init_array     0x0801a840        0x4
-                0x0801a840                PROVIDE (__init_array_start = .)
+.init_array     0x0801a850        0x4
+                0x0801a850                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x0801a840        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
-                0x0801a844                PROVIDE (__init_array_end = .)
+ .init_array    0x0801a850        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x0801a854                PROVIDE (__init_array_end = .)
 
-.fini_array     0x0801a844        0x4
+.fini_array     0x0801a854        0x4
                 [!provide]                PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x0801a844        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+ .fini_array    0x0801a854        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
                 [!provide]                PROVIDE (__fini_array_end = .)
-                0x0801a848                _sidata = LOADADDR (.data)
+                0x0801a858                _sidata = LOADADDR (.data)
 
-.data           0x20000000      0x348 load address 0x0801a848
+.data           0x20000000      0x348 load address 0x0801a858
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
@@ -2262,17 +2267,17 @@ LOAD c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none
                 0x20000348                _edata = .
 
 .tm_clone_table
-                0x20000348        0x0 load address 0x0801ab90
+                0x20000348        0x0 load address 0x0801aba0
  .tm_clone_table
                 0x20000348        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
  .tm_clone_table
                 0x20000348        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtend.o
 
-.igot.plt       0x20000348        0x0 load address 0x0801ab90
+.igot.plt       0x20000348        0x0 load address 0x0801aba0
  .igot.plt      0x20000348        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
                 0x20000348                . = ALIGN (0x4)
 
-.bss            0x20000348     0x14f4 load address 0x0801ab90
+.bss            0x20000348     0x155c load address 0x0801aba0
                 0x20000348                _sbss = .
                 0x20000348                __bss_start__ = _sbss
  *(.bss)
@@ -2296,204 +2301,206 @@ LOAD c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none
  *fill*         0x200004c1        0x3 
  .bss           0x200004c4       0x10 build/mod_data_logger.o
                 0x200004d2                logCount
- .bss           0x200004d4       0x58 build/mod_adc.o
- .bss           0x2000052c        0x0 build/mod_enc.o
- .bss           0x2000052c        0x0 build/main.o
- .bss           0x2000052c        0x0 build/stm32f4xx_it.o
- .bss           0x2000052c        0x0 build/system_stm32f4xx.o
- .bss           0x2000052c       0x12 build/uart.o
- *fill*         0x2000053e        0x2 
- .bss           0x20000540       0x11 build/uart_bt.o
- .bss           0x20000551       0x51 build/cmd_task.o
- .bss           0x200005a2        0x0 build/startup_stm32f446xx.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_dma.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_adc.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_adc_ex.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_gpio.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_ll_gpio.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_ll_usart.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_ll_dma.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_ll_rcc.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_i2c.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_i2c_ex.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_tim.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_tim_ex.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_rtc.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_rcc.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_rcc_ex.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_pwr.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_pwr_ex.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_cortex.o
- .bss           0x200005a2        0x0 build/stm32f4_HAL/stm32f4xx_hal_spi.o
- .bss           0x200005a2        0x0 build/FreeRTOS/croutine.o
- .bss           0x200005a2        0x0 build/FreeRTOS/event_groups.o
- .bss           0x200005a2        0x0 build/FreeRTOS/list.o
- .bss           0x200005a2        0x0 build/FreeRTOS/queue.o
- *fill*         0x200005a2        0x2 
- .bss           0x200005a4      0x4fc build/FreeRTOS/tasks.o
-                0x200005a8                pxCurrentTCB
- .bss           0x20000aa0       0xdc build/FreeRTOS/timers.o
- .bss           0x20000b7c        0x0 build/FreeRTOS/stream_buffer.o
- *fill*         0x20000b7c        0x4 
- .bss           0x20000b80      0xc58 build/FreeRTOS/cmsis_os2.o
- .bss           0x200017d8        0x0 build/FreeRTOS/clib_arm.o
- .bss           0x200017d8        0x1 build/FreeRTOS/os_systick.o
- *fill*         0x200017d9        0x3 
- .bss           0x200017dc        0x4 build/FreeRTOS/heap_useNewlib.o
- .bss           0x200017e0        0x0 build/FreeRTOS/port.o
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_fmax.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_fmin.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_fpclassify.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_sin.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-w_atan2.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-w_sqrt.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-e_atan2.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-ef_rem_pio2.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-e_sqrt.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-kf_cos.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-kf_rem_pio2.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-kf_sin.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_atan.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_fabs.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_fabs.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_floor.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_scalbn.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldf3.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldivdf3.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_unorddf2.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_truncdfsf2.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_ldivmod.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_uldivmod.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_dvmd_tls.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-atof.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-atoi.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-ctype_.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-errno.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-exit.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-getchar.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-getc.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-impure.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-init.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-malloc.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memcpy-stub.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memset.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mstats.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-freer.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallinfor.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallocr.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-malloptr.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallstatsr.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfprintf_i.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfscanf_float.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-printf.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-reent.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-rget.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-sbrkr.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-setvbuf.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-sf_nan.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-sprintf.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strcmp.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strlen.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strtod.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strtol.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-vprintf.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-dtoa.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-fflush.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-fprintf.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-fwalk.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-gdtoa-gethex.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-gdtoa-hexnan.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lnumeric.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-localeconv.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-locale.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-makebuf.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mbtowc_r.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memchr.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-callocr.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-svfprintf.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-refill.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-s_nan.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-stdio.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strncmp.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-wbuf.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-wctomb_r.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-writer.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-wsetup.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-assert.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-closer.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-fstatr.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-fvwrite.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-isattyr.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lseekr.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memmove.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-reallocr.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-readr.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-abort.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-msizer.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-signal.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-signalr.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixunsdfsi.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_fixdfdi.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_fixunsdfdi.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(close.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(fstat.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(getpid.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(isatty.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(kill.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(lseek.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(_exit.o)
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtend.o
- .bss           0x200017e0        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtn.o
+ .bss           0x200004d4       0x60 build/mod_adc.o
+ .bss           0x20000534        0x0 build/mod_enc.o
+ .bss           0x20000534        0x0 build/main.o
+ .bss           0x20000534        0x0 build/stm32f4xx_it.o
+ .bss           0x20000534        0x0 build/system_stm32f4xx.o
+ .bss           0x20000534       0x12 build/uart.o
+ *fill*         0x20000546        0x2 
+ .bss           0x20000548       0x11 build/uart_bt.o
+ .bss           0x20000559       0x51 build/cmd_task.o
+ .bss           0x200005aa        0x0 build/startup_stm32f446xx.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_dma.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_adc.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_adc_ex.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_gpio.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_ll_gpio.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_ll_usart.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_ll_dma.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_ll_rcc.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_i2c.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_i2c_ex.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_tim.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_tim_ex.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_rtc.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_rcc.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_rcc_ex.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_pwr.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_pwr_ex.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_cortex.o
+ .bss           0x200005aa        0x0 build/stm32f4_HAL/stm32f4xx_hal_spi.o
+ .bss           0x200005aa        0x0 build/FreeRTOS/croutine.o
+ .bss           0x200005aa        0x0 build/FreeRTOS/event_groups.o
+ .bss           0x200005aa        0x0 build/FreeRTOS/list.o
+ .bss           0x200005aa        0x0 build/FreeRTOS/queue.o
+ *fill*         0x200005aa        0x2 
+ .bss           0x200005ac      0x4fc build/FreeRTOS/tasks.o
+                0x200005b0                pxCurrentTCB
+ .bss           0x20000aa8       0xdc build/FreeRTOS/timers.o
+ .bss           0x20000b84        0x0 build/FreeRTOS/stream_buffer.o
+ *fill*         0x20000b84        0x4 
+ .bss           0x20000b88      0xc58 build/FreeRTOS/cmsis_os2.o
+ .bss           0x200017e0        0x0 build/FreeRTOS/clib_arm.o
+ .bss           0x200017e0        0x1 build/FreeRTOS/os_systick.o
+ *fill*         0x200017e1        0x3 
+ .bss           0x200017e4        0x4 build/FreeRTOS/heap_useNewlib.o
+ .bss           0x200017e8        0x0 build/FreeRTOS/port.o
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_fmax.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_fmin.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_fpclassify.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_sin.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-w_atan2.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-w_sqrt.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-e_atan2.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-ef_rem_pio2.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-e_sqrt.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-kf_cos.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-kf_rem_pio2.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-kf_sin.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_atan.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-s_fabs.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_fabs.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_floor.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libm.a(lib_a-sf_scalbn.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldf3.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_addsubdf3.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_muldivdf3.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_cmpdf2.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_unorddf2.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_truncdfsf2.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_ldivmod.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_aeabi_uldivmod.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_dvmd_tls.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-atof.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-atoi.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-ctype_.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-errno.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-exit.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-getchar.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-getc.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-impure.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-init.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-malloc.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memcpy-stub.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memset.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mstats.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-freer.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallinfor.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallocr.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-malloptr.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallstatsr.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfprintf_float.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfprintf_i.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfscanf_float.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-printf.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-reent.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-rget.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-sbrkr.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-setvbuf.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-sf_nan.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-sprintf.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strcmp.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strlen.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strtod.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strtol.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-vprintf.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-dtoa.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-fflush.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-findfp.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-fprintf.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-fwalk.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-gdtoa-gethex.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-gdtoa-hexnan.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lnumeric.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-localeconv.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-locale.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-makebuf.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mbtowc_r.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memchr.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-mprec.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-callocr.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-svfprintf.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-vfprintf.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-refill.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-s_nan.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-stdio.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-strncmp.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-wbuf.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-wctomb_r.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-writer.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-wsetup.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-assert.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-closer.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-fstatr.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-fvwrite.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-isattyr.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lseekr.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-memmove.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-reallocr.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-readr.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-abort.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-msizer.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-signal.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-signalr.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixdfsi.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_arm_fixunsdfsi.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_fixdfdi.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libgcc.a(_fixunsdfdi.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(close.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(fstat.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(getpid.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(isatty.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(kill.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(lseek.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libnosys.a(_exit.o)
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtend.o
+ .bss           0x200017e8        0x0 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtn.o
  *(.bss*)
  .bss.completed.1
-                0x200017e0        0x1 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
- *fill*         0x200017e1        0x3 
- .bss.object.0  0x200017e4       0x18 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+                0x200017e8        0x1 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
+ *fill*         0x200017e9        0x3 
+ .bss.object.0  0x200017ec       0x18 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crtbegin.o
  .bss.__malloc_current_mallinfo
-                0x200017fc       0x28 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallinfor.o)
-                0x200017fc                __malloc_current_mallinfo
+                0x20001804       0x28 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallinfor.o)
+                0x20001804                __malloc_current_mallinfo
  .bss.__malloc_free_list
-                0x20001824        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallocr.o)
-                0x20001824                __malloc_free_list
+                0x2000182c        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallocr.o)
+                0x2000182c                __malloc_free_list
  .bss.__malloc_sbrk_start
-                0x20001828        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallocr.o)
-                0x20001828                __malloc_sbrk_start
- .bss.errno     0x2000182c        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-reent.o)
-                0x2000182c                errno
+                0x20001830        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-nano-mallocr.o)
+                0x20001830                __malloc_sbrk_start
+ .bss.errno     0x20001834        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-reent.o)
+                0x20001834                errno
  .bss._PathLocale
-                0x20001830        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-locale.o)
-                0x20001830                _PathLocale
+                0x20001838        0x4 c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-locale.o)
+                0x20001838                _PathLocale
  *(COMMON)
- COMMON         0x20001834        0x1 build/cmd_parser.o
-                0x20001834                ModManagerControlAlgorithm
- *fill*         0x20001835        0x3 
- COMMON         0x20001838        0x4 build/stm32f4_HAL/stm32f4xx_hal.o
-                0x20001838                uwTick
-                0x2000183c                . = ALIGN (0x4)
-                0x2000183c                _ebss = .
-                0x2000183c                __bss_end__ = _ebss
+ COMMON         0x2000183c        0x1 build/cmd_parser.o
+                0x2000183c                ModManagerControlAlgorithm
+ *fill*         0x2000183d        0x3 
+ COMMON         0x20001840       0x60 build/stm32f4xx_hal_msp.o
+                0x20001840                hdma_adc1
+ COMMON         0x200018a0        0x4 build/stm32f4_HAL/stm32f4xx_hal.o
+                0x200018a0                uwTick
+                0x200018a4                . = ALIGN (0x4)
+                0x200018a4                _ebss = .
+                0x200018a4                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x2000183c     0xa000 load address 0x0801ab90
-                0x2000183c                . = ALIGN (0x4)
+                0x200018a4     0xa000 load address 0x0801aba0
+                0x200018a4                . = ALIGN (0x4)
                 [!provide]                PROVIDE (end = .)
                 [!provide]                PROVIDE (_end = .)
-                0x2000183c                __HeapBase = .
-                0x2000983c                . = (. + _Min_Heap_Size)
- *fill*         0x2000183c     0x8000 
-                0x2000983c                __HeapLimit = .
-                0x2000b83c                . = (. + _Min_Stack_Size)
- *fill*         0x2000983c     0x2000 
-                0x2000b83c                . = ALIGN (0x4)
+                0x200018a4                __HeapBase = .
+                0x200098a4                . = (. + _Min_Heap_Size)
+ *fill*         0x200018a4     0x8000 
+                0x200098a4                __HeapLimit = .
+                0x2000b8a4                . = (. + _Min_Stack_Size)
+ *fill*         0x200098a4     0x2000 
+                0x2000b8a4                . = ALIGN (0x4)
 
 /DISCARD/
  libc.a(*)
@@ -4323,7 +4330,7 @@ DMA1_Stream4_IRQHandler                           build/startup_stm32f446xx.o
 DMA1_Stream5_IRQHandler                           build/startup_stm32f446xx.o
 DMA1_Stream6_IRQHandler                           build/startup_stm32f446xx.o
 DMA1_Stream7_IRQHandler                           build/startup_stm32f446xx.o
-DMA2_Stream0_IRQHandler                           build/startup_stm32f446xx.o
+DMA2_Stream0_IRQHandler                           build/stm32f4xx_hal_msp.o
 DMA2_Stream1_IRQHandler                           build/startup_stm32f446xx.o
 DMA2_Stream2_IRQHandler                           build/startup_stm32f446xx.o
 DMA2_Stream3_IRQHandler                           build/startup_stm32f446xx.o
@@ -4361,7 +4368,7 @@ HAL_ADCEx_MultiModeStop_DMA                       build/stm32f4_HAL/stm32f4xx_ha
 HAL_ADC_AnalogWDGConfig                           build/stm32f4_HAL/stm32f4xx_hal_adc.o
 HAL_ADC_ConfigChannel                             build/stm32f4_HAL/stm32f4xx_hal_adc.o
                                                   build/mod_adc.o
-HAL_ADC_ConvCpltCallback                          build/stm32f4_HAL/stm32f4xx_hal_adc.o
+HAL_ADC_ConvCpltCallback                          build/mod_adc.o
                                                   build/stm32f4_HAL/stm32f4xx_hal_adc_ex.o
 HAL_ADC_ConvHalfCpltCallback                      build/stm32f4_HAL/stm32f4xx_hal_adc.o
                                                   build/stm32f4_HAL/stm32f4xx_hal_adc_ex.o
@@ -4371,7 +4378,6 @@ HAL_ADC_ErrorCallback                             build/stm32f4_HAL/stm32f4xx_ha
 HAL_ADC_GetError                                  build/stm32f4_HAL/stm32f4xx_hal_adc.o
 HAL_ADC_GetState                                  build/stm32f4_HAL/stm32f4xx_hal_adc.o
 HAL_ADC_GetValue                                  build/stm32f4_HAL/stm32f4xx_hal_adc.o
-                                                  build/mod_adc.o
 HAL_ADC_IRQHandler                                build/stm32f4_HAL/stm32f4xx_hal_adc.o
 HAL_ADC_Init                                      build/stm32f4_HAL/stm32f4xx_hal_adc.o
                                                   build/mod_adc.o
@@ -4379,14 +4385,12 @@ HAL_ADC_LevelOutOfWindowCallback                  build/stm32f4_HAL/stm32f4xx_ha
 HAL_ADC_MspDeInit                                 build/stm32f4_HAL/stm32f4xx_hal_adc.o
 HAL_ADC_MspInit                                   build/stm32f4xx_hal_msp.o
 HAL_ADC_PollForConversion                         build/stm32f4_HAL/stm32f4xx_hal_adc.o
-                                                  build/mod_adc.o
 HAL_ADC_PollForEvent                              build/stm32f4_HAL/stm32f4xx_hal_adc.o
 HAL_ADC_Start                                     build/stm32f4_HAL/stm32f4xx_hal_adc.o
-                                                  build/mod_adc.o
 HAL_ADC_Start_DMA                                 build/stm32f4_HAL/stm32f4xx_hal_adc.o
+                                                  build/mod_adc.o
 HAL_ADC_Start_IT                                  build/stm32f4_HAL/stm32f4xx_hal_adc.o
 HAL_ADC_Stop                                      build/stm32f4_HAL/stm32f4xx_hal_adc.o
-                                                  build/mod_adc.o
 HAL_ADC_Stop_DMA                                  build/stm32f4_HAL/stm32f4xx_hal_adc.o
 HAL_ADC_Stop_IT                                   build/stm32f4_HAL/stm32f4xx_hal_adc.o
 HAL_DBGMCU_DisableDBGSleepMode                    build/stm32f4_HAL/stm32f4xx_hal.o
@@ -4410,7 +4414,9 @@ HAL_DMA_GetError                                  build/stm32f4_HAL/stm32f4xx_ha
 HAL_DMA_GetState                                  build/stm32f4_HAL/stm32f4xx_hal_dma.o
                                                   build/stm32f4_HAL/stm32f4xx_hal_i2c.o
 HAL_DMA_IRQHandler                                build/stm32f4_HAL/stm32f4xx_hal_dma.o
+                                                  build/stm32f4xx_hal_msp.o
 HAL_DMA_Init                                      build/stm32f4_HAL/stm32f4xx_hal_dma.o
+                                                  build/stm32f4xx_hal_msp.o
 HAL_DMA_PollForTransfer                           build/stm32f4_HAL/stm32f4xx_hal_dma.o
 HAL_DMA_RegisterCallback                          build/stm32f4_HAL/stm32f4xx_hal_dma.o
 HAL_DMA_Start                                     build/stm32f4_HAL/stm32f4xx_hal_dma.o
@@ -4525,6 +4531,7 @@ HAL_MspInit                                       build/stm32f4_HAL/stm32f4xx_ha
 HAL_NVIC_ClearPendingIRQ                          build/stm32f4_HAL/stm32f4xx_hal_cortex.o
 HAL_NVIC_DisableIRQ                               build/stm32f4_HAL/stm32f4xx_hal_cortex.o
 HAL_NVIC_EnableIRQ                                build/stm32f4_HAL/stm32f4xx_hal_cortex.o
+                                                  build/stm32f4xx_hal_msp.o
 HAL_NVIC_GetActive                                build/stm32f4_HAL/stm32f4xx_hal_cortex.o
 HAL_NVIC_GetPendingIRQ                            build/stm32f4_HAL/stm32f4xx_hal_cortex.o
 HAL_NVIC_GetPriority                              build/stm32f4_HAL/stm32f4xx_hal_cortex.o
@@ -4532,6 +4539,7 @@ HAL_NVIC_GetPriorityGrouping                      build/stm32f4_HAL/stm32f4xx_ha
 HAL_NVIC_SetPendingIRQ                            build/stm32f4_HAL/stm32f4xx_hal_cortex.o
 HAL_NVIC_SetPriority                              build/stm32f4_HAL/stm32f4xx_hal_cortex.o
                                                   build/stm32f4_HAL/stm32f4xx_hal.o
+                                                  build/stm32f4xx_hal_msp.o
 HAL_NVIC_SetPriorityGrouping                      build/stm32f4_HAL/stm32f4xx_hal_cortex.o
                                                   build/stm32f4_HAL/stm32f4xx_hal.o
 HAL_NVIC_SystemReset                              build/stm32f4_HAL/stm32f4xx_hal_cortex.o
@@ -5547,6 +5555,7 @@ getc                                              c:/mchatoolchainwindows/toolch
 getchar                                           c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-getchar.o)
                                                   build/cmd_line_buffer.o
 hardware_init_hook                                c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard/crt0.o
+hdma_adc1                                         build/stm32f4xx_hal_msp.o
 heartbeat_task_deinit                             build/heartbeat_task.o
 heartbeat_task_init                               build/heartbeat_task.o
                                                   build/main.o
@@ -5755,7 +5764,7 @@ pitch                                             build/mod_mpu6050.o
 printf                                            c:/mchatoolchainwindows/toolchain/gcc-arm-none-eabi/bin/../lib/gcc/arm-none-eabi/11.2.1/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-printf.o)
                                                   build/uart_bt.o
                                                   build/uart.o
-                                                  build/mod_data_logger.o
+                                                  build/mod_adc.o
                                                   build/mod_manager.o
                                                   build/cmd_parser.o
                                                   build/cmd_line_buffer.o

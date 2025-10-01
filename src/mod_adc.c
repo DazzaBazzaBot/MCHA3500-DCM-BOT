@@ -5,36 +5,28 @@
 
 #include "mod_adc.h"
 
+#define ADC_NUM_CHANNELS 2
+
 // Hardware
 static ADC_HandleTypeDef hadc1 = {0};
 static ADC_ChannelConfTypeDef sConfigADC = {0};
 
 // Flags
 static uint8_t _is_init = 0;
-static uint8_t _is_running = 0;
 
-
-
-
+// DMA buffer(wow really thats so crazy i needed this comment to tell me that  i srsly had no idea
+// the comment totally helps and i would have never guessed at first glance that this is a buffer for the dma
+// especially with the adc_dma_ prefix like what else could it be)
+static uint16_t adc_dma_buffer[ADC_NUM_CHANNELS];
 
 void mod_adc_update_readings(float *voltage_1, float *voltage_2)
 {
-    float adcValue = 0.0f;
+    uint16_t ch1 = adc_dma_buffer[0];
+    uint16_t ch2 = adc_dma_buffer[1];
 
-    // Start ADC conversion
-    HAL_ADC_Start(&hadc1);
-
-    // Poll for conversion completion
-    HAL_ADC_PollForConversion(&hadc1, 10);
-    adcValue = HAL_ADC_GetValue(&hadc1);
-    *voltage_1 = (adcValue * 3.3f) / 4096.0f;
-
-    HAL_ADC_PollForConversion(&hadc1, 10);
-    adcValue = HAL_ADC_GetValue(&hadc1);
-    *voltage_2 = (adcValue * 3.3f) / 4096.0f;
-
-    // Stop ADC
-    HAL_ADC_Stop(&hadc1);
+    printf("ADC1 Channel 0: %u, Channel 1: %u\n", ch1, ch2);
+    *voltage_1 = (adc_dma_buffer[0] * 3.3f) / 4096.0f;
+    *voltage_2 = (adc_dma_buffer[1] * 3.3f) / 4096.0f;
 }
 
 /**************************************
@@ -49,32 +41,40 @@ void mod_adc_configure_hardware(void)
         // Enable ADC1 clock
         __HAL_RCC_ADC1_CLK_ENABLE();
 
-        // COnfigure ADC1
         hadc1.Instance = ADC1;
         hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
         hadc1.Init.Resolution = ADC_RESOLUTION_12B;
         hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
         hadc1.Init.ScanConvMode = ENABLE;
-        hadc1.Init.ContinuousConvMode = DISABLE;
-        hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-        hadc1.Init.NbrOfConversion = 2;
+        hadc1.Init.ContinuousConvMode = ENABLE; // Enable continuous mode for DMA
+        hadc1.Init.EOCSelection = ADC_EOC_SEQ_CONV;
+        hadc1.Init.NbrOfConversion = ADC_NUM_CHANNELS;
         hadc1.Init.DiscontinuousConvMode = DISABLE;
+        hadc1.Init.DMAContinuousRequests = ENABLE;
 
-        // Initialize ADC
         HAL_ADC_Init(&hadc1);
 
-        // Configure common parameters
         sConfigADC.SamplingTime = ADC_SAMPLETIME_480CYCLES;
         sConfigADC.Offset = 0;
 
-        // Configure channel 0, rank 1
+        // Channel 0, rank 1
         sConfigADC.Channel = ADC_CHANNEL_0;
         sConfigADC.Rank = 1;
         HAL_ADC_ConfigChannel(&hadc1, &sConfigADC);
 
-        // Configure channel 1, rank 2
+        // Channel 1, rank 2
         sConfigADC.Channel = ADC_CHANNEL_1;
         sConfigADC.Rank = 2;
         HAL_ADC_ConfigChannel(&hadc1, &sConfigADC);
+
+        // Start ADC in DMA mode
+        HAL_ADC_Start_DMA(&hadc1, (uint32_t *)adc_dma_buffer, ADC_NUM_CHANNELS);
+
+        _is_init = 1;
     }
+}
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
+{
+    UNUSED(hadc);
 }
