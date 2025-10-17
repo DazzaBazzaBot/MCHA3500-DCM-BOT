@@ -1,16 +1,14 @@
 #ifndef MOD_ENC_H
 #define MOD_ENC_H
 
-void mod_enc_init(void);
-void mod_enc_task(void *argument);
+#include "stdlib.h"
+
 void mod_enc_configure_hardware(void);
 
-void mod_enc_update_readings(void);
-void mod_enc_reset_counts(void);
-void mod_get_speed_left(void);
-void mod_get_speed_right(void);
+int32_t mod_enc_get_countA(void);
+int32_t mod_enc_get_countB(void);
 
-void mod_enc_stop_task(void);
-void mod_enc_start_task(void);
+void mod_enc_reset_countA(void);
+void mod_enc_reset_countB(void);
 
 #endif

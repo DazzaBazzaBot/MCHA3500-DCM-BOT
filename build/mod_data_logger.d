@@ -72,4 +72,4 @@ build/mod_data_logger.o: src/mod_data_logger.c \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\stdlib.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\machine\stdlib.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\alloca.h \
- src/mod_mpu6050.h src/mod_adc.h
+ src/mod_mpu6050.h src/mod_adc.h src/mod_enc.h

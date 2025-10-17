@@ -78,4 +78,5 @@ build/cmd_parser.o: src/cmd_parser.c \
  src/cmd_line_buffer.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\lib\gcc\arm-none-eabi\11.2.1\include\stdbool.h \
  src/cmd_parser.h src/heartbeat_task.h src/mod_mpu6050.h \
- src/mod_data_logger.h src/mod_manager.h src/mod_dcm_driver.h
+ src/mod_data_logger.h src/mod_manager.h src/mod_dcm_driver.h \
+ src/mod_adc.h src/mod_enc.h

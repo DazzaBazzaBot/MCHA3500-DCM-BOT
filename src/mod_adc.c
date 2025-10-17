@@ -14,25 +14,29 @@ static ADC_ChannelConfTypeDef sConfigADC = {0};
 // Flags
 static uint8_t _is_init = 0;
 
-// DMA buffer(wow really thats so crazy i needed this comment to tell me that  i srsly had no idea
-// the comment totally helps and i would have never guessed at first glance that this is a buffer for the dma
-// especially with the adc_dma_ prefix like what else could it be)
+// buffer for adc readings
 static uint16_t adc_dma_buffer[ADC_NUM_CHANNELS];
 
 void mod_adc_update_readings(float *voltage_1, float *voltage_2)
 {
-    uint16_t ch1 = adc_dma_buffer[0];
-    uint16_t ch2 = adc_dma_buffer[1];
-
-    printf("ADC1 Channel 0: %u, Channel 1: %u\n", ch1, ch2);
     *voltage_1 = (adc_dma_buffer[0] * 3.3f) / 4096.0f;
     *voltage_2 = (adc_dma_buffer[1] * 3.3f) / 4096.0f;
 }
 
+float mod_adc_get_voltageA(void)
+{
+    return (adc_dma_buffer[0] * 3.3f) / 4096.0f;
+}
+
+float mod_adc_get_voltageB(void)
+{
+    return (adc_dma_buffer[1] * 3.3f) / 4096.0f;
+}
+
 /**************************************
  * Configure the ADC hardware
- * PA0: ADC1_IN0, Left Motor Current
- * PA1: ADC1_IN1, Right Motor Current
+ * PA0: ADC1_IN0, ADCA, right motor current
+ * PA1: ADC1_IN1, ADCB, left motor current
  **************************************/
 void mod_adc_configure_hardware(void)
 {

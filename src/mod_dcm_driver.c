@@ -97,8 +97,8 @@ void left_reverse()
 
 void left_halt()
 {
-    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
 }
 
 void right_forward()
@@ -115,9 +115,57 @@ void right_reverse()
 
 void right_halt()
 {
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
 }
+
+
+void mod_dcm_set_voltageLeft(float voltage)
+{
+    float pwm_percent_left = (int8_t)(voltage / MAX_VOLTAGE * 100.0f);
+    pwm_percent_left = fmin(fmax(pwm_percent_left, -100), 100);
+
+    if (pwm_percent_left > 0)
+    {
+        left_forward();
+    }
+    else if (pwm_percent_left < 0)
+    {
+        left_reverse();
+    }
+    else
+    {
+        left_halt();
+    }
+
+    uint16_t new_pwm_left = abs(pwm_percent_left) * 5000.0f / 100.0f + 5000.0f;
+
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, new_pwm_left);
+}
+
+void mod_dcm_set_voltageRight(float voltage)
+{
+    float pwm_percent_right = -(int8_t)(voltage / MAX_VOLTAGE * 100.0f);
+    pwm_percent_right = fmin(fmax(pwm_percent_right, -100), 100);
+
+    if (pwm_percent_right > 0)
+    {
+        right_forward();
+    }
+    else if (pwm_percent_right < 0)
+    {
+        right_reverse();
+    }
+    else
+    {
+        right_halt();
+    }
+
+    uint16_t new_pwm_right = abs(pwm_percent_right) * 5000.0f / 100.0f + 5000.0f;
+
+    __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, new_pwm_right);
+}
+
 
 /**************************************
  * Configure the DC Motor hardware
@@ -137,7 +185,7 @@ void mod_dcm_configure_hardware(void)
 
     // Configure TIM2
     htim2.Instance = TIM2;
-    htim2.Init.Prescaler = 0;
+    htim2.Init.Prescaler = 4;
     htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
     htim2.Init.Period = 9999;
     htim2.Init.ClockDivision = 0;
@@ -145,7 +193,7 @@ void mod_dcm_configure_hardware(void)
 
     // Configure TIM3
     htim3.Instance = TIM3;
-    htim3.Init.Prescaler = 0;
+    htim3.Init.Prescaler = 4;
     htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
     htim3.Init.Period = 9999;
     htim3.Init.ClockDivision = 0;

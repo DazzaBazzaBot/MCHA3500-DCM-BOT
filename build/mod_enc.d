@@ -66,9 +66,7 @@ build/mod_enc.o: src/mod_enc.c \
  ../libraries/STM32Cube_F4_FW/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  ../libraries/STM32Cube_F4_FW/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../libraries/STM32Cube_F4_FW/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- ../libraries/CMSIS_5/CMSIS/RTOS2/Include/cmsis_os2.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\stdlib.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\machine\stdlib.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\alloca.h \
- c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\math.h \
  src/mod_enc.h

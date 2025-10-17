@@ -31,14 +31,13 @@ int main(void)
 
     // Start ma mod manager
     mod_manager_init();
-    //mod_manager_start(MOD_MANAGER_PID);
+    //mod_manager_start(MOD_MANAGER_LQR);
 
     // Start scheduler
     osKernelStart();
 
     /* We should never get here as control is now taken by the scheduler */
-    for (; /*ever*/;)
-        ;
+    for (; /*ever*/;);
 }
 
 /*

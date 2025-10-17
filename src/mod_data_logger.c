@@ -10,9 +10,12 @@
 #include "mod_dcm_driver.h"
 #include "mod_mpu6050.h"
 #include "mod_adc.h"
+#include "mod_enc.h"
 
-#define PERIOD_MS 5.0f
+#define LOG_PERIOD_MS 5.0f
 #define LOG_DURATION_MS 5000.0f
+#define COUNTS_PER_OUTPUT_REV 1320
+#define INERTIA_COUNT_PER_REV 4096
 
 // Timer ID and attributes
 static osTimerId_t _dataLoggingTimerID;
@@ -24,8 +27,8 @@ static uint8_t _is_running = 0;
 static uint8_t _is_init = 0;
 
 // for logger
-uint16_t logCount = 0;
-
+static uint16_t logCount = 0;
+static int32_t lastEncoderCount = 0;
 
 // ma logger
 static void (*log_function)(void) = NULL;
@@ -33,46 +36,127 @@ static void (*log_function)(void) = NULL;
 void log_imu(void);
 void log_imu(void)
 {
-
+    // ufkc that
 }
 
 void log_inertia(void);
-void log_inertia(){
-    //ill do it
-    //eventually
-    // please come back co pilot
-    // i cant speell without u
-}
-
-
-void log_motor(void);
-void log_motor(){
-    float time = logCount * (PERIOD_MS / 1000.0f);
+void log_inertia()
+{
+        // Time
+    float time = logCount * (LOG_PERIOD_MS / 1000.0f);
     logCount++;
 
-    // generate 1hz sine wave between -6 and 6 volts
-    float voltage = 6.0f * sinf(6.283185 * time);
-    mod_dcm_set_voltage_log(voltage);
+    // Rotational velocity
+    int32_t newEncoderCount = mod_enc_get_countA();
 
-    // read adc left and right
-    float voltage_torque = 0;
-    float voltage_current = 0;
-    mod_adc_update_readings(&voltage_current, &voltage_torque);
-
-    float current = (voltage_current - 1.65f) / .4f;
-    float torque = 0.3577f * (voltage_torque - 1.6337f); // 0.1 Nm per volt
+    float angle_rad = ((float)newEncoderCount / INERTIA_COUNT_PER_REV) * 6.283185f;
 
 
-    // print [time],[voltage],[torque],[current],[velocity]
-    //printf("%.5f,%.5f,%.5f,%.5f\n", time, voltage, torque, current);
+    float count_diff = (float)(newEncoderCount - lastEncoderCount);
+    float time_period = LOG_PERIOD_MS / 1000.0f; // Convert ms to seconds
+    float counts_per_sec = count_diff / time_period;
+    float rps = counts_per_sec / INERTIA_COUNT_PER_REV;
+    float rad_per_sec = rps * 6.283185f;
+
+    // print [time],[ANGLE],[velocity]
+    printf("%.3f,%.5f,%.5f\n", time, angle_rad, rad_per_sec);
+
+    // print [time],[encCount],[velocity]
+    //printf("%.3f,%ld,%.5f\n", time, newEncoderCount, rad_per_sec);
+
 
     // stop after 5s
-    if(time >= 5.0f){
+    if (time >= 30.0f)
+    {
         mod_log_stop();
-        mod_dcm_set_voltage_log(0);
-    }   
+    }
+
+    // Update last count
+    lastEncoderCount = newEncoderCount;
 }
 
+void log_motor(void);
+void log_motor()
+{
+    // Time
+    float time = logCount * (LOG_PERIOD_MS / 1000.0f);
+    logCount++;
+
+    // Voltage input
+    float voltage = 9.0f * sinf(6.283185 * time * 0.5f);
+    mod_dcm_set_voltage_log(voltage);
+
+    // Current and torque readings
+    float voltage_torque = 0;
+    float voltage_current = 0;
+    mod_adc_update_readings(&voltage_torque, &voltage_current);
+
+    float current = (voltage_current - 1.65f) / 0.4f;
+    // float current = (voltage_current - 2.5f) / 0.4f;
+    float torque = 0.3577f * (voltage_torque - 1.6337f);
+
+    // Rotational velocity
+    int32_t newEncoderCount = mod_enc_get_countB();
+    float count_diff = (float)(newEncoderCount - lastEncoderCount);
+    float time_period = LOG_PERIOD_MS / 1000.0f; // Convert ms to seconds
+    float counts_per_sec = count_diff / time_period;
+    float rps = counts_per_sec / COUNTS_PER_OUTPUT_REV;
+    float rad_per_sec = rps * 6.283185f;
+
+    // print [time],[voltage],[torque],[current],[velocity]
+    printf("%.5f,%.5f,%.5f,%.5f,%.5f\n", time, voltage, torque, current, rad_per_sec);
+
+    // stop after 5s
+    if (time >= 10.0f)
+    {
+        mod_log_stop();
+        mod_dcm_set_voltage_log(0);
+    }
+
+    // Update last count
+    lastEncoderCount = newEncoderCount;
+}
+
+void log_motor_freewheel(void);
+void log_motor_freewheel()
+{
+    // Time
+    float time = logCount * (LOG_PERIOD_MS / 1000.0f);
+    logCount++;
+
+    // Voltage input
+    float voltage = 9.0f * sinf(6.283185 * time * 1.0f);
+    mod_dcm_set_voltage_log(voltage);
+
+    // Current and torque readings
+    float voltage_torque = 0;
+    float voltage_current = 0;
+    mod_adc_update_readings(&voltage_torque, &voltage_current);
+
+    float current = (voltage_current - 1.65f) / 0.4f;
+    // float current = (voltage_current - 2.5f) / 0.4f;
+
+    // Rotational velocity
+    int32_t newEncoderCount = mod_enc_get_countB();
+    float count_diff = (float)(newEncoderCount - lastEncoderCount);
+    float time_period = LOG_PERIOD_MS / 1000.0f; // Convert ms to seconds
+    float counts_per_sec = count_diff / time_period;
+    float rps = counts_per_sec / COUNTS_PER_OUTPUT_REV;
+    float rad_per_sec = rps * 6.283185f;
+
+    // print [time],[voltage],[current],[velocity]
+    printf("%.5f,%.5f,%.5f,%.5f\n", time, voltage, current, rad_per_sec);
+
+    // stop after 5s
+    if (time >= 10.0f)
+    {
+        mod_log_stop();
+        mod_dcm_set_voltage_log(0);
+    }
+
+    // Update last count
+    lastEncoderCount = newEncoderCount;
+}
 
 void mod_log_task(void *argument)
 {
@@ -81,7 +165,6 @@ void mod_log_task(void *argument)
 
     (*log_function)();
 }
-
 
 void mod_log_init(void)
 {
@@ -94,6 +177,8 @@ void mod_log_init(void)
 
 void mod_log_start(uint8_t log_type)
 {
+    lastEncoderCount = 0;
+    
     if (log_type == LOG_IMU)
     {
         log_function = &log_imu;
@@ -106,6 +191,10 @@ void mod_log_start(uint8_t log_type)
     {
         log_function = &log_motor;
     }
+    else if (log_type == LOG_FREEWHEEL)
+    {
+        log_function = &log_motor_freewheel;
+    }
     else
     {
         log_function = NULL;
@@ -115,7 +204,7 @@ void mod_log_start(uint8_t log_type)
     if (!_is_running)
     {
         logCount = 0;
-        osTimerStart(_dataLoggingTimerID, PERIOD_MS);
+        osTimerStart(_dataLoggingTimerID, LOG_PERIOD_MS);
         _is_running = 1;
     }
 }

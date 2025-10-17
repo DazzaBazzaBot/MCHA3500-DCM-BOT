@@ -14,7 +14,8 @@
 #include "mod_data_logger.h"
 #include "mod_manager.h"
 #include "mod_dcm_driver.h"
-
+#include "mod_adc.h"
+#include "mod_enc.h"
 
 // Type for each command table entry
 typedef struct
@@ -36,12 +37,16 @@ static void _cmd_manager_stop(int, char *[]);
 
 // data logging commands
 static void _cmd_log_motor_data(int, char *[]);
+static void _cmd_log_freewheel_data(int, char *[]);
+static void _cmd_log_inertia_data(int, char *[]);
 
 // dcm commands
 static void _cmd_dcm_set_pwm(int, char *[]);
 static void _cmd_dcm_set_voltage(int, char *[]);
-static void _cmd_dcm_set_voltage_log(int, char *[]);
 
+// dcm + enc + adc commands
+static void _cmd_dcm_left_voltage(int, char *[]);
+static void _cmd_dcm_right_voltage(int, char *[]);
 
 // Command table
 static CMD_T cmd_table[] =
@@ -55,15 +60,20 @@ static CMD_T cmd_table[] =
         {_cmd_manager_stop, "manager_stop", "", "Stops the module manager\n"},
 
         // data logging
-        {_cmd_log_motor_data, "log_motor_data", "", "Logs motor data\n"},
+        {_cmd_log_motor_data, "log_motor_data", "", "Logs motor data"},
+        {_cmd_log_freewheel_data, "log_freewheel_data", "", "Logs freewheel motor data"},
+        {_cmd_log_inertia_data, "log_inertia_data", "", "Logs inertia data\n"},
 
         // dcm
         {_cmd_dcm_set_pwm, "dcm_set_pwm", "<left_pwm> <right_pwm>", "Sets the PWM duty cycle for the left and right DC motors (-100 to 100)"},
         {_cmd_dcm_set_voltage, "dcm_set_voltage", "<left_voltage> <right_voltage>", "Sets the voltage for the left and right DC motors (-12.0 to 12.0)\n"},
-        {_cmd_dcm_set_voltage_log, "dcm_set_voltage_log", "<voltage>", "Sets the voltage for both DC motors (for data logging) (-12.0 to 12.0)\n"},
+
+        // dcm + enc + adc
+        {_cmd_dcm_left_voltage, "dcm_left_voltage", "<left_voltage>", "Sets the voltage for the left DC motor (-12.0 to 12.0)"},
+        {_cmd_dcm_right_voltage, "dcm_right_voltage", "<right_voltage>", "Sets the voltage for the right DC motor (-12.0 to 12.0)\n"},
 
         // temp runner
-       
+
 };
 
 enum
@@ -155,18 +165,38 @@ void _cmd_manager_stop(int argc, char *argv[])
     printf("Module manager stopped\n");
 }
 
-
 /********************************************
 *********** DATA LOGGING COMMANDS ***********
 ********************************************/
-void _cmd_log_motor_data(int argc, char *argv[]){
+void _cmd_log_motor_data(int argc, char *argv[])
+{
     UNUSED(argc);
     UNUSED(argv);
 
+    mod_enc_reset_countA();
+    mod_enc_reset_countB();
     mod_log_start(LOG_MOTOR);
 }
 
+void _cmd_log_freewheel_data(int argc, char *argv[])
+{
+    UNUSED(argc);
+    UNUSED(argv);
 
+    mod_enc_reset_countA();
+    mod_enc_reset_countB();
+    mod_log_start(LOG_FREEWHEEL);
+}
+
+void _cmd_log_inertia_data(int argc, char *argv[])
+{
+    UNUSED(argc);
+    UNUSED(argv);
+
+    mod_enc_reset_countA();
+    mod_enc_reset_countB();
+    mod_log_start(LOG_INERTIA);
+}
 
 /******************************************
 *********** DCM DRIVER COMMANDS ***********
@@ -193,7 +223,6 @@ void _cmd_dcm_set_pwm(int argc, char *argv[])
     printf("Set left PWM to %d%% and right PWM to %d%%\n", left_pwm, right_pwm);
 }
 
-
 void _cmd_dcm_set_voltage(int argc, char *argv[])
 {
     if (argc < 3)
@@ -216,30 +245,58 @@ void _cmd_dcm_set_voltage(int argc, char *argv[])
     printf("Set left voltage to %.2fV and right voltage to %.2fV\n", left_voltage, right_voltage);
 }
 
-void _cmd_dcm_set_voltage_log(int argc, char *argv[])
+/******************************************
+*********** DCM + MORE COMMANDS ***********
+******************************************/
+void _cmd_dcm_left_voltage(int argc, char *argv[])
 {
     if (argc < 2)
     {
-        printf("Usage: %s <voltage>\n", argv[0]);
-        printf("  voltage should be in the range -12.0 to 12.0\n");
+        printf("Usage: %s <left_voltage>\n", argv[0]);
+        printf("  left_voltage should be in the range -12.0 to 12.0\n");
         return;
     }
 
-    float voltage = atof(argv[1]);
+    float left_voltage = atof(argv[1]);
 
-    if (voltage < -12.0f || voltage > 12.0f)
+    if (left_voltage < -12.0f || left_voltage > 12.0f)
     {
         printf("Error: Voltage value must be between -12.0 and 12.0\n");
         return;
     }
 
-    mod_dcm_set_voltage_log(voltage);
+    mod_dcm_set_voltageLeft(left_voltage);
+    int32_t left_enc_count = mod_enc_get_countB();
+    float left_adc_voltage = mod_adc_get_voltageB();
+
+    // prent voltage, enc count, adc voltage
+    printf("Set left voltage to %.2fV | Left Encoder Count: %" PRId32 " | Left ADC Voltage: %.2fV\n", left_voltage, left_enc_count, left_adc_voltage);
 }
 
+void _cmd_dcm_right_voltage(int argc, char *argv[])
+{
+    if (argc < 2)
+    {
+        printf("Usage: %s <right_voltage>\n", argv[0]);
+        printf("  right_voltage should be in the range -12.0 to 12.0\n");
+        return;
+    }
 
+    float right_voltage = atof(argv[1]);
 
+    if (right_voltage < -12.0f || right_voltage > 12.0f)
+    {
+        printf("Error: Voltage value must be between -12.0 and 12.0\n");
+        return;
+    }
 
+    mod_dcm_set_voltageRight(right_voltage);
+    int32_t right_enc_count = mod_enc_get_countA();
+    float right_adc_voltage = mod_adc_get_voltageA();
 
+    // prent voltage, enc count, adc voltage
+    printf("Set right voltage to %.2fV | Right Encoder Count: %" PRId32 " | Right ADC Voltage: %.2fV\n", right_voltage, right_enc_count, right_adc_voltage);
+}
 
 /*******************************************/
 static void _print_chip_pinout(void);

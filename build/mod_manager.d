@@ -77,4 +77,5 @@ build/mod_manager.o: src/mod_manager.c \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\stdlib.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\machine\stdlib.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\alloca.h \
- src/mod_adc.h src/mod_PID_control.h
+ src/mod_adc.h src/mod_enc.h src/mod_PID_control.h src/mod_LQR_control.h \
+ src/mod_MPC_control.h

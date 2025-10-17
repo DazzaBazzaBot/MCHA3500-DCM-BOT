@@ -5,6 +5,7 @@ enum {
     LOG_IMU = 0,
     LOG_INERTIA = 1,
     LOG_MOTOR = 2,
+    LOG_FREEWHEEL = 3,
 };
 
 void mod_log_init(void);
