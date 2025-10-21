@@ -115,10 +115,10 @@ void mod_manager_LQR(void)
     mod_LQR_set_states(state_vector);
 
     // Update Control
-    //mod_LQR_update();
+    mod_LQR_update();
 
     // Get control
-    //LQR_output = mod_LQR_get_control();
+    LQR_output = mod_LQR_get_control();
 
 
     // Update current sensor ?

@@ -16,6 +16,7 @@
 #include "mod_dcm_driver.h"
 #include "mod_adc.h"
 #include "mod_enc.h"
+#include "mod_LQR_control.h"
 
 // Type for each command table entry
 typedef struct
@@ -48,6 +49,13 @@ static void _cmd_dcm_set_voltage(int, char *[]);
 static void _cmd_dcm_left_voltage(int, char *[]);
 static void _cmd_dcm_right_voltage(int, char *[]);
 
+// LQR commands
+static void _cmd_lqr_update(int, char *[]);
+static void _cmd_lqr_set_states(int, char *[]);
+static void _cmd_lqr_get_control(int, char *[]);
+static void _cmd_lqr_set_y_ref(int, char *[]);
+
+
 // Command table
 static CMD_T cmd_table[] =
     {
@@ -71,6 +79,12 @@ static CMD_T cmd_table[] =
         // dcm + enc + adc
         {_cmd_dcm_left_voltage, "dcm_left_voltage", "<left_voltage>", "Sets the voltage for the left DC motor (-12.0 to 12.0)"},
         {_cmd_dcm_right_voltage, "dcm_right_voltage", "<right_voltage>", "Sets the voltage for the right DC motor (-12.0 to 12.0)\n"},
+
+        // LQR
+        {_cmd_lqr_update, "lqr_run", "<x1> <x2> <x3> <x4>", "Runs the LQR control and outputs the control signal"},
+        {_cmd_lqr_set_states, "lqr_set_states", "<x1> <x2> <x3> <x4>", "Sets the LQR state vector"},
+        {_cmd_lqr_get_control, "lqr_get_control", "", "Gets the current LQR control output"},
+        {_cmd_lqr_set_y_ref, "lqr_set_y_ref", "<y_ref>", "Sets the LQR reference output value\n"},
 
         // temp runner
 
@@ -296,6 +310,60 @@ void _cmd_dcm_right_voltage(int argc, char *argv[])
 
     // prent voltage, enc count, adc voltage
     printf("Set right voltage to %.2fV | Right Encoder Count: %" PRId32 " | Right ADC Voltage: %.2fV\n", right_voltage, right_enc_count, right_adc_voltage);
+}
+
+
+/*******************************************
+*********** LQR CONTROK COMMANDS ***********
+*******************************************/
+void _cmd_lqr_update(int argc, char *argv[])
+{
+    if (argc < 5)
+    {
+        printf("Usage: %s <x1> <x2> <x3> <x4>\n", argv[0]);
+        printf("  x1, x2, x3, x4 are the LQR state variables\n");
+        return;
+    }
+
+    float x1 = atof(argv[1]);
+    float x2 = atof(argv[2]);
+    float x3 = atof(argv[3]);
+    float x4 = atof(argv[4]);
+
+    mod_LQR_set_x1(x1);
+    mod_LQR_set_x2(x2);
+    mod_LQR_set_x3(x3);
+    mod_LQR_set_x4(x4);
+
+    mod_LQR_update();
+
+    printf("%.4f\n", mod_LQR_get_control());
+}
+
+void _cmd_lqr_set_states(int argc, char *argv[]){
+    UNUSED(argc);
+    UNUSED(argv);
+}
+
+void _cmd_lqr_get_control(int argc, char *argv[]){
+    UNUSED(argc);
+    UNUSED(argv);
+}
+
+void _cmd_lqr_set_y_ref(int argc, char *argv[])
+{
+    if (argc < 2)
+    {
+        printf("Usage: %s <y_ref>\n", argv[0]);
+        printf("  y_ref is the LQR reference output value\n");
+        return;
+    }
+
+    float y_ref = atof(argv[1]);
+
+    mod_LQR_set_y_ref(y_ref);
+
+    printf("LQR reference output set to %.4f\n", y_ref);
 }
 
 /*******************************************/

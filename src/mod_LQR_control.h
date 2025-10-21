@@ -8,6 +8,7 @@ void mod_LQR_set_x1(float);
 void mod_LQR_set_x2(float);
 void mod_LQR_set_x3(float);
 void mod_LQR_set_x4(float);
+void mod_LQR_set_y_ref(float);
 
 void mod_LQR_update(void);
 
