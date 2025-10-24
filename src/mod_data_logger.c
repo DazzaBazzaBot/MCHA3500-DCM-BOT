@@ -13,9 +13,12 @@
 #include "mod_enc.h"
 
 #define LOG_PERIOD_MS 5.0f
+#define IMU_LOG_PERIOD_MS 3.0f
 #define LOG_DURATION_MS 5000.0f
 #define COUNTS_PER_OUTPUT_REV 1320
 #define INERTIA_COUNT_PER_REV 4096
+
+static float log_period = LOG_PERIOD_MS;
 
 // Timer ID and attributes
 static osTimerId_t _dataLoggingTimerID;
@@ -29,20 +32,62 @@ static uint8_t _is_init = 0;
 // for logger
 static uint16_t logCount = 0;
 static int32_t lastEncoderCount = 0;
+static int32_t encoder_CountA = 0;
+static int32_t encoder_CountB = 0;
+static int32_t encoder_CountAvg = 0;
 
 // ma logger
 static void (*log_function)(void) = NULL;
 
+// for mpu logger
+static int16_t ax = 0;
+static int16_t ay = 0;
+static int16_t az = 0;
+static int16_t gx = 0;
+static int16_t gy = 0;
+static int16_t gz = 0;
+
 void log_imu(void);
 void log_imu(void)
 {
-    // ufkc that
+    // update time
+    float time = logCount * (IMU_LOG_PERIOD_MS / 1000.0f);
+    logCount++;
+
+    // get enc angle
+    encoder_CountA = mod_enc_get_countA();
+    encoder_CountB = mod_enc_get_countA();
+    encoder_CountAvg = (encoder_CountA + encoder_CountB)/2;
+    float enc_angle = ((float)encoder_CountAvg / COUNTS_PER_OUTPUT_REV) * 6.283185f;
+
+    //// get acc angle
+    //mod_mpu_read_raw_accel(&ax, &ay, &az);
+    //float acc_angle = mod_mpu_update_pitch(ax, ay, az);
+
+    //// get gyro rate
+    //mod_mpu_read_raw_gyro(&gx, &gy, &gz);
+    //float rps_gyro = -mod_mpu_update_rps(gx);
+    float acc_angle = 0;
+    float rps_gyro = 0;
+    mod_mpu_update(&acc_angle, &rps_gyro);
+
+    // print [time],[angle],[acc],[rate]
+    printf("%.3f,%.4f,%.4f,%.4f\n", time, enc_angle, acc_angle, rps_gyro);
+
+    // print enc count
+    //printf("%ld\n", encoderCount);
+
+    // compare time
+    if (time >= 15.0f)
+    {
+        mod_log_stop();
+    }
 }
 
 void log_inertia(void);
 void log_inertia()
 {
-        // Time
+    // Time
     float time = logCount * (LOG_PERIOD_MS / 1000.0f);
     logCount++;
 
@@ -50,7 +95,6 @@ void log_inertia()
     int32_t newEncoderCount = mod_enc_get_countA();
 
     float angle_rad = ((float)newEncoderCount / INERTIA_COUNT_PER_REV) * 6.283185f;
-
 
     float count_diff = (float)(newEncoderCount - lastEncoderCount);
     float time_period = LOG_PERIOD_MS / 1000.0f; // Convert ms to seconds
@@ -60,10 +104,6 @@ void log_inertia()
 
     // print [time],[ANGLE],[velocity]
     printf("%.3f,%.5f,%.5f\n", time, angle_rad, rad_per_sec);
-
-    // print [time],[encCount],[velocity]
-    //printf("%.3f,%ld,%.5f\n", time, newEncoderCount, rad_per_sec);
-
 
     // stop after 5s
     if (time >= 30.0f)
@@ -177,23 +217,26 @@ void mod_log_init(void)
 
 void mod_log_start(uint8_t log_type)
 {
-    lastEncoderCount = 0;
-    
+
     if (log_type == LOG_IMU)
     {
         log_function = &log_imu;
+        log_period = IMU_LOG_PERIOD_MS;
     }
     else if (log_type == LOG_INERTIA)
     {
         log_function = &log_inertia;
+        log_period = LOG_PERIOD_MS;
     }
     else if (log_type == LOG_MOTOR)
     {
         log_function = &log_motor;
+        log_period = LOG_PERIOD_MS;
     }
     else if (log_type == LOG_FREEWHEEL)
     {
         log_function = &log_motor_freewheel;
+        log_period = LOG_PERIOD_MS;
     }
     else
     {
@@ -204,7 +247,11 @@ void mod_log_start(uint8_t log_type)
     if (!_is_running)
     {
         logCount = 0;
-        osTimerStart(_dataLoggingTimerID, LOG_PERIOD_MS);
+        encoder_CountA = 0;
+        encoder_CountB = 0;
+        lastEncoderCount = 0;
+
+        osTimerStart(_dataLoggingTimerID, log_period);
         _is_running = 1;
     }
 }

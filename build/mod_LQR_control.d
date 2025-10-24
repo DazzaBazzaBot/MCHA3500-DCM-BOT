@@ -66,10 +66,4 @@ build/mod_LQR_control.o: src/mod_LQR_control.c \
  ../libraries/STM32Cube_F4_FW/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  ../libraries/STM32Cube_F4_FW/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../libraries/STM32Cube_F4_FW/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- ../libraries/STM32Cube_F4_FW/Drivers/CMSIS/DSP/Include/arm_math.h \
- c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\string.h \
- c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\sys\_locale.h \
- c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\strings.h \
- c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\sys\string.h \
- c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\math.h \
  src/mod_LQR_control.h

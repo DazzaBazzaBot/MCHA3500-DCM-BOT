@@ -1,114 +1,143 @@
 #include <stddef.h>
 #include "stm32f4xx_hal.h"
-#include "arm_math.h"
 
 #include "mod_LQR_control.h"
 
 #define CTRL_N_INPUT 1
-#define CTRL_N_STATE 5
+#define CTRL_N_STATE 4
+#define CTRL_N_STATE_INT 5
 
-// Control gain K
-static float ctrl_mK_f32[CTRL_N_INPUT * CTRL_N_STATE] =
+static float LQR_y_ref[CTRL_N_INPUT] = {0.0f};
+
+// Vector from init
+static float LQR_N_x_f32[CTRL_N_STATE] =
     {
-        57.4827f,
-        162.0246f,
-        49.4904f,
-        26.5967f,
-        29.8511f,
+        1.0f,
+        0.0f,
+        0.0f,
+        0.0f,
 };
 
-// State vector including integrator
-static float ctrl_x_f32[CTRL_N_STATE] =
+// Updates each loop
+static float LQR_x_ss_f32[CTRL_N_STATE] =
     {
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
 };
 
-// Control input
-static float ctrl_u_f32[CTRL_N_INPUT] =
+// Value from init
+static float LQR_N_u_f32[CTRL_N_INPUT] = {0.0f};
+
+// Updates each loop
+// Will be 0  cause N_u is zero
+static float LQR_u_ss_f32[CTRL_N_INPUT] = {0.0f};
+
+// negative K to save on steps,
+// Value from init
+static float LQR_K_f32[CTRL_N_STATE_INT] =
     {
-        0.0,
+        -0.0958f,
+        3.88163f,
+        -0.005884f,
+        0.75350f,
+        0.1815f,
 };
 
-// This this Az
-static float ctrl_Az_f32[CTRL_N_STATE] =
+// Updates each loop
+static float LQR_state_f32[CTRL_N_STATE_INT] =
     {
-        0.0050f,
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+        0.0f,
+};
+
+// Value from init
+static float LQR_Az_f32[CTRL_N_STATE_INT] =
+    {
+        0.005f,
         0.0f,
         0.0f,
         0.0f,
         1.0f,
 };
 
-// Integrator state
-static float ctrl_z_f32[CTRL_N_INPUT] =
-    {
-        0.0,
-};
+// UUpdates each loop
+static float LQR_z_f32[CTRL_N_INPUT] = {0.0f};
 
-/* Define control matrix variables */
-arm_matrix_instance_f32 ctrl_mK = {CTRL_N_INPUT, CTRL_N_STATE, (float32_t *)ctrl_mK_f32};
-arm_matrix_instance_f32 ctrl_x = {CTRL_N_STATE, 1, (float32_t *)ctrl_x_f32};
-arm_matrix_instance_f32 ctrl_u = {CTRL_N_INPUT, 1, (float32_t *)ctrl_u_f32};
-arm_matrix_instance_f32 ctrl_Az = {1, CTRL_N_STATE, (float32_t *)ctrl_Az_f32};
-arm_matrix_instance_f32 ctrl_z = {1, 1, (float32_t *)ctrl_z_f32};
-
-// Control init
-void mod_LQR_init(void)
-{
-    arm_mat_init_f32(&ctrl_mK, CTRL_N_INPUT, CTRL_N_STATE, (float32_t *)ctrl_mK_f32);
-    arm_mat_init_f32(&ctrl_x, CTRL_N_STATE, 1, (float32_t *)ctrl_x_f32);
-    arm_mat_init_f32(&ctrl_u, CTRL_N_INPUT, 1, (float32_t *)ctrl_u_f32);
-    arm_mat_init_f32(&ctrl_Az, 1, CTRL_N_STATE, (float32_t *)ctrl_Az_f32);
-    arm_mat_init_f32(&ctrl_z, 1, 1, (float32_t *)ctrl_z_f32);
-}
+// UUpdates each loop
+static float LQR_u_f32[CTRL_N_INPUT] = {0.0f};
 
 // Sets all states at once
 void mod_LQR_set_states(float new_states[])
 {
-    ctrl_x_f32[0] = new_states[0];
-    ctrl_x_f32[1] = new_states[1];
-    ctrl_x_f32[2] = new_states[2];
-    ctrl_x_f32[3] = new_states[3];
+    LQR_state_f32[0] = new_states[0];
+    LQR_state_f32[1] = new_states[1];
+    LQR_state_f32[2] = new_states[2];
+    LQR_state_f32[3] = new_states[3];
 }
 
 void mod_LQR_set_x1(float x1)
 {
-    ctrl_x_f32[0] = x1;
+    LQR_state_f32[0] = x1;
 }
 
 void mod_LQR_set_x2(float x2)
 {
-    ctrl_x_f32[1] = x2;
+    LQR_state_f32[1] = x2;
 }
 
 void mod_LQR_set_x3(float x3)
 {
-    ctrl_x_f32[2] = x3;
+    LQR_state_f32[2] = x3;
 }
 
 void mod_LQR_set_x4(float x4)
 {
-    ctrl_x_f32[3] = x4;
+    LQR_state_f32[3] = x4;
+}
+
+void mod_LQR_set_y_ref(float y_ref)
+{
+    LQR_y_ref[0] = y_ref;
 }
 
 // Updates a new control gain
 void mod_LQR_update(void)
 {
-    // K*state
-    arm_mat_mult_f32(&ctrl_mK, &ctrl_x, &ctrl_u);
+    // compute feed forward, x_ss = N_x * y_ref
+    for (int i = 0; i < CTRL_N_STATE; i++)
+    {
+        LQR_x_ss_f32[i] = LQR_N_x_f32[i] * LQR_y_ref[0];
+    }
 
-    // Update integrator state
-    arm_mat_mult_f32(&ctrl_Az, &ctrl_x, &ctrl_z);
+    // state - [x_ss; 0]
+    for (int i = 0; i < CTRL_N_STATE; i++)
+    {
+        LQR_state_f32[i] = LQR_state_f32[i] - LQR_x_ss_f32[i];
+    }
+    // print state vector
+    // printf("State: [%.4f, %.4f, %.4f, %.4f, %.4f]\n", LQR_state_f32[0], LQR_state_f32[1], LQR_state_f32[2], LQR_state_f32[3], LQR_state_f32[4]);
 
-    // Copy updated value of integrator state into state vector
-    ctrl_x_f32[4] = ctrl_z_f32[0];
+    // compute control u = K * state
+    LQR_u_f32[0] = 0.0f;
+    for (int i = 0; i < CTRL_N_STATE_INT; i++)
+    {
+        LQR_u_f32[0] += LQR_K_f32[i] * LQR_state_f32[i];
+    }
+
+    // update integrator z = A_z * state
+    LQR_z_f32[0] = LQR_Az_f32[0] * LQR_state_f32[0] + LQR_Az_f32[4] * LQR_state_f32[4];
+    // printf("Integrator: %.4f\n", LQR_z_f32[0]);
+
+    // update state vector with new integrator
+    LQR_state_f32[4] = LQR_z_f32[0];
 }
 
 float mod_LQR_get_control(void)
 {
-    return ctrl_u_f32[0];
+    return LQR_u_f32[0];
 }

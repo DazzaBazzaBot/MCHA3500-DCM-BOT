@@ -1,15 +1,24 @@
 #include <math.h>
 #include "stm32f4xx_hal.h"
 #include "stdlib.h"
-#include "arm_math.h"
+#include "cmsis_os2.h"
 
 #include "mod_mpu6050.h"
 
-// I2C handle
-static I2C_HandleTypeDef hi2c1;
+#define MPU_PERIOD_MS 3
+
+// Thread ID and attributes
+static osTimerId_t _modMPUTimerID;
+static osTimerAttr_t _modMPUTimerAttr =
+{
+        .name = "mpu6050"};
 
 // Flags
+static uint8_t _is_running = 0;
 static uint8_t _is_init = 0;
+
+// I2C handle
+static I2C_HandleTypeDef hi2c1;
 
 // MPU raw vals
 static int16_t ax = 0;
@@ -24,15 +33,16 @@ static KALMAN kf = {
     .y = {0.0f, 0.0f},
 
     // Covariance matrix
-    .R = {{0.0502f,     0.0f}, 
-          {0.0f,        0.0000034546f}},
+    .R = {{0.236169466336982f,     0.0f}, 
+          {0.0f,        0.00000722446f}},
     // Process noise covariance
-    .Q = {{0.0002890f,  0.0000102f,  -0.0001530f,}, 
-          {0.0000102f,  0.0000036f,   0.0000049f,}, 
+    .Q = {{0.0002890f,  0.0000103f,  -0.0001530f,}, 
+          {0.0000103f,  0.0000036f,   0.0000049f,}, 
           {-0.0001530f, 0.0000049f,   0.0001219f,}},
+
     // State transition matrix
     .Ad = {{1.0000f, 0.0000f, 0.0000f,}, 
-           {0.0050f, 1.0000f, 0.0000f,}, 
+           {0.0030f, 1.0000f, 0.0000f,}, 
            {0.0000f, 0.0000f, 1.0000f}},
 
     // Kalman gain
@@ -54,13 +64,11 @@ static KALMAN kf = {
     .xm = {0.0f, 0.0f, 0.0f},
 };
 
-
 // Update vars
 float pitch = 0.0f;
 float rps = 0.0f;
 
-void mod_mpu_update(float *fangle, float *frps)
-{
+void mod_mpu_update(float *fangle, float *frps){
     int16_t gy, gz;
     mod_mpu_read_raw_accel(&ax, &ay, &az);
     mod_mpu_read_raw_gyro(&gx, &gy, &gz);
@@ -71,27 +79,51 @@ void mod_mpu_update(float *fangle, float *frps)
 
     mod_mpu_update_kalman(pitch, rps);
 
-    *frps = (kf.xp[0]);
-    *fangle = (kf.xp[1] + 0.015f);
+    *frps = kf.xp[0];
+    *fangle = kf.xp[1];
+}
+
+
+void mod_mpu_task()
+{
+    int16_t gy, gz;
+    mod_mpu_read_raw_accel(&ax, &ay, &az);
+    mod_mpu_read_raw_gyro(&gx, &gy, &gz);
+
+    pitch = mod_mpu_update_pitch(ax, ay, az);
+
+    rps = mod_mpu_update_rps(gx);
+
+    mod_mpu_update_kalman(pitch, rps);
+}
+
+float mod_mpu_get_pitch(){
+    return kf.xp[1];
+}
+
+float mod_mpu_get_rps(){
+    return kf.xp[0];
 }
 
 // Calc pitch in rads from accel x,y,z
 float mod_mpu_update_pitch(int16_t fax, int16_t fay, int16_t faz)
 {
-    float ax_g = fax / 16384.0f;
-    float ay_g = fay / 16384.0f;
-    float az_g = faz / 16384.0f;
+    float ax_g = fax / 8192.0f;
+    float ay_g = fay / 8192.0f;
+    float az_g = faz / 8192.0f;
 
-    float temp_pitch = atan2(ay_g, sqrt(ax_g * ax_g + az_g * az_g));
+    float temp_pitch = atan2(ay_g, sqrt(ax_g*ax_g + az_g*az_g));
     //printf("Pitch: %.5f\n", temp_pitch);
+
     return temp_pitch;
 }
 
 // Calc rad per second from gyro x
 float mod_mpu_update_rps(int16_t fgx)
 {
-    float temp_rps = -(3.14159f * (float)(fgx)) / (131.0f * 180.0f);
+    float temp_rps = -(3.14159f * (float)(fgx)) / (65.0f * 180.0f);
     //printf("RPS: %.5f\n", temp_rps);
+
     return temp_rps;
 }
 
@@ -173,8 +205,8 @@ void mod_mpu_update_kalman(float angle_accel, float velocity_gyro)
     for (int r=0; r<3; r++) {
         for (int c=0; c<3; c++) {
             kf.Pp[r][c] = M[r][0]*kf.Pm[0][c] +
-                           M[r][1]*kf.Pm[1][c] +
-                           M[r][2]*kf.Pm[2][c];
+                          M[r][1]*kf.Pm[1][c] +
+                          M[r][2]*kf.Pm[2][c];
         }
     }
 
@@ -274,6 +306,56 @@ void mod_mpu_configure_hardware()
 
         // Initialize the MPU6050
         uint8_t data = 0;
-        HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, 0x6B, 1, &data, 1, 10);
+        HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, 0x6B, 1, &data, 1, HAL_MAX_DELAY);
+
+        // Set sample rate to 1kHz (1MHz / (1 + 0))
+        data = 0x00;
+        HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, MPU6050_SMPLRT_DIV_REG, 1, &data, 1, HAL_MAX_DELAY);
+
+        // Disable DLPF for maximum bandwidth
+        data = 0x00;
+        HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, MPU6050_CONFIG_REG, 1, &data, 1, HAL_MAX_DELAY);
+
+        // Set gyro range to ±500°/s
+        data = 0x08;  // 0x08 = ±500°/s
+        HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, MPU6050_GYRO_CONFIG, 1, &data, 1, HAL_MAX_DELAY);
+
+        // Set accel range to ±4g
+        data = 0x08;  // 0x08 = ±4g
+        HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, MPU6050_ACCEL_CONFIG, 1, &data, 1, HAL_MAX_DELAY);
+    }
+}
+
+
+void mod_mpu_init(void)
+{
+    // Init big module
+    if (!_is_init)
+    {
+        mod_mpu_configure_hardware();
+
+        _modMPUTimerID = osTimerNew(mod_mpu_task, osTimerPeriodic, NULL, &_modMPUTimerAttr);
+        _is_init = 1;
+    }
+}
+
+// Start the module mpu task
+void mod_mpu_start()
+{
+    // Get it started baby
+    if (!_is_running)
+    {
+        osTimerStart(_modMPUTimerID, MPU_PERIOD_MS);
+        _is_running = 1;
+    }
+}
+
+// Stop the module mpu task
+void mod_mpu_stop(void)
+{
+    if (_is_running)
+    {
+        osTimerStop(_modMPUTimerID);
+        _is_running = 0;
     }
 }

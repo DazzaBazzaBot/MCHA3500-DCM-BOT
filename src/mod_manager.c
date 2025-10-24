@@ -17,6 +17,20 @@
 
 #define PERIOD_MS 5.0f
 #define ENC_COUNT_PER_REV 1320.0f
+#define VMAX 12
+#define VMIN -12
+
+// Left motor params
+#define N_LEFT 33.0f
+#define Ki_LEFT 0.004634328631135f
+#define Kw_LEFT 0.258184074389226f
+#define Ra_LEFT 5.201728777304033
+
+// Right motor params
+#define N_RIGHT 33.0f
+#define Ki_RIGHT 0.005211169122476f
+#define Kw_RIGHT 0.311524176289173f
+#define Ra_RIGHT 5.15671139960308f
 
 // Thread ID and attributes
 static osTimerId_t _modManagerTimerID;
@@ -40,11 +54,20 @@ static int32_t new_enc_count_left = 0;
 static int32_t last_enc_count_left = 0;
 
 static int32_t enc_average = 0;
-static float enc_average_diff = 0;
 
 /* Current sensing */
+static float adc_voltage_left = 0;
+static float adc_voltage_right = 0;
 static float current_left = 0;
 static float current_right = 0;
+
+/* Desired Voltage */
+static float voltage_left = 0;
+static float voltage_right = 0;
+
+// shut up fuck you
+static float omega_left = 0.0f;
+static float omega_right = 0.0f;
 
 /* State vars */
 // State vector [phi, theta, d_phi, d_theta]
@@ -74,8 +97,8 @@ void mod_manager_task(void *argument)
 
 void mod_manager_PID(void)
 {
-    mod_mpu_update(&rad_pitch, &rad_rate);
-    // printf("Pitch: %.5f, Rate: %.5f\n", rad_pitch, rad_rate);
+    rad_pitch = mod_mpu_get_pitch();
+    //printf("Pitch: %.5f, Rate: %.5f\n", rad_pitch, rad_rate);
 
     PID_output = mod_PID_run(rad_pitch);
     // printf("PID Output: %.5f\n", PID_output);
@@ -92,14 +115,16 @@ void mod_manager_LQR(void)
 
     // Update phi
     enc_average = (new_enc_count_right + new_enc_count_left) / 2;
-    phi = ((float)enc_average / ENC_COUNT_PER_REV) * PIx2;
+    phi = PIx2 * ((float)enc_average / ENC_COUNT_PER_REV);
 
     // Update d_phi
-    enc_average_diff = ((new_enc_count_right - last_enc_count_right) + (new_enc_count_left - last_enc_count_left)) / 2;
-    d_phi = PIx2 * ((enc_average_diff / dt) / ENC_COUNT_PER_REV);
+    omega_left = PIx2 * (new_enc_count_left - last_enc_count_left) / (dt * ENC_COUNT_PER_REV);
+    omega_right = PIx2 * (new_enc_count_right - last_enc_count_right) / (dt * ENC_COUNT_PER_REV);
+    d_phi = (omega_left + omega_right) / 2;
 
     // Update mpu data [theta, d_theta]
-    mod_mpu_update(&rad_pitch, &rad_rate);
+    rad_rate = mod_mpu_get_rps();
+    rad_pitch = mod_mpu_get_pitch();
 
     // Update state vector
     state_vector[0] = phi;
@@ -115,15 +140,31 @@ void mod_manager_LQR(void)
     mod_LQR_set_states(state_vector);
 
     // Update Control
-    //mod_LQR_update();
+    mod_LQR_update();
 
-    // Get control
-    //LQR_output = mod_LQR_get_control();
-
+    // Get control, returns torque
+    LQR_output = mod_LQR_get_control();
+    LQR_output *= 0.5f;
+    // printf("LQR: %.4f\n", LQR_output);
 
     // Update current sensor ?
+    adc_voltage_left = mod_adc_get_voltageB();
+    adc_voltage_right = mod_adc_get_voltageA();
+    current_left = (adc_voltage_left - 2.5f) / 0.4f;
+    current_right = (adc_voltage_right - 2.5f) / 0.4f;
 
-    // Update torque readings?
+    // Desired voltage
+    // V = R*t/(N*Ki) + Kw*N*w
+    voltage_left = Ra_LEFT * LQR_output / (N_LEFT * Ki_LEFT) + Kw_LEFT * N_LEFT * omega_left;
+    voltage_left = fmin(fmax(VMIN, voltage_left), VMAX);
+
+    voltage_right = Ra_RIGHT * LQR_output / (N_RIGHT * Ki_RIGHT) + Kw_RIGHT * N_RIGHT * omega_right;
+    voltage_right = fmin(fmax(VMIN, voltage_right), VMAX);
+    printf("Left: %.4f,         Right: %.4f\n", voltage_left, voltage_right);
+
+    // set voltages
+    mod_dcm_set_voltageLeft(voltage_left);
+    mod_dcm_set_voltageRight(voltage_right);
 
     // Print state vector
     //printf("State: [%.4f, %.4f, %.4f, %.4f]\n", state_vector[0], state_vector[1], state_vector[2], state_vector[3]);
@@ -137,12 +178,12 @@ void mod_manager_MPC(void)
 void mod_manager_init(void)
 {
     // Configure sub modules
-    mod_mpu_configure_hardware();
     mod_dcm_configure_hardware();
     mod_adc_configure_hardware();
     mod_enc_configure_hardware();
 
     mod_log_init();
+    mod_mpu_init();
 
     // probs none needed
     // mod_PID_control_init();
@@ -180,6 +221,7 @@ void mod_manager_start(int8_t method)
     // Get it started
     if (!_is_running)
     {
+        mod_mpu_start();
         osTimerStart(_modManagerTimerID, PERIOD_MS);
         _is_running = 1;
     }

@@ -57,7 +57,6 @@ SRC_COMMON = \
 	$(SRCDIR)/stm32f4xx_hal_msp.c \
 	$(SRCDIR)/mod_dcm_driver.c \
 	$(SRCDIR)/mod_mpu6050.c \
-	$(SRCDIR)/mod_observer.c \
 	$(SRCDIR)/mod_PID_control.c \
 	$(SRCDIR)/mod_LQR_control.c \
 	$(SRCDIR)/mod_MPC_control.c \
