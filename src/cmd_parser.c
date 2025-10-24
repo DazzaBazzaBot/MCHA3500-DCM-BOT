@@ -40,6 +40,7 @@ static void _cmd_manager_stop(int, char *[]);
 static void _cmd_log_motor_data(int, char *[]);
 static void _cmd_log_freewheel_data(int, char *[]);
 static void _cmd_log_inertia_data(int, char *[]);
+static void _cmd_log_imu_data(int, char *[]);
 
 // dcm commands
 static void _cmd_dcm_set_pwm(int, char *[]);
@@ -70,7 +71,8 @@ static CMD_T cmd_table[] =
         // data logging
         {_cmd_log_motor_data, "log_motor_data", "", "Logs motor data"},
         {_cmd_log_freewheel_data, "log_freewheel_data", "", "Logs freewheel motor data"},
-        {_cmd_log_inertia_data, "log_inertia_data", "", "Logs inertia data\n"},
+        {_cmd_log_inertia_data, "log_inertia_data", "", "Logs inertia data"},
+        {_cmd_log_imu_data, "log_imu_data", "", "Logs IMU data\n"},     
 
         // dcm
         {_cmd_dcm_set_pwm, "dcm_set_pwm", "<left_pwm> <right_pwm>", "Sets the PWM duty cycle for the left and right DC motors (-100 to 100)"},
@@ -210,6 +212,16 @@ void _cmd_log_inertia_data(int argc, char *argv[])
     mod_enc_reset_countA();
     mod_enc_reset_countB();
     mod_log_start(LOG_INERTIA);
+}
+
+void _cmd_log_imu_data(int argc, char *argv[])
+{
+    UNUSED(argc);
+    UNUSED(argv);
+
+    mod_enc_reset_countA();
+    mod_enc_reset_countB();
+    mod_log_start(LOG_IMU);
 }
 
 /******************************************

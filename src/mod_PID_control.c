@@ -6,13 +6,13 @@
 
 #define PERIOD_MS 5
 #define LIMIT 100.0f
-#define DEADZONE 1.0f
+#define DEADZONE 1.8f
 
 // Control variables
 static PID_t pid = {
     .Kp = 24.0f,
-    .Ki = 0.0f,
-    .Kd = 1.2f,
+    .Ki = 0.1f,
+    .Kd = 1.8f,
 
     .prev_error = 0.0f,
     .integral = 0.0f,

@@ -59,7 +59,7 @@ void mod_enc_configure_hardware(void)
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1;
     GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
@@ -67,7 +67,7 @@ void mod_enc_configure_hardware(void)
     // init PB4, PB5
     GPIO_InitStruct.Pin = GPIO_PIN_4 | GPIO_PIN_5;
     GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -135,14 +135,14 @@ void handle_encoderB_interrupt()
                  ((GPIOC->IDR & GPIO_PIN_1) ? 1 : 0);
 
     // Look up direction from state transition table
-    old_stateA = state_table[old_stateB][new_stateB];
+    old_stateB = state_table[old_stateB][new_stateB];
 
     // Update count based on valid state transition
-    if (old_stateA == CW)
+    if (old_stateB == CW)
     {
         encB_count++;
     }
-    else if (old_stateA == CCW)
+    else if (old_stateB == CCW)
     {
         encB_count--;
     }

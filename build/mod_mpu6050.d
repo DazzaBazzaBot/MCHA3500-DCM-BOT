@@ -70,9 +70,4 @@ build/mod_mpu6050.o: src/mod_mpu6050.c \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\stdlib.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\machine\stdlib.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\alloca.h \
- ../libraries/STM32Cube_F4_FW/Drivers/CMSIS/DSP/Include/arm_math.h \
- c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\string.h \
- c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\sys\_locale.h \
- c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\strings.h \
- c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\sys\string.h \
- src/mod_mpu6050.h
+ ../libraries/CMSIS_5/CMSIS/RTOS2/Include/cmsis_os2.h src/mod_mpu6050.h

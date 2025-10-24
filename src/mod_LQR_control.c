@@ -38,10 +38,10 @@ static float LQR_u_ss_f32[CTRL_N_INPUT] = {0.0f};
 // Value from init
 static float LQR_K_f32[CTRL_N_STATE_INT] =
     {
-        0.4958f,
-        38.8163f,
-        0.5884f,
-        7.5350f,
+        -0.0958f,
+        3.88163f,
+        -0.005884f,
+        0.75350f,
         0.1815f,
 };
 
