@@ -36,6 +36,7 @@ build/cmd_parser.o: src/cmd_parser.c \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\string.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\strings.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\sys\string.h \
+ c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\math.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\inttypes.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\arm-none-eabi\include\sys\_intsup.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\lib\gcc\arm-none-eabi\11.2.1\include\stdint.h \
@@ -77,6 +78,7 @@ build/cmd_parser.o: src/cmd_parser.c \
  ../libraries/STM32Cube_F4_FW/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  src/cmd_line_buffer.h \
  c:\mchatoolchainwindows\toolchain\gcc-arm-none-eabi\lib\gcc\arm-none-eabi\11.2.1\include\stdbool.h \
- src/cmd_parser.h src/heartbeat_task.h src/mod_mpu6050.h \
+ src/cmd_parser.h src/heartbeat_task.h \
+ ../libraries/CMSIS_5/CMSIS/RTOS2/Include/cmsis_os2.h src/mod_mpu6050.h \
  src/mod_data_logger.h src/mod_manager.h src/mod_dcm_driver.h \
  src/mod_adc.h src/mod_enc.h src/mod_LQR_control.h

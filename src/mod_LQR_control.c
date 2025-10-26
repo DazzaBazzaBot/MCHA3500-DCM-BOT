@@ -38,11 +38,11 @@ static float LQR_u_ss_f32[CTRL_N_INPUT] = {0.0f};
 // Value from init
 static float LQR_K_f32[CTRL_N_STATE_INT] =
     {
-        -0.0958f,
-        3.88163f,
-        -0.005884f,
-        0.75350f,
-        0.1815f,
+        -0.096007625964754f,
+        -4.956857683408849f,
+        -0.062803986045144f,
+        -1.123358363151154f,
+        0,//0.075609973396100f,
 };
 
 // Updates each loop
@@ -58,7 +58,7 @@ static float LQR_state_f32[CTRL_N_STATE_INT] =
 // Value from init
 static float LQR_Az_f32[CTRL_N_STATE_INT] =
     {
-        0.005f,
+        0.01f,
         0.0f,
         0.0f,
         0.0f,
@@ -126,7 +126,7 @@ void mod_LQR_update(void)
     LQR_u_f32[0] = 0.0f;
     for (int i = 0; i < CTRL_N_STATE_INT; i++)
     {
-        LQR_u_f32[0] += LQR_K_f32[i] * LQR_state_f32[i];
+        LQR_u_f32[0] -= LQR_K_f32[i] * LQR_state_f32[i];
     }
 
     // update integrator z = A_z * state

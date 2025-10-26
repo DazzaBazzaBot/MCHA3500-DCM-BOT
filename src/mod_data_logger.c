@@ -34,7 +34,7 @@ static uint16_t logCount = 0;
 static int32_t lastEncoderCount = 0;
 static int32_t encoder_CountA = 0;
 static int32_t encoder_CountB = 0;
-static int32_t encoder_CountAvg = 0;
+//static int32_t encoder_CountAvg = 0;
 
 // ma logger
 static void (*log_function)(void) = NULL;
@@ -48,37 +48,59 @@ static int16_t gy = 0;
 static int16_t gz = 0;
 
 void log_imu(void);
-void log_imu(void)
+void log_imu()
 {
     // update time
     float time = logCount * (IMU_LOG_PERIOD_MS / 1000.0f);
     logCount++;
 
     // get enc angle
-    encoder_CountA = mod_enc_get_countA();
-    encoder_CountB = mod_enc_get_countA();
-    encoder_CountAvg = (encoder_CountA + encoder_CountB)/2;
-    float enc_angle = ((float)encoder_CountAvg / COUNTS_PER_OUTPUT_REV) * 6.283185f;
+    float enc_angle = ((float)mod_enc_get_countB() / COUNTS_PER_OUTPUT_REV) * 6.283185f;
 
-    //// get acc angle
-    //mod_mpu_read_raw_accel(&ax, &ay, &az);
-    //float acc_angle = mod_mpu_update_pitch(ax, ay, az);
+    // get acc angle
+    mod_mpu_read_raw_accel(&ax, &ay, &az);
+    float acc_angle = mod_mpu_update_pitch(ax, ay, az);
 
-    //// get gyro rate
-    //mod_mpu_read_raw_gyro(&gx, &gy, &gz);
-    //float rps_gyro = -mod_mpu_update_rps(gx);
-    float acc_angle = 0;
-    float rps_gyro = 0;
-    mod_mpu_update(&acc_angle, &rps_gyro);
+    // get gyro rate
+    mod_mpu_read_raw_gyro(&gx, &gy, &gz);
+    float rps_gyro = mod_mpu_update_rps(gx);
+
+    // float acc_angle = 0;
+    // float rps_gyro = 0;
+    // mod_mpu_update(&acc_angle, &rps_gyro);
 
     // print [time],[angle],[acc],[rate]
     printf("%.3f,%.4f,%.4f,%.4f\n", time, enc_angle, acc_angle, rps_gyro);
 
     // print enc count
-    //printf("%ld\n", encoderCount);
+    // printf("%ld\n", encoderCount);
 
     // compare time
     if (time >= 15.0f)
+    {
+        mod_log_stop();
+    }
+}
+
+void log_kalman(void);
+void log_kalman()
+{
+    float time = logCount * (IMU_LOG_PERIOD_MS / 1000.0f);
+    logCount++;
+
+    // get enc angle
+    float enc_angle = ((float)mod_enc_get_countB() / COUNTS_PER_OUTPUT_REV) * 6.283185f;
+
+    // shut it buhiadsfbvbuiphadsgbuiadsfvbuiadsfvbiu
+    float pitch = 0;
+    float rpsisuselesshere = 0;
+    mod_mpu_update(&pitch, &rpsisuselesshere);
+
+    // hhhhhhhhhhhrrrrrrrrrrmrmrmmrmmmmmm
+    printf("%.3f,%.4f,%.4f,%.4f\n", time, enc_angle, pitch, rpsisuselesshere);
+
+    // STOP WHEN ITS 10
+    if (time >= 60.0f)
     {
         mod_log_stop();
     }
@@ -92,7 +114,7 @@ void log_inertia()
     logCount++;
 
     // Rotational velocity
-    int32_t newEncoderCount = mod_enc_get_countA();
+    int32_t newEncoderCount = mod_enc_get_countB();
 
     float angle_rad = ((float)newEncoderCount / INERTIA_COUNT_PER_REV) * 6.283185f;
 
@@ -237,6 +259,11 @@ void mod_log_start(uint8_t log_type)
     {
         log_function = &log_motor_freewheel;
         log_period = LOG_PERIOD_MS;
+    }
+    else if (log_type == LOG_KALMAN)
+    {
+        log_function = &log_kalman;
+        log_period = IMU_LOG_PERIOD_MS;
     }
     else
     {

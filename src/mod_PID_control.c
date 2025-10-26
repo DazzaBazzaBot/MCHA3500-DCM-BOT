@@ -11,8 +11,8 @@
 // Control variables
 static PID_t pid = {
     .Kp = 24.0f,
-    .Ki = 0.1f,
-    .Kd = 1.8f,
+    .Ki = 0.0f,
+    .Kd = 0.0f,
 
     .prev_error = 0.0f,
     .integral = 0.0f,
@@ -30,15 +30,15 @@ float mod_PID_run(float new_pitch)
 
     //printf("Pitch: %.5f, Error: %.5f\n", new_pitch, error);
 
-    if (fabsf(error) < DEADZONE)
+    /*if (fabsf(error) < DEADZONE)
     {
         rpm = 0;
     }
     else
-    {
+    {*/
         rpm = -mod_PID_compute_control(error, PERIOD_MS);
         rpm = fmin(fmax(rpm, -LIMIT), LIMIT);
-    }
+    //}
     return rpm;
 }
 

@@ -47,6 +47,6 @@ void mod_mpu_configure_hardware(void);
 void mod_mpu_init(void);
 void mod_mpu_start(void);
 void mod_mpu_stop(void);
-void mod_mpu_task(void);
+void mod_mpu_task(void*);
 
 #endif

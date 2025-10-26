@@ -27,39 +27,59 @@ static int16_t az = 0;
 static int16_t gx = 0;
 
 
+// RAWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+static float accel_pitch_offset = -0.0246f;
+
+
 // Kalman filter struct
 static KALMAN kf = {
     // Initial values
     .y = {0.0f, 0.0f},
 
     // Covariance matrix
-    .R = {{0.236169466336982f,     0.0f}, 
-          {0.0f,        0.00000722446f}},
+    .R = {
+            {0.050777895595138f,        0.0f}, 
+            {0.0f,                      0.000002479814267429953f}
+        },
+
     // Process noise covariance
-    .Q = {{0.0002890f,  0.0000103f,  -0.0001530f,}, 
-          {0.0000103f,  0.0000036f,   0.0000049f,}, 
-          {-0.0001530f, 0.0000049f,   0.0001219f,}},
+    .Q = {
+            {0.0035487938f,       0.001645481517455f,  0.000908163374234f},
+            {0.001645481517455f,  0.000007597522812f,  0.000004193176048f},
+            {0.000908163374234f,  0.000004193176048f,  0.000002336950718f}
+        },
 
     // State transition matrix
-    .Ad = {{1.0000f, 0.0000f, 0.0000f,}, 
-           {0.0030f, 1.0000f, 0.0000f,}, 
-           {0.0000f, 0.0000f, 1.0000f}},
+    .Ad = {
+            {1.0000f, 0.0000f, 0.0000f,}, 
+            {0.0030f, 1.0000f, 0.0000f,}, 
+            {0.0000f, 0.0000f, 1.0000f}
+        },
 
     // Kalman gain
-    .Kk = {{0.0f, 0.0f}, 
-           {0.0f, 0.0f}, 
-           {0.0f, 0.0f}},
+    .Kk = {
+            {0.0f, 0.0f}, 
+            {0.0f, 0.0f}, 
+            {0.0f, 0.0f}
+        },
+
     // Predicted Pp
-    .Pp = {{0.0f, 0.0f, 0.0f}, 
-           {0.0f, 0.0f, 0.0f}, 
-           {0.0f, 0.0f, 0.0f}},
+    .Pp = {
+            {0.0f, 0.0f, 0.0f}, 
+            {0.0f, 0.0f, 0.0f}, 
+            {0.0f, 0.0f, 0.0f}
+        },
+
     // Measured Pm
-    .Pm = {{0.0f, 0.0f, 0.0f}, 
-           {0.0f, 0.0f, 0.0f}, 
-           {0.0f, 0.0f, 0.0f}},
+    .Pm = {
+            {1.0f, 0.0f, 0.0f}, 
+            {0.0f, 1.0f, 0.0f}, 
+            {0.0f, 0.0f, 0.1f}
+        },
 
     // Predicted state
     .xp = {0.0f, 0.0f, 0.0f},
+
     // Measured state
     .xm = {0.0f, 0.0f, 0.0f},
 };
@@ -68,6 +88,7 @@ static KALMAN kf = {
 float pitch = 0.0f;
 float rps = 0.0f;
 
+// Run with period of 3ms
 void mod_mpu_update(float *fangle, float *frps){
     int16_t gy, gz;
     mod_mpu_read_raw_accel(&ax, &ay, &az);
@@ -84,8 +105,10 @@ void mod_mpu_update(float *fangle, float *frps){
 }
 
 
-void mod_mpu_task()
+void mod_mpu_task(void* argument)
 {
+    UNUSED(argument);
+
     int16_t gy, gz;
     mod_mpu_read_raw_accel(&ax, &ay, &az);
     mod_mpu_read_raw_gyro(&gx, &gy, &gz);
@@ -96,7 +119,7 @@ void mod_mpu_task()
 
     mod_mpu_update_kalman(pitch, rps);
 }
-
+  
 float mod_mpu_get_pitch(){
     return kf.xp[1];
 }
@@ -108,11 +131,12 @@ float mod_mpu_get_rps(){
 // Calc pitch in rads from accel x,y,z
 float mod_mpu_update_pitch(int16_t fax, int16_t fay, int16_t faz)
 {
-    float ax_g = fax / 8192.0f;
+    UNUSED(fax);
+
     float ay_g = fay / 8192.0f;
     float az_g = faz / 8192.0f;
 
-    float temp_pitch = atan2(ay_g, sqrt(ax_g*ax_g + az_g*az_g));
+    float temp_pitch = atan2(ay_g, -az_g) - accel_pitch_offset;
     //printf("Pitch: %.5f\n", temp_pitch);
 
     return temp_pitch;
@@ -121,12 +145,13 @@ float mod_mpu_update_pitch(int16_t fax, int16_t fay, int16_t faz)
 // Calc rad per second from gyro x
 float mod_mpu_update_rps(int16_t fgx)
 {
-    float temp_rps = -(3.14159f * (float)(fgx)) / (65.0f * 180.0f);
+    float temp_rps = -(3.14159f * (float)(fgx)) / (65.5f * 180.0f);
     //printf("RPS: %.5f\n", temp_rps);
 
     return temp_rps;
 }
 
+/*
 //  kalman updatey
 void mod_mpu_update_kalman(float angle_accel, float velocity_gyro)
 {
@@ -210,6 +235,21 @@ void mod_mpu_update_kalman(float angle_accel, float velocity_gyro)
         }
     }
 
+    // Enforce symmetry
+    for (int i = 0; i < 3; i++) {
+        for (int j = i+1; j < 3; j++) {
+            float avg = 0.5f * (kf.Pp[i][j] + kf.Pp[j][i]);
+            kf.Pp[i][j] = avg;
+            kf.Pp[j][i] = avg;
+        }
+    }
+
+    // Ensure positive diagonal
+    for (int i = 0; i < 3; i++) {
+        if (kf.Pp[i][i] < 1e-9f) {
+            kf.Pp[i][i] = 1e-9f;
+        }
+    }
     // === Prediction step ===
     // xm = Ad*xp
     kf.xm[0] = kf.xp[0];
@@ -235,7 +275,219 @@ void mod_mpu_update_kalman(float angle_accel, float velocity_gyro)
     kf.Pm[2][0] = AP[2][0] + kf.Q[2][0];
     kf.Pm[2][1] = AP[2][0]*kf.Ad[1][0] + AP[2][1] + kf.Q[2][1];
     kf.Pm[2][2] = AP[2][2] + kf.Q[2][2];
+
+    // Enforce symmetry
+    for (int i = 0; i < 3; i++) {
+        for (int j = i+1; j < 3; j++) {
+            float avg = 0.5f * (kf.Pm[i][j] + kf.Pm[j][i]);
+            kf.Pm[i][j] = avg;
+            kf.Pm[j][i] = avg;
+        }
+    }
+
+    // Ensure positive diagonal
+    for (int i = 0; i < 3; i++) {
+        if (kf.Pm[i][i] < 1e-9f) {
+            kf.Pm[i][i] = 1e-9f;
+        }
+    }
 }
+
+*/
+
+//  Kalman update using Joseph form for numerical stability
+void mod_mpu_update_kalman(float angle_accel, float velocity_gyro)
+{
+    float PmC[2][3];
+    float S[2][2], invS[2][2];
+    float PmCt[3][2];
+    float Kc[3][3];
+    float M[3][3];
+    float AP[3][3];
+    float detS;
+    float res1, res2;
+    
+    // Joseph form intermediate matrices
+    float Mt[3][3];           // M transpose
+    float MPMt[3][3];         // M*Pm*M'
+    float KR[3][2];           // K*R
+    float KRKt[3][3];         // K*R*K'
+
+    // Pack measurement
+    kf.y[0] = angle_accel;
+    kf.y[1] = velocity_gyro;
+
+    // === Correction step ===
+    // Compute C*Pm (2x3), with C = [0 1 0; 1 0 1]
+    PmC[0][0] = kf.Pm[1][0];
+    PmC[0][1] = kf.Pm[1][1];
+    PmC[0][2] = kf.Pm[1][2];
+
+    PmC[1][0] = kf.Pm[0][0] + kf.Pm[2][0];
+    PmC[1][1] = kf.Pm[0][1] + kf.Pm[2][1];
+    PmC[1][2] = kf.Pm[0][2] + kf.Pm[2][2];
+
+    // S = C*Pm*C' + R
+    S[0][0] = PmC[0][1] + kf.R[0][0];
+    S[0][1] = PmC[0][0] + PmC[0][2] + kf.R[0][1];
+    S[1][0] = PmC[1][1] + kf.R[1][0];
+    S[1][1] = PmC[1][0] + PmC[1][2] + kf.R[1][1];
+
+    // Inverse of S with numerical safety
+    detS = S[0][0]*S[1][1] - S[0][1]*S[1][0];
+    
+    // Prevent division by very small numbers
+    if (fabsf(detS) < 1e-10f) {
+        detS = (detS < 0.0f) ? -1e-10f : 1e-10f;
+    }
+    
+    invS[0][0] =  S[1][1]/detS;
+    invS[0][1] = -S[0][1]/detS;
+    invS[1][0] = -S[1][0]/detS;
+    invS[1][1] =  S[0][0]/detS;
+
+    // Compute Pm*C' (3x2)
+    PmCt[0][0] = kf.Pm[0][1];
+    PmCt[0][1] = kf.Pm[0][0] + kf.Pm[0][2];
+
+    PmCt[1][0] = kf.Pm[1][1];
+    PmCt[1][1] = kf.Pm[1][0] + kf.Pm[1][2];
+
+    PmCt[2][0] = kf.Pm[2][1];
+    PmCt[2][1] = kf.Pm[2][0] + kf.Pm[2][2];
+
+    // Compute Kk = Pm*C' * inv(S) (3x2)
+    for (int r=0; r<3; r++) {
+        kf.Kk[r][0] = PmCt[r][0]*invS[0][0] + PmCt[r][1]*invS[1][0];
+        kf.Kk[r][1] = PmCt[r][0]*invS[0][1] + PmCt[r][1]*invS[1][1];
+    }
+
+    // Residual (innovation)
+    res1 = kf.y[0] - kf.xm[1];
+    res2 = kf.y[1] - (kf.xm[0] + kf.xm[2]);
+
+    // Correction xp = xm + Kk*residual
+    kf.xp[0] = kf.xm[0] + kf.Kk[0][0]*res1 + kf.Kk[0][1]*res2;
+    kf.xp[1] = kf.xm[1] + kf.Kk[1][0]*res1 + kf.Kk[1][1]*res2;
+    kf.xp[2] = kf.xm[2] + kf.Kk[2][0]*res1 + kf.Kk[2][1]*res2;
+
+    // === Joseph Form Covariance Update ===
+    // Pp = (I - Kk*C)*Pm*(I - Kk*C)' + Kk*R*Kk'
+    
+    // Kk*C (3x3) where C = [0 1 0; 1 0 1]
+    Kc[0][0] = kf.Kk[0][1];   Kc[0][1] = kf.Kk[0][0];   Kc[0][2] = kf.Kk[0][1];
+    Kc[1][0] = kf.Kk[1][1];   Kc[1][1] = kf.Kk[1][0];   Kc[1][2] = kf.Kk[1][1];
+    Kc[2][0] = kf.Kk[2][1];   Kc[2][1] = kf.Kk[2][0];   Kc[2][2] = kf.Kk[2][1];
+
+    // M = I - Kk*C
+    M[0][0] = 1.0f - Kc[0][0];   M[0][1] = -Kc[0][1];        M[0][2] = -Kc[0][2];
+    M[1][0] = -Kc[1][0];         M[1][1] = 1.0f - Kc[1][1];  M[1][2] = -Kc[1][2];
+    M[2][0] = -Kc[2][0];         M[2][1] = -Kc[2][1];        M[2][2] = 1.0f - Kc[2][2];
+
+    // Compute M' (transpose of M)
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            Mt[i][j] = M[j][i];
+        }
+    }
+
+    // Compute M*Pm (store in AP temporarily)
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            AP[r][c] = M[r][0]*kf.Pm[0][c] + 
+                       M[r][1]*kf.Pm[1][c] + 
+                       M[r][2]*kf.Pm[2][c];
+        }
+    }
+
+    // Compute (M*Pm)*M' = M*Pm*M'
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            MPMt[r][c] = AP[r][0]*Mt[0][c] + 
+                         AP[r][1]*Mt[1][c] + 
+                         AP[r][2]*Mt[2][c];
+        }
+    }
+
+    // Compute K*R (3x2)
+    for (int r = 0; r < 3; r++) {
+        KR[r][0] = kf.Kk[r][0]*kf.R[0][0] + kf.Kk[r][1]*kf.R[1][0];
+        KR[r][1] = kf.Kk[r][0]*kf.R[0][1] + kf.Kk[r][1]*kf.R[1][1];
+    }
+
+    // Compute (K*R)*K' (3x3)
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            KRKt[r][c] = KR[r][0]*kf.Kk[c][0] + KR[r][1]*kf.Kk[c][1];
+        }
+    }
+
+    // Final: Pp = M*Pm*M' + K*R*K'
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            kf.Pp[r][c] = MPMt[r][c] + KRKt[r][c];
+        }
+    }
+
+    // Enforce symmetry (numerical safety)
+    for (int i = 0; i < 3; i++) {
+        for (int j = i+1; j < 3; j++) {
+            float avg = 0.5f * (kf.Pp[i][j] + kf.Pp[j][i]);
+            kf.Pp[i][j] = avg;
+            kf.Pp[j][i] = avg;
+        }
+    }
+
+    // Ensure positive diagonal elements
+    for (int i = 0; i < 3; i++) {
+        if (kf.Pp[i][i] < 1e-9f) {
+            kf.Pp[i][i] = 1e-9f;
+        }
+    }
+
+    // === Prediction step ===
+    // xm = Ad*xp
+    kf.xm[0] = kf.xp[0];
+    kf.xm[1] = kf.Ad[1][0]*kf.xp[0] + kf.xp[1]; // T*xp[0] + xp[1]
+    kf.xm[2] = kf.xp[2];
+
+    // AP = Ad*Pp
+    AP[0][0] = kf.Pp[0][0];  AP[0][1] = kf.Pp[0][1];  AP[0][2] = kf.Pp[0][2];
+    AP[1][0] = kf.Ad[1][0]*kf.Pp[0][0] + kf.Pp[1][0];
+    AP[1][1] = kf.Ad[1][0]*kf.Pp[0][1] + kf.Pp[1][1];
+    AP[1][2] = kf.Ad[1][0]*kf.Pp[0][2] + kf.Pp[1][2];
+    AP[2][0] = kf.Pp[2][0];  AP[2][1] = kf.Pp[2][1];  AP[2][2] = kf.Pp[2][2];
+
+    // Pm = (Ad*Pp)*Ad' + Q
+    kf.Pm[0][0] = AP[0][0] + kf.Q[0][0];
+    kf.Pm[0][1] = AP[0][0]*kf.Ad[1][0] + AP[0][1] + kf.Q[0][1];
+    kf.Pm[0][2] = AP[0][2] + kf.Q[0][2];
+
+    kf.Pm[1][0] = AP[1][0] + kf.Q[1][0];
+    kf.Pm[1][1] = AP[1][0]*kf.Ad[1][0] + AP[1][1] + kf.Q[1][1];
+    kf.Pm[1][2] = AP[1][2] + kf.Q[1][2];
+
+    kf.Pm[2][0] = AP[2][0] + kf.Q[2][0];
+    kf.Pm[2][1] = AP[2][0]*kf.Ad[1][0] + AP[2][1] + kf.Q[2][1];
+    kf.Pm[2][2] = AP[2][2] + kf.Q[2][2];
+
+    // Enforce symmetry on Pm (numerical safety)
+    for (int i = 0; i < 3; i++) {
+        for (int j = i+1; j < 3; j++) {
+            float avg = 0.5f * (kf.Pm[i][j] + kf.Pm[j][i]);
+            kf.Pm[i][j] = avg;
+            kf.Pm[j][i] = avg;
+        }
+    }
+
+    // Ensure positive diagonal elements
+    for (int i = 0; i < 3; i++) {
+        if (kf.Pm[i][i] < 1e-9f) {
+            kf.Pm[i][i] = 1e-9f;
+        }
+    }
+}
+
 
 // Get pitch and rps
 void mod_mpu_get_states(float *fangle, float *frps){

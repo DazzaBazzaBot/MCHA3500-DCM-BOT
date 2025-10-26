@@ -3,11 +3,13 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <math.h>
 #include <inttypes.h> // For PRIxx and SCNxx macros
 #include "stm32f4xx_hal.h"
 #include "cmd_line_buffer.h"
 #include "cmd_parser.h"
 #include "heartbeat_task.h"
+#include "cmsis_os2.h"
 
 // my cool shit
 #include "mod_mpu6050.h"
@@ -41,6 +43,7 @@ static void _cmd_log_motor_data(int, char *[]);
 static void _cmd_log_freewheel_data(int, char *[]);
 static void _cmd_log_inertia_data(int, char *[]);
 static void _cmd_log_imu_data(int, char *[]);
+static void _cmd_log_kalman_data(int, char *[]);
 
 // dcm commands
 static void _cmd_dcm_set_pwm(int, char *[]);
@@ -56,6 +59,30 @@ static void _cmd_lqr_set_states(int, char *[]);
 static void _cmd_lqr_get_control(int, char *[]);
 static void _cmd_lqr_set_y_ref(int, char *[]);
 
+// MPU BULLSHIT
+static void _cmd_mpu_accel_offset(int, char *[]);
+
+// Assesment
+// set motor voltage -12 to 12
+static void _cmd_ass_set_voltage(int, char *[]);
+
+// get wheel position in rads
+static void _cmd_ass_get_phi(int, char *[]);
+
+// get chasis angle in rads from kalman
+static void _cmd_ass_get_theta(int, char *[]);
+
+// get wheel velocity
+static void _cmd_ass_get_dphi(int, char *[]);
+
+// non zero velocity ref
+static void _cmd_ass_set_ds_yref(int, char *[]);
+
+// zero velocity ref
+////////////////////////////////////// PIL
+// probs ass_set_state
+//       ass_update_control
+//       ass_get_control
 
 // Command table
 static CMD_T cmd_table[] =
@@ -65,14 +92,15 @@ static CMD_T cmd_table[] =
         {_cmd_reset, "reset", "", "Restarts the system.\n"},
 
         // manager
-        {_cmd_manager_start, "manager_start", "[pid|lqr|mpc]", "Starts the module manager with the specified control method"},
+        {_cmd_manager_start, "manager_start", "[pid|lqr|mpc|ass]", "Starts the module manager with the specified control method, or assessment mode"},
         {_cmd_manager_stop, "manager_stop", "", "Stops the module manager\n"},
 
         // data logging
         {_cmd_log_motor_data, "log_motor_data", "", "Logs motor data"},
         {_cmd_log_freewheel_data, "log_freewheel_data", "", "Logs freewheel motor data"},
         {_cmd_log_inertia_data, "log_inertia_data", "", "Logs inertia data"},
-        {_cmd_log_imu_data, "log_imu_data", "", "Logs IMU data\n"},     
+        {_cmd_log_imu_data, "log_imu_data", "", "Logs IMU data"},
+        {_cmd_log_kalman_data, "log_kalman_data", "", "Logs Kalman output\n"},
 
         // dcm
         {_cmd_dcm_set_pwm, "dcm_set_pwm", "<left_pwm> <right_pwm>", "Sets the PWM duty cycle for the left and right DC motors (-100 to 100)"},
@@ -88,8 +116,15 @@ static CMD_T cmd_table[] =
         {_cmd_lqr_get_control, "lqr_get_control", "", "Gets the current LQR control output"},
         {_cmd_lqr_set_y_ref, "lqr_set_y_ref", "<y_ref>", "Sets the LQR reference output value\n"},
 
-        // temp runner
+        // stupid mpu stupid stuff
+        {_cmd_mpu_accel_offset, "mpu_accel_offset", "", "Calculates the accel offset when level\n"},
 
+        // assesment stuff
+        {_cmd_ass_set_voltage, "ass_set_voltage", "<v_left> <v_right>", "Sets the voltage for the motors in the range of -12V to 12V"},
+        {_cmd_ass_get_phi, "ass_get_phi", "", "Gets the position of the wheel in radians"},
+        {_cmd_ass_get_theta, "ass_get_theta", "", "Gets the angle of the chassis in radians"},
+        {_cmd_ass_get_dphi, "ass_get_dphi", "", "Gets the velocity of the wheels in radians per second"},
+        {_cmd_ass_set_ds_yref, "ass_set_ds_yref", "<rads>", "Sets the wheel velocity reference in the range of -5 to 5 radians per second\n"},
 };
 
 enum
@@ -165,9 +200,14 @@ void _cmd_manager_start(int argc, char *argv[])
             mod_manager_start(MOD_MANAGER_MPC);
             printf("Module manager started with MPC control\n");
         }
+        else if (strcmp(argv[1], "ass") == 0)
+        {
+            mod_manager_start(MOD_MANAGER_ASS);
+            printf("Module manager started assessment mode\n");
+        }
         else
         {
-            printf("%s: invalid argument \"%s\", syntax is: %s [pid|lqr|mpc]\n", argv[0], argv[1], argv[0]);
+            printf("%s: invalid argument \"%s\", syntax is: %s [pid|lqr|mpc|ass]\n", argv[0], argv[1], argv[0]);
         }
     }
 }
@@ -222,6 +262,16 @@ void _cmd_log_imu_data(int argc, char *argv[])
     mod_enc_reset_countA();
     mod_enc_reset_countB();
     mod_log_start(LOG_IMU);
+}
+
+void _cmd_log_kalman_data(int argc, char *argv[])
+{
+    UNUSED(argc);
+    UNUSED(argv);
+
+    mod_enc_reset_countA();
+    mod_enc_reset_countB();
+    mod_log_start(LOG_KALMAN);
 }
 
 /******************************************
@@ -324,7 +374,6 @@ void _cmd_dcm_right_voltage(int argc, char *argv[])
     printf("Set right voltage to %.2fV | Right Encoder Count: %" PRId32 " | Right ADC Voltage: %.2fV\n", right_voltage, right_enc_count, right_adc_voltage);
 }
 
-
 /*******************************************
 *********** LQR CONTROK COMMANDS ***********
 *******************************************/
@@ -352,12 +401,14 @@ void _cmd_lqr_update(int argc, char *argv[])
     printf("%.4f\n", mod_LQR_get_control());
 }
 
-void _cmd_lqr_set_states(int argc, char *argv[]){
+void _cmd_lqr_set_states(int argc, char *argv[])
+{
     UNUSED(argc);
     UNUSED(argv);
 }
 
-void _cmd_lqr_get_control(int argc, char *argv[]){
+void _cmd_lqr_get_control(int argc, char *argv[])
+{
     UNUSED(argc);
     UNUSED(argv);
 }
@@ -376,6 +427,108 @@ void _cmd_lqr_set_y_ref(int argc, char *argv[])
     mod_LQR_set_y_ref(y_ref);
 
     printf("LQR reference output set to %.4f\n", y_ref);
+}
+
+/***********************************
+*********** IMU COMMANDS ***********
+***********************************/
+void _cmd_mpu_accel_offset(int argc, char *argv[])
+{
+    printf("start calc (thats short for calculator chat)\n");
+    float sum = 0.0f;
+    int16_t ax, ay, az;
+
+    for (int i = 0; i < 200; i++)
+    {
+        mod_mpu_read_raw_accel(&ax, &ay, &az);
+        float pitch = mod_mpu_update_pitch(ax, ay, az);
+        sum += pitch;
+        osDelay(5); // Small delay between samples
+    }
+
+    float avg_off = sum / 200;
+
+    printf("Accel offset: %.4f\n", avg_off);
+}
+
+/******************************************
+*********** ASSESSMENT COMMANDS ***********
+******************************************/
+
+static void _cmd_ass_set_voltage(int argc, char *argv[])
+{
+    UNUSED(argv);
+
+    // Check arg coung
+    if (argc < 3)
+    {
+        printf("Usage: %s <left_voltage> <right_voltage>\n", argv[0]);
+        printf("Both should be in the range -12.0 to 12.0\n");
+        return;
+    }
+
+    // Make the number number
+    float left_voltage = atof(argv[1]);
+    float right_voltage = atof(argv[2]);
+
+    // CHecl range
+    if (fabs(left_voltage) > 12.0f || fabs(right_voltage) > 12.0f)
+    {
+        printf("Error: Voltage must be between -12.0 and 12.0\n");
+        return;
+    }
+
+    // Set voltage
+    mod_dcm_set_voltageLeft(left_voltage);
+    mod_dcm_set_voltageRight(right_voltage);
+}
+
+static void _cmd_ass_get_phi(int argc, char *argv[])
+{
+    UNUSED(argc);
+    UNUSED(argv);
+
+    // get from mod man
+    float state_phi = mod_manager_get_phi();
+    printf("Wheel position: %0.3fradians\n", state_phi);
+}
+
+static void _cmd_ass_get_theta(int argc, char *argv[])
+{
+    UNUSED(argc);
+    UNUSED(argv);
+
+    // get from mod man
+    float state_theta = mod_manager_get_theta();
+    printf("Chassis angle: %0.3fradians\n", state_theta);
+}
+
+static void _cmd_ass_get_dphi(int argc, char *argv[])
+{
+    UNUSED(argc);
+    UNUSED(argv);
+
+    // get from mod man
+    float state_dphi = mod_manager_get_dphi();
+    printf("Wheel position: %0.3fradians/second\n", state_dphi);
+}
+
+static void _cmd_ass_set_ds_yref(int argc, char *argv[])
+{
+    UNUSED(argc);
+    UNUSED(argv);
+
+    // set lqr
+    if (argc < 2)
+    {
+        printf("Usage: %s <y_ref>\n", argv[0]);
+        printf("  y_ref is the LQR reference output value\n");
+        return;
+    }
+
+    float y_ref = atof(argv[1]);
+
+    mod_LQR_set_y_ref(y_ref);
 }
 
 /*******************************************/
